@@ -2,20 +2,29 @@ package com.senlacourses.lecture3.task3;
 
 public class AssemblyLine implements IAssemblyLine{
 
+  private ILineStep buildBody;
+  private ILineStep buildChassis;
+  private ILineStep buildEngine;
+
+  public AssemblyLine(ILineStep buildBody, ILineStep buildChassis, ILineStep buildEngine) {
+    this.buildBody = buildBody;
+    this.buildChassis = buildChassis;
+    this.buildEngine = buildEngine;
+  }
+
   @Override
   public IProduct assembleProduct(IProduct product) {
-    System.out.println("Start assembly");
-    ILineStep lineStep = new LineStep();
+    System.out.println("Start assembly\n");
 
-    IProductPart bodyOfCar = lineStep.buildProductPart();
-    IProductPart chassisOfCar = lineStep.buildProductPart();
-    IProductPart engineOfCar = lineStep.buildProductPart();
+    IProductPart body = buildBody.buildProductPart();
+    IProductPart chassis = buildChassis.buildProductPart();
+    IProductPart engine = buildEngine.buildProductPart();
 
-    product.installFirstPart(bodyOfCar);
-    product.installSecondPart(chassisOfCar);
-    product.installThirdPart(engineOfCar);
+    product.installFirstPart(body);
+    product.installSecondPart(chassis);
+    product.installThirdPart(engine);
 
-    System.out.println("Car is ready!");
+    System.out.println("\nCar is ready!");
     return product;
   }
 }

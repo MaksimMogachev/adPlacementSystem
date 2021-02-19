@@ -4,12 +4,10 @@ public class HotelResident {
 
   final private String fullName;
   final private int passportNumber;
-  private int hotelRoom;
 
-  public HotelResident(String fullName, int passportNumber, int hotelRoom) {
+  public HotelResident(String fullName, int passportNumber) {
     this.fullName = fullName;
     this.passportNumber = passportNumber;
-    this.hotelRoom = hotelRoom;
   }
 
   public String getFullName() {
@@ -18,13 +16,5 @@ public class HotelResident {
 
   public int getPassportNumber() {
     return passportNumber;
-  }
-
-  public int getHotelRoom() {
-    return hotelRoom;
-  }
-
-  public void setHotelRoom(int hotelRoom) {
-    this.hotelRoom = hotelRoom;
   }
 }

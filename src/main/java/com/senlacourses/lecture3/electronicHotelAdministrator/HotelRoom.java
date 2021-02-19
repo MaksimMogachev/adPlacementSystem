@@ -34,7 +34,11 @@ public class HotelRoom {
     return hotelResidents;
   }
 
-  public void setHotelResidents(HotelResident hotelResident) {
-    this.hotelResidents.add(hotelResident);
+  public void setHotelResident(HotelResident hotelResident) {
+    if (hotelResident == null) {
+      hotelResidents = new ArrayList<>();
+    } else {
+      this.hotelResidents.add(hotelResident);
+    }
   }
 }

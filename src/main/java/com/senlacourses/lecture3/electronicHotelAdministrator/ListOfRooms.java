@@ -12,15 +12,20 @@ public class ListOfRooms {
   }
 
   public void showCurrentList() {
-    for (HotelRoom room : list) {
-      System.out.print("Number of room: " + room + "; Residents: ");
+    for (int i = 0; i < list.size(); i++) {
+      System.out.print("Number of room: " + i + "; Residents: ");
 
-      for (int j = 0; j < room.getHotelResidents().size(); j++) {
-        System.out.print(room.getHotelResidents().get(j).getFullName() + ", "
-            + room.getHotelResidents().get(j).getPassportNumber() + "; ");
+      if (list.get(i).getHotelResidents().size() > 0) {
+        for (int j = 0; j < list.get(i).getHotelResidents().size(); j++) {
+          System.out.print(list.get(i).getHotelResidents().get(j).getFullName() + ", "
+              + list.get(i).getHotelResidents().get(j).getPassportNumber() + "; ");
+        }
+      } else {
+        System.out.print("no residents; ");
       }
-      System.out.println("Price: " + room.getPrice() +
-          "; Room condition: " + room.getRoomCondition());
+
+      System.out.println("Price: " + list.get(i).getPrice() +
+          "; Room condition: " + list.get(i).getRoomCondition());
     }
   }
 
@@ -33,11 +38,11 @@ public class ListOfRooms {
   }
 
   public void putInTheRoom(int id, String fullName, int passportNumber) {
-      list.get(id).setHotelResidents(new HotelResident(fullName, passportNumber, id));
+      list.get(id).setHotelResident(new HotelResident(fullName, passportNumber));
   }
 
   public void evictFromTheRoom(int id) {
-    list.get(id).setHotelResidents(null);
+    list.get(id).setHotelResident(null);
   }
 
   public void addNewRoom(int price, RoomCondition roomCondition) {

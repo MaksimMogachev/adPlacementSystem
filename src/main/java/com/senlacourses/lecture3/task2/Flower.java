@@ -1,6 +1,6 @@
 package com.senlacourses.lecture3.task2;
 
-public class Flower {
+public abstract class Flower {
 
   private String name;
   private int price;

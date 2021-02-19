@@ -5,17 +5,21 @@ import java.util.Random;
 public class TaskOne {
 
   private final int randomInt;
+  private final int maximumInt;
+  private final int minimumInt;
 
-  public TaskOne() {
+  public TaskOne(int maximumInt, int minimumInt) {
     final Random random = new Random();
-    this.randomInt = random.nextInt(900) + 100;
+    this.maximumInt = maximumInt;
+    this.minimumInt = minimumInt;
+    this.randomInt = random.nextInt(this.maximumInt - this.minimumInt) + this.minimumInt;
   }
 
   public void findTheLargest() {
     char[] arrayFromInt = ("" + this.randomInt).toCharArray();
     char largestInt = arrayFromInt[0];
 
-    System.out.println("Исходное число - " + this.randomInt);
+    System.out.println("The original number - " + this.randomInt);
 
     for (int i = 1; i < arrayFromInt.length; i++) {
       if ((int) arrayFromInt[i] > (int) largestInt) {
@@ -23,6 +27,6 @@ public class TaskOne {
       }
     }
 
-    System.out.println("Наибольшая цифра - " + largestInt);
+    System.out.println("The highest figure - " + largestInt);
   }
 }

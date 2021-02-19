@@ -1,10 +1,13 @@
 package com.senlacourses.lecture3.electronicHotelAdministrator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HotelRoom {
 
   private int price;
   private RoomCondition roomCondition;
-  private HotelResident hotelResident;
+  private List<HotelResident> hotelResidents = new ArrayList<>();
 
   public HotelRoom(int price, RoomCondition roomCondition) {
     this.price = price;
@@ -27,11 +30,11 @@ public class HotelRoom {
     this.roomCondition = roomCondition;
   }
 
-  public HotelResident getHotelResident() {
-    return hotelResident;
+  public List<HotelResident> getHotelResidents() {
+    return hotelResidents;
   }
 
-  public void setHotelResident(HotelResident hotelResident) {
-    this.hotelResident = hotelResident;
+  public void setHotelResidents(HotelResident hotelResident) {
+    this.hotelResidents.add(hotelResident);
   }
 }

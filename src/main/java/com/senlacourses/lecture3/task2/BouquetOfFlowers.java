@@ -6,7 +6,6 @@ import java.util.List;
 public class BouquetOfFlowers {
 
   private List<Flower> bouquet = new ArrayList<>();
-  private int totalCost = 0;
 
   public List<Flower> getBouquet() {
     return this.bouquet;
@@ -20,16 +19,13 @@ public class BouquetOfFlowers {
     this.bouquet.add(flower);
   }
 
+  public void findTheTotalCost() {
+    int totalCost = 0;
 
-  public int getTotalCost() {
     for (Flower flower : bouquet) {
       totalCost += flower.getPrice();
     }
-    return totalCost;
-  }
 
-  public void findTheTotalCost() {
-
-    System.out.println("\n" + "total cost is " + this.getTotalCost());
+    System.out.println("\n" + "total cost is " + totalCost + "\n");
   }
 }

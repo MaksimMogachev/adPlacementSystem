@@ -16,7 +16,7 @@ public class Services {
   }
 
   public void showCurrentServices() {
-    System.out.println(services.toString());  //override toString
+    System.out.println(services.toString());
   }
 
   public void changePrice(String key, int price) {

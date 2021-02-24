@@ -4,19 +4,27 @@ public class Main {
 
   public static void main(String[] args) {
     Administrator administrator = new Administrator("kakoi-to administrator");
+    Hotel hotel = new Hotel(administrator);
 
-    administrator.getListOfRooms().addNewRoom(1, 500, null);
-    administrator.getListOfRooms().putInTheRoom(1, "kakoi-to zhilec", 2204014);
-    administrator.getListOfRooms().showCurrentRooms();
+    hotel.addNewRoom(1, 1, 2, 500);
+    hotel.showAllRooms();
+    hotel.addNewResident("kakoi-to zhilec", 2204014);
+    hotel.showAllResidents();
+    hotel.putInTheRoom(1, 0);
+    hotel.showAllRooms();
+    hotel.showOccupiedRooms();
 
-    administrator.getListOfRooms().changePrice(1, 800);
-    administrator.getListOfRooms().evictFromTheRoom(1, 0);
-    administrator.getListOfRooms().changeRoomCondition(1, RoomCondition.REPAIRED);
-    administrator.getListOfRooms().showCurrentRooms();
+    hotel.addNewService("pomit' pol", 1000);
+    hotel.changeServicePrice("pomit' pol", 2000);
+    hotel.showCurrentServices();
 
-    administrator.getServices().addNewService("pomit' pol", 1000);
-    administrator.getServices().changePrice("pomit' pol", 2000);
-    administrator.getServices().showCurrentServices();
+    hotel.addServiceToOccupiedRoom(1, "pomit' pol");
+    hotel.showOccupiedRooms();
+
+    hotel.changeRoomPrice(1, 800);
+    hotel.evictFromTheRoom(1, 0);
+    hotel.changeRoomCondition(1, RoomCondition.REPAIRED);
+    hotel.showAllRooms();
 
   }
 }

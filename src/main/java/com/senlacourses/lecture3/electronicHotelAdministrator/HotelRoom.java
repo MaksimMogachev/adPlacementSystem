@@ -6,14 +6,20 @@ import java.util.List;
 public class HotelRoom {
 
   private final int numberOfRoom;
+  private int numberOfStars;
+  private int roomCapacity;
   private int price;
   private RoomCondition roomCondition;
-  private List<HotelResident> hotelResidents = new ArrayList<>();
+  private boolean roomIsOccupied;
 
-  public HotelRoom(int numberOfRoom, int price, RoomCondition roomCondition) {
+  public HotelRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
+    if (numberOfRoom < 1 || numberOfStars < 0 || roomCapacity < 1 || price < 0) {
+      throw new UnsupportedOperationException("Incorrect values");
+    }
     this.numberOfRoom = numberOfRoom;
+    this.numberOfStars = numberOfStars;
+    this.roomCapacity = roomCapacity;
     this.price = price;
-    this.roomCondition = roomCondition;
   }
 
   public int getPrice() {
@@ -32,19 +38,39 @@ public class HotelRoom {
     this.roomCondition = roomCondition;
   }
 
-  public List<HotelResident> getHotelResidents() {
-    return hotelResidents;
-  }
-
-  public void addHotelResident(HotelResident hotelResident) {
-    this.hotelResidents.add(hotelResident);
-  }
-
-  public void removeHotelResident(int index) {
-    this.hotelResidents.remove(this.hotelResidents.get(index));
-  }
-
   public int getNumberOfRoom() {
     return numberOfRoom;
+  }
+
+  public int getNumberOfStars() {
+    return numberOfStars;
+  }
+
+  public void setNumberOfStars(int numberOfStars) {
+    this.numberOfStars = numberOfStars;
+  }
+
+  public int getRoomCapacity() {
+    return roomCapacity;
+  }
+
+  public void setRoomCapacity(int roomCapacity) {
+    this.roomCapacity = roomCapacity;
+  }
+
+  @Override
+  public String toString() {
+    return ("Number of room: " + getNumberOfRoom() + "; Number of stars: " + getNumberOfStars()
+        + "; Room capacity: " + getRoomCapacity() + "; Price: " + getPrice()
+        + "; Room condition: " + getRoomCondition()
+        + (roomIsOccupied ? "; Room is occupied now" : "; Room is not occupied now"));
+  }
+
+  public boolean isRoomIsOccupied() {
+    return roomIsOccupied;
+  }
+
+  public void setRoomIsOccupied(boolean roomIsOccupied) {
+    this.roomIsOccupied = roomIsOccupied;
   }
 }

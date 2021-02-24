@@ -32,6 +32,7 @@ buildNumber.properties
 
 # File-based project format
 *.iws
+*.iml
 
 # IntelliJ
 out/

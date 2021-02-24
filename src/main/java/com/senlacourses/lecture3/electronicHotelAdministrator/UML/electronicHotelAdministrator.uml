@@ -3,70 +3,116 @@
   <ID>JAVA</ID>
   <OriginalElement>com.senlacourses.lecture3.electronicHotelAdministrator</OriginalElement>
   <nodes>
-    <node x="424.0208333333333" y="573.0">com.senlacourses.lecture3.electronicHotelAdministrator.Services</node>
-    <node x="923.0208333333333" y="0.0">com.senlacourses.lecture3.electronicHotelAdministrator.UML</node>
-    <node x="71.02083333333329" y="518.0">com.senlacourses.lecture3.electronicHotelAdministrator.ListOfRooms</node>
-    <node x="274.66666666666663" y="821.0">com.senlacourses.lecture3.electronicHotelAdministrator.Administrator</node>
-    <node x="94.41666666666663" y="171.0">com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom</node>
-    <node x="252.0" y="0.0">com.senlacourses.lecture3.electronicHotelAdministrator.HotelResident</node>
-    <node x="0.0" y="0.0">com.senlacourses.lecture3.electronicHotelAdministrator.RoomCondition</node>
-    <node x="721.0208333333333" y="0.0">com.senlacourses.lecture3.electronicHotelAdministrator.Main</node>
+    <node x="169.08333333333331" y="451.0">com.senlacourses.lecture3.electronicHotelAdministrator.CheckInRegistration</node>
+    <node x="10.5" y="238.0">com.senlacourses.lecture3.electronicHotelAdministrator.Service</node>
+    <node x="891.7" y="0.0">com.senlacourses.lecture3.electronicHotelAdministrator.UML</node>
+    <node x="604.7" y="473.0">com.senlacourses.lecture3.electronicHotelAdministrator.Administrator</node>
+    <node x="170.36666666666667" y="672.0">com.senlacourses.lecture3.electronicHotelAdministrator.Hotel</node>
+    <node x="366.7" y="194.0">com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom</node>
+    <node x="177.7" y="227.0">com.senlacourses.lecture3.electronicHotelAdministrator.HotelResident</node>
+    <node x="342.3666666666667" y="1262.0">com.senlacourses.lecture3.electronicHotelAdministrator.Main</node>
+    <node x="353.16666666666663" y="0.0">com.senlacourses.lecture3.electronicHotelAdministrator.RoomCondition</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.ListOfRooms" target="com.senlacourses.lecture3.electronicHotelAdministrator.HotelResident">
-      <point x="133.20000000000005" y="-126.5" />
-      <point x="370.7208333333333" y="493.0" />
-      <point x="407.9442708333333" y="493.0" />
-      <point x="407.9442708333333" y="146.0" />
-      <point x="414.5" y="146.0" />
-      <point x="65.0" y="60.5" />
-    </edge>
-    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Administrator" target="com.senlacourses.lecture3.electronicHotelAdministrator.Services">
-      <point x="22.33333333333337" y="-82.5" />
-      <point x="431.0" y="801.0" />
-      <point x="466.0208333333333" y="801.0" />
-      <point x="-84.0" y="71.5" />
-    </edge>
-    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom" target="com.senlacourses.lecture3.electronicHotelAdministrator.RoomCondition">
-      <point x="-108.37499999999994" y="-148.5" />
-      <point x="130.54166666666669" y="146.0" />
-      <point x="116.0" y="146.0" />
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.CheckInRegistration" target="com.senlacourses.lecture3.electronicHotelAdministrator.HotelResident">
+      <point x="-17.416666666666657" y="-60.5" />
+      <point x="256.16666666666663" y="431.0" />
+      <point x="262.2" y="431.0" />
       <point x="0.0" y="60.5" />
     </edge>
-    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.ListOfRooms" target="com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom">
-      <point x="-66.60000000000002" y="-126.5" />
-      <point x="170.92083333333326" y="493.0" />
-      <point x="142.58333333333331" y="493.0" />
-      <point x="-96.33333333333331" y="148.5" />
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Hotel" target="com.senlacourses.lecture3.electronicHotelAdministrator.Administrator">
+      <point x="133.60000000000002" y="-270.0" />
+      <point x="470.9666666666667" y="642.0" />
+      <point x="634.95" y="642.0" />
+      <point x="-90.75" y="38.5" />
     </edge>
-    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom" target="com.senlacourses.lecture3.electronicHotelAdministrator.HotelResident">
-      <point x="36.12500000000006" y="-148.5" />
-      <point x="275.0416666666667" y="146.0" />
-      <point x="284.5" y="146.0" />
-      <point x="-65.0" y="60.5" />
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Main" target="com.senlacourses.lecture3.electronicHotelAdministrator.RoomCondition">
+      <point x="-62.80000000000007" y="-27.0" />
+      <point x="358.0666666666666" y="1242.0" />
+      <point x="0.0" y="1242.0" />
+      <point x="0.0" y="169.0" />
+      <point x="382.16666666666663" y="169.0" />
+      <point x="-87.0" y="72.0" />
     </edge>
-    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.ListOfRooms" target="com.senlacourses.lecture3.electronicHotelAdministrator.RoomCondition">
-      <point x="-133.2" y="-126.5" />
-      <point x="104.3208333333333" y="493.0" />
-      <point x="68.49322916666665" y="493.0" />
-      <point x="68.49322916666665" y="146.0" />
-      <point x="38.666666666666686" y="146.0" />
-      <point x="-77.33333333333331" y="60.5" />
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Main" target="com.senlacourses.lecture3.electronicHotelAdministrator.Administrator">
+      <point x="62.799999999999955" y="-27.0" />
+      <point x="483.66666666666663" y="1242.0" />
+      <point x="779.9892361111112" y="1242.0" />
+      <point x="779.9892361111112" y="652.0" />
+      <point x="816.45" y="652.0" />
+      <point x="90.75" y="38.5" />
     </edge>
-    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Administrator" target="com.senlacourses.lecture3.electronicHotelAdministrator.ListOfRooms">
-      <point x="-111.66666666666663" y="-82.5" />
-      <point x="297.0" y="801.0" />
-      <point x="126.52083333333329" y="801.0" />
-      <point x="-111.0" y="126.5" />
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Hotel" target="com.senlacourses.lecture3.electronicHotelAdministrator.CheckInRegistration">
+      <point x="-44.53333333333336" y="-270.0" />
+      <point x="292.8333333333333" y="602.0" />
+      <point x="203.91666666666663" y="602.0" />
+      <point x="-69.66666666666669" y="60.5" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Hotel" target="com.senlacourses.lecture3.electronicHotelAdministrator.RoomCondition">
+      <point x="111.33333333333337" y="-270.0" />
+      <point x="448.70000000000005" y="632.0" />
+      <point x="594.2" y="632.0" />
+      <point x="594.2" y="169.0" />
+      <point x="556.1666666666666" y="169.0" />
+      <point x="87.0" y="72.0" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Main" target="com.senlacourses.lecture3.electronicHotelAdministrator.Hotel">
+      <point x="-31.399999999999977" y="-27.0" />
+      <point x="389.4666666666667" y="1232.0" />
+      <point x="253.86666666666667" y="1232.0" />
+      <point x="-83.5" y="270.0" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Hotel" target="com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom">
+      <point x="89.06666666666666" y="-270.0" />
+      <point x="426.43333333333334" y="622.0" />
+      <point x="534.1666666666666" y="622.0" />
+      <point x="534.1666666666666" y="431.0" />
+      <point x="562.0" y="431.0" />
+      <point x="86.80000000000004" y="93.5" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Hotel" target="com.senlacourses.lecture3.electronicHotelAdministrator.HotelResident">
+      <point x="22.26666666666665" y="-270.0" />
+      <point x="359.6333333333333" y="592.0" />
+      <point x="423.375" y="592.0" />
+      <point x="423.375" y="411.0" />
+      <point x="329.8" y="411.0" />
+      <point x="67.60000000000002" y="60.5" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.Hotel" target="com.senlacourses.lecture3.electronicHotelAdministrator.Service">
+      <point x="-133.60000000000002" y="-270.0" />
+      <point x="203.76666666666665" y="642.0" />
+      <point x="51.455902777777794" y="642.0" />
+      <point x="51.455902777777794" y="431.0" />
+      <point x="53.39999999999998" y="431.0" />
+      <point x="-28.600000000000023" y="49.5" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom" target="com.senlacourses.lecture3.electronicHotelAdministrator.RoomCondition">
+      <point x="-54.25" y="-93.5" />
+      <point x="420.95" y="169.0" />
+      <point x="440.16666666666663" y="169.0" />
+      <point x="-29.0" y="72.0" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.CheckInRegistration" target="com.senlacourses.lecture3.electronicHotelAdministrator.HotelRoom">
+      <point x="52.25" y="-60.5" />
+      <point x="325.8333333333333" y="421.0" />
+      <point x="388.4" y="421.0" />
+      <point x="-86.8" y="93.5" />
+    </edge>
+    <edge source="com.senlacourses.lecture3.electronicHotelAdministrator.CheckInRegistration" target="com.senlacourses.lecture3.electronicHotelAdministrator.Service">
+      <point x="-87.08333333333334" y="-60.5" />
+      <point x="186.49999999999997" y="411.0" />
+      <point x="110.60000000000002" y="411.0" />
+      <point x="28.600000000000023" y="49.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.9" x="554.4444444444445" y="498.1111111111111" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="486.50000000000006" y="658.0000000000001" />
   <SelectedNodes />
   <Categories>
-    <Category>Methods</Category>
     <Category>Fields</Category>
+    <Category>Methods</Category>
     <Category>Inner Classes</Category>
+    <Category>Properties</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

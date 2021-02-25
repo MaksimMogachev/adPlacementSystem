@@ -2,6 +2,7 @@ package com.senlacourses.lecture3.electronicHotelAdministrator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Hotel {
@@ -56,15 +57,26 @@ public class Hotel {
     listOfRooms.get(index).setRoomCondition(roomCondition);
   }
 
-  public void putInTheRoom(int numberOfRoom, int indexOfResident) {
+  public void putInTheRoom(int numberOfRoom, int indexOfResident, int yearOfArrival, int month, int dayOfMonth, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
 
     if (indexOfOccupiedRoom == -1) {
       listOfOccupiedRooms.add(new CheckInRegistration(listOfRooms.get(indexOfRoom),
-          listOfResidents.get(indexOfResident)));
+          listOfResidents.get(indexOfResident),
+          new GregorianCalendar(yearOfArrival, month, dayOfMonth), daysOfStay));
       listOfRooms.get(indexOfRoom).setRoomIsOccupied(true);
-      return;
+    } else {
+      throw new UnsupportedOperationException("the given room is occupied, use method with 2 arguments");
+    }
+  }
+
+  public void putInTheRoom(int numberOfRoom, int indexOfResident) {
+    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+
+    if (indexOfOccupiedRoom == -1) {
+      throw new UnsupportedOperationException("the given room is not occupied, use method with 6 arguments");
     }
 
     if (listOfOccupiedRooms.get(indexOfOccupiedRoom).getHotelRoom().getRoomCapacity()
@@ -80,11 +92,17 @@ public class Hotel {
 
   public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    if (indexOfRoom == -1) {
+      throw new IllegalArgumentException("this room does not exist");
+    }
+
     int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    if (indexOfOccupiedRoom == -1) {
+      throw new IllegalArgumentException("this room is not occupied");
+    }
 
     if (listOfOccupiedRooms.get(indexOfOccupiedRoom).getResidents().size() == 1) {
-      listOfOccupiedRooms.remove(listOfOccupiedRooms.get(indexOfOccupiedRoom));
-      listOfRooms.get(indexOfRoom).setRoomIsOccupied(false);
+      evictFromTheRoom(numberOfRoom);
       return;
     }
 
@@ -96,17 +114,24 @@ public class Hotel {
 
   public void evictFromTheRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    if (indexOfRoom == -1) {
+      throw new IllegalArgumentException("this room does not exist");
+    }
+
     int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    if (indexOfOccupiedRoom == -1) {
+      throw new IllegalArgumentException("this room is not occupied");
+    }
 
     listOfOccupiedRooms.remove(listOfOccupiedRooms.get(indexOfOccupiedRoom));
     listOfRooms.get(indexOfRoom).setRoomIsOccupied(false);
   }
 
   public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
-    if (findIndexOfRoom(numberOfRoom) == -1 && numberOfRoom > 0) {
+    if (findIndexOfRoom(numberOfRoom) == -1) {
       listOfRooms.add(new HotelRoom(numberOfRoom, numberOfStars, roomCapacity, price));
     } else {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("this room already exists");
     }
   }
 
@@ -122,6 +147,10 @@ public class Hotel {
     int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
     int indexOfService = findIndexOfService(nameOfService);
 
+    if (indexOfOccupiedRoom == -1 || indexOfService == -1) {
+      throw new IllegalArgumentException("incorrect arguments");
+    }
+
     listOfOccupiedRooms.get(indexOfOccupiedRoom)
         .getServices().add(listOfServices.get(indexOfService));
   }
@@ -134,6 +163,11 @@ public class Hotel {
 
   public void changeServicePrice(String nameOfService, int price) {
     int index = findIndexOfService(nameOfService);
+
+    if (index == -1) {
+      throw new IllegalArgumentException("this service does not exist");
+    }
+
     listOfServices.get(index).setPrice(price);
   }
 

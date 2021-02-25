@@ -1,5 +1,7 @@
 package com.senlacourses.lecture3.electronicHotelAdministrator;
 
+import java.util.Calendar;
+
 public class Main {
 
   public static void main(String[] args) {
@@ -10,7 +12,7 @@ public class Main {
     hotel.showAllRooms();
     hotel.addNewResident("kakoi-to zhilec", 2204014);
     hotel.showAllResidents();
-    hotel.putInTheRoom(1, 0);
+    hotel.putInTheRoom(1, 0, 2020, Calendar.APRIL, 28, 5);
     hotel.showAllRooms();
     hotel.showOccupiedRooms();
 

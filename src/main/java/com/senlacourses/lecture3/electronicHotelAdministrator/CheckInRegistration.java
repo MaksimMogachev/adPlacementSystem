@@ -1,6 +1,8 @@
 package com.senlacourses.lecture3.electronicHotelAdministrator;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class CheckInRegistration {
@@ -8,10 +10,16 @@ public class CheckInRegistration {
   private HotelRoom hotelRoom;
   private List<HotelResident> residents = new ArrayList<>();
   private List<Service> services = new ArrayList<>();
+  private Calendar arrivalDate;
+  private Calendar departureDate;
 
-  public CheckInRegistration(HotelRoom hotelRoom, HotelResident hotelResident) {
+  public CheckInRegistration(HotelRoom hotelRoom, HotelResident hotelResident, GregorianCalendar arrivalDate, int daysOfStay) {
     this.hotelRoom = hotelRoom;
     this.residents.add(hotelResident);
+    this.arrivalDate = arrivalDate;
+    departureDate = new GregorianCalendar(this.arrivalDate.get(Calendar.YEAR),
+        this.arrivalDate.get(Calendar.MONTH),
+        this.arrivalDate.get(Calendar.DAY_OF_MONTH) + daysOfStay);
   }
 
   public HotelRoom getHotelRoom() {
@@ -38,6 +46,22 @@ public class CheckInRegistration {
     this.services = services;
   }
 
+  public Calendar getCheckInDate() {
+    return arrivalDate;
+  }
+
+  public void setCheckInDate(Calendar arrivalDate) {
+    this.arrivalDate = arrivalDate;
+  }
+
+  public Calendar getDepartureDate() {
+    return departureDate;
+  }
+
+  public void setDepartureDate(Calendar departureDate) {
+    this.departureDate = departureDate;
+  }
+
   @Override
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder();
@@ -54,6 +78,8 @@ public class CheckInRegistration {
         stringBuilder.append(service.toString());
       }
     }
+    stringBuilder.append("; Arrival date: ").append(arrivalDate.getTime())
+        .append("; Departure date: ").append(departureDate.getTime());
 
     return stringBuilder.toString();
   }

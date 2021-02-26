@@ -1,4 +1,4 @@
-package com.senlacourses.lecture3.task2;
+package com.senlacourses.lecture3.task2.flowers;
 
 public class Wildflower extends Flower {
 

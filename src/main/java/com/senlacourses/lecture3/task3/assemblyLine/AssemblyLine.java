@@ -1,4 +1,8 @@
-package com.senlacourses.lecture3.task3;
+package com.senlacourses.lecture3.task3.assemblyLine;
+
+import com.senlacourses.lecture3.task3.lineStep.ILineStep;
+import com.senlacourses.lecture3.task3.product.IProduct;
+import com.senlacourses.lecture3.task3.productPart.IProductPart;
 
 public class AssemblyLine implements IAssemblyLine{
 

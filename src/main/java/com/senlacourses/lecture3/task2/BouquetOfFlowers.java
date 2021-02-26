@@ -1,5 +1,6 @@
 package com.senlacourses.lecture3.task2;
 
+import com.senlacourses.lecture3.task2.flowers.Flower;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +18,5 @@ public class BouquetOfFlowers {
 
   public void addFlower(Flower flower) {
     this.bouquet.add(flower);
-  }
-
-  public void findTheTotalCost() {
-    int totalCost = 0;
-
-    for (Flower flower : bouquet) {
-      totalCost += flower.getPrice();
-    }
-
-    System.out.println("\n" + "total cost is " + totalCost + "\n");
   }
 }

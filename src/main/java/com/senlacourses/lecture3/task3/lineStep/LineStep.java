@@ -1,4 +1,7 @@
-package com.senlacourses.lecture3.task3;
+package com.senlacourses.lecture3.task3.lineStep;
+
+import com.senlacourses.lecture3.task3.productPart.IProductPart;
+import com.senlacourses.lecture3.task3.productPart.ProductPart;
 
 public class LineStep implements ILineStep {
 

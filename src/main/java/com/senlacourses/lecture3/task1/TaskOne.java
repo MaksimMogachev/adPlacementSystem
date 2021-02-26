@@ -5,14 +5,10 @@ import java.util.Random;
 public class TaskOne {
 
   private final int randomInt;
-  private final int maximumInt;
-  private final int minimumInt;
 
   public TaskOne(int maximumInt, int minimumInt) {
     final Random random = new Random();
-    this.maximumInt = maximumInt;
-    this.minimumInt = minimumInt;
-    this.randomInt = random.nextInt(this.maximumInt - this.minimumInt) + this.minimumInt;
+    this.randomInt = random.nextInt(maximumInt - minimumInt) + minimumInt;
   }
 
   public void findTheLargest() {

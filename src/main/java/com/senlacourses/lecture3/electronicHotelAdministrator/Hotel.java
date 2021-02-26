@@ -1,8 +1,8 @@
 package com.senlacourses.lecture3.electronicHotelAdministrator;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Hotel {
@@ -48,35 +48,67 @@ public class Hotel {
   }
 
   public void changeRoomPrice(int numberOfRoom, int newPrice) {
-    int index = findIndexOfRoom(numberOfRoom);
-    listOfRooms.get(index).setPrice(newPrice);
+    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+
+    if (indexOfRoom == -1) {
+      throw new IllegalArgumentException("this room does not exist");
+    }
+
+    if (newPrice < 0) {
+      throw new IllegalArgumentException("incorrect price");
+    }
+
+    listOfRooms.get(indexOfRoom).setPrice(newPrice);
   }
 
   public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
-    int index = findIndexOfRoom(numberOfRoom);
-    listOfRooms.get(index).setRoomCondition(roomCondition);
+    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+
+    if (indexOfRoom == -1) {
+      throw new IllegalArgumentException("this room does not exist");
+    }
+
+    listOfRooms.get(indexOfRoom).setRoomCondition(roomCondition);
   }
 
-  public void putInTheRoom(int numberOfRoom, int indexOfResident, int yearOfArrival, int month, int dayOfMonth, int daysOfStay) {
+  public void putInTheRoom(int numberOfRoom, String nameOfResident, int yearOfArrival, int month, int dayOfMonth, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    int indexOfResident = findIndexOfResident(nameOfResident);
+
+    if (indexOfRoom == -1) {
+      throw new IllegalArgumentException("this room does not exist");
+    }
+
+    if (indexOfResident == -1) {
+      throw new IllegalArgumentException("the given resident is not registered");
+    }
 
     if (indexOfOccupiedRoom == -1) {
       listOfOccupiedRooms.add(new CheckInRegistration(listOfRooms.get(indexOfRoom),
           listOfResidents.get(indexOfResident),
-          new GregorianCalendar(yearOfArrival, month, dayOfMonth), daysOfStay));
+          LocalDate.of(yearOfArrival, month, dayOfMonth), daysOfStay));
       listOfRooms.get(indexOfRoom).setRoomIsOccupied(true);
     } else {
       throw new UnsupportedOperationException("the given room is occupied, use method with 2 arguments");
     }
   }
 
-  public void putInTheRoom(int numberOfRoom, int indexOfResident) {
+  public void putInTheRoom(int numberOfRoom, String nameOfResident) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    int indexOfResident = findIndexOfResident(nameOfResident);
 
     if (indexOfOccupiedRoom == -1) {
       throw new UnsupportedOperationException("the given room is not occupied, use method with 6 arguments");
+    }
+
+    if (indexOfResident == -1) {
+      throw new IllegalArgumentException("the given resident is not registered");
+    }
+
+    if (indexOfRoom == -1) {
+      throw new IllegalArgumentException("this room does not exist");
     }
 
     if (listOfOccupiedRooms.get(indexOfOccupiedRoom).getHotelRoom().getRoomCapacity()
@@ -92,6 +124,7 @@ public class Hotel {
 
   public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
+
     if (indexOfRoom == -1) {
       throw new IllegalArgumentException("this room does not exist");
     }
@@ -114,11 +147,12 @@ public class Hotel {
 
   public void evictFromTheRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+
     if (indexOfRoom == -1) {
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
     if (indexOfOccupiedRoom == -1) {
       throw new IllegalArgumentException("this room is not occupied");
     }
@@ -147,8 +181,12 @@ public class Hotel {
     int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
     int indexOfService = findIndexOfService(nameOfService);
 
-    if (indexOfOccupiedRoom == -1 || indexOfService == -1) {
-      throw new IllegalArgumentException("incorrect arguments");
+    if (indexOfOccupiedRoom == -1) {
+      throw new IllegalArgumentException("this room is not occupied");
+    }
+
+    if (indexOfService == -1) {
+      throw new IllegalArgumentException("this service does not exist");
     }
 
     listOfOccupiedRooms.get(indexOfOccupiedRoom)
@@ -161,47 +199,61 @@ public class Hotel {
     }
   }
 
-  public void changeServicePrice(String nameOfService, int price) {
-    int index = findIndexOfService(nameOfService);
+  public void changeServicePrice(String nameOfService, int newPrice) {
+    int indexOfService = findIndexOfService(nameOfService);
 
-    if (index == -1) {
+    if (indexOfService == -1) {
       throw new IllegalArgumentException("this service does not exist");
     }
 
-    listOfServices.get(index).setPrice(price);
+    if (newPrice < 0) {
+      throw new IllegalArgumentException("incorrect newPrice");
+    }
+
+    listOfServices.get(indexOfService).setPrice(newPrice);
   }
 
   private int findIndexOfRoom(int numberOfRoom) {
-    int index = -1;
+    int indexOfRoom = -1;
     for (int i = 0; i < listOfRooms.size(); i++) {
       if (listOfRooms.get(i).getNumberOfRoom() == numberOfRoom) {
-        index = i;
+        indexOfRoom = i;
         break;
       }
     }
-    return index;
+    return indexOfRoom;
   }
 
   private int findIndexOfService(String name) {
-    int index = -1;
+    int indexOfService = -1;
     for (int i = 0; i < listOfServices.size(); i++) {
       if (listOfServices.get(i).getName().equals(name)) {
-        index = i;
+        indexOfService = i;
         break;
       }
     }
-    return index;
+    return indexOfService;
   }
 
   private int findIndexOfCheckInRegistration(int numberOfRoom) {
-    int index = -1;
+    int indexOfCheckInRegistration = -1;
     for (int i = 0; i < listOfOccupiedRooms.size(); i++) {
       if (listOfOccupiedRooms.get(i).getHotelRoom().getNumberOfRoom() == numberOfRoom) {
-        index = i;
+        indexOfCheckInRegistration = i;
         break;
       }
     }
-    return index;
+    return indexOfCheckInRegistration;
+  }
+  private int findIndexOfResident(String name) {
+    int indexOfResident = -1;
+    for (int i = 0; i < listOfResidents.size(); i++) {
+      if (listOfResidents.get(i).fullName().equals(name)) {
+        indexOfResident = i;
+        break;
+      }
+    }
+    return indexOfResident;
   }
 
   public void sortByPrice() {

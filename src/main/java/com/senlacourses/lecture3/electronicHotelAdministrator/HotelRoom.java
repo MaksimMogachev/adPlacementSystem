@@ -62,7 +62,7 @@ public class HotelRoom {
   public String toString() {
     return ("Number of room: " + getNumberOfRoom() + "; Number of stars: " + getNumberOfStars()
         + "; Room capacity: " + getRoomCapacity() + "; Price: " + getPrice()
-        + "; Room condition: " + getRoomCondition()
+        + (roomCondition != null ? "; Room condition: " + getRoomCondition() : "")
         + (roomIsOccupied ? "; Room is occupied now" : "; Room is not occupied now"));
   }
 

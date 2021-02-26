@@ -68,6 +68,10 @@ public class Hotel {
       throw new IllegalArgumentException("this room does not exist");
     }
 
+    if (findIndexOfCheckInRegistration(numberOfRoom) != -1) {
+      throw new UnsupportedOperationException("the room must be vacated before changing the condition");
+    }
+
     listOfRooms.get(indexOfRoom).setRoomCondition(roomCondition);
   }
 

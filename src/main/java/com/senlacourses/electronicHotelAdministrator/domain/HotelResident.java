@@ -1,4 +1,4 @@
-package com.senlacourses.lecture3.electronicHotelAdministrator;
+package com.senlacourses.electronicHotelAdministrator.domain;
 
 public record HotelResident(String fullName, int passportNumber) {
 

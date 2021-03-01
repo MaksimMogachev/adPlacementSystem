@@ -1,10 +1,7 @@
-package com.senlacourses.lecture3.electronicHotelAdministrator;
+package com.senlacourses.electronicHotelAdministrator.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class CheckInRegistration {

@@ -1,7 +1,4 @@
-package com.senlacourses.lecture3.electronicHotelAdministrator;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.senlacourses.electronicHotelAdministrator.domain;
 
 public class HotelRoom {
 

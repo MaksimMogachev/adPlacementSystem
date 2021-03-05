@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.senlacourses.electronicHotelAdministrator.domain.service</OriginalElement>
+  <nodes>
+    <node x="1166.9459219858154" y="590.0">com.senlacourses.electronicHotelAdministrator.dao.Dao</node>
+    <node x="1342.9459219858154" y="601.5">com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration</node>
+    <node x="2178.9396572104024" y="194.0">com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom</node>
+    <node x="2234.4459219858154" y="1216.0">com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService</node>
+    <node x="1079.1959219858154" y="891.0">com.senlacourses.electronicHotelAdministrator.dao.ServiceDao</node>
+    <node x="2443.1683806146575" y="858.0">com.senlacourses.electronicHotelAdministrator.domain.model.RoomSortingCriteria</node>
+    <node x="1682.4459219858152" y="1282.0">com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService</node>
+    <node x="0.0" y="1304.0">com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService</node>
+    <node x="2190.1683806146575" y="891.0">com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao</node>
+    <node x="123.4375" y="891.0">com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao</node>
+    <node x="743.1959219858154" y="869.0">com.senlacourses.electronicHotelAdministrator.domain.model.OccupiedRoomSortingCriteria</node>
+    <node x="1399.8771572104024" y="891.0">com.senlacourses.electronicHotelAdministrator.dao.CheckInRegistrationDao</node>
+    <node x="1773.6896572104022" y="869.0">com.senlacourses.electronicHotelAdministrator.domain.model.ServiceAndRoomSortingCriteria</node>
+    <node x="455.1959219858154" y="869.0">com.senlacourses.electronicHotelAdministrator.domain.model.ServiceSortingCriteria</node>
+    <node x="519.6666666666665" y="1161.0">com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService</node>
+    <node x="180.10416666666652" y="260.5">com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident</node>
+    <node x="1551.6896572104024" y="282.5">com.senlacourses.electronicHotelAdministrator.domain.model.Service</node>
+    <node x="2225.6896572104024" y="0.0">com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.domain.model.Service">
+      <point x="-121.0666666666666" y="-226.0" />
+      <point x="625.5999999999999" y="1111.0" />
+      <point x="381.9374999999999" y="1111.0" />
+      <point x="381.9374999999999" y="510.0" />
+      <point x="1563.606323877069" y="510.0" />
+      <point x="-59.58333333333337" y="49.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService" target="com.senlacourses.electronicHotelAdministrator.domain.model.ServiceAndRoomSortingCriteria">
+      <point x="-33.249999999999886" y="-105.0" />
+      <point x="1915.1959219858154" y="1081.0" />
+      <point x="1937.1896572104022" y="1081.0" />
+      <point x="0.0" y="60.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom">
+      <point x="55.25" y="-38.5" />
+      <point x="2355.9183806146575" y="570.0" />
+      <point x="2287.4396572104024" y="570.0" />
+      <point x="0.0" y="138.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident">
+      <point x="-151.33333333333326" y="-226.0" />
+      <point x="595.3333333333333" y="1121.0" />
+      <point x="370.9375" y="1121.0" />
+      <point x="370.9375" y="570.0" />
+      <point x="278.6875" y="570.0" />
+      <point x="14.083333333333485" y="71.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom">
+      <point x="82.22222222222217" y="-171.0" />
+      <point x="2501.668144208037" y="1121.0" />
+      <point x="2714.6683806146575" y="1121.0" />
+      <point x="2714.6683806146575" y="550.0" />
+      <point x="2349.4396572104024" y="550.0" />
+      <point x="62.0" y="138.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.CheckInRegistrationDao" target="com.senlacourses.electronicHotelAdministrator.dao.Dao">
+      <point x="-67.75" y="-38.5" />
+      <point x="1467.6271572104024" y="818.0" />
+      <point x="1264.4459219858154" y="818.0" />
+      <point x="19.5" y="94.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService" target="com.senlacourses.electronicHotelAdministrator.domain.model.Service">
+      <point x="33.250000000000114" y="-105.0" />
+      <point x="1981.6959219858154" y="1081.0" />
+      <point x="2111.1896572104024" y="1081.0" />
+      <point x="2111.1896572104024" y="530.0" />
+      <point x="1682.7729905437354" y="530.0" />
+      <point x="59.58333333333326" y="49.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.domain.model.OccupiedRoomSortingCriteria">
+      <point x="30.26666666666665" y="-226.0" />
+      <point x="776.9333333333332" y="1041.0" />
+      <point x="901.1959219858154" y="1041.0" />
+      <point x="0.0" y="60.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident">
+      <point x="-59.25" y="-38.5" />
+      <point x="182.6875" y="570.0" />
+      <point x="250.52083333333303" y="570.0" />
+      <point x="-14.083333333333485" y="71.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService" target="com.senlacourses.electronicHotelAdministrator.dao.CheckInRegistrationDao">
+      <point x="-164.44444444444446" y="-171.0" />
+      <point x="2255.0014775413706" y="1031.0" />
+      <point x="1569.2521572104024" y="1031.0" />
+      <point x="33.875" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService" target="com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao">
+      <point x="33.25" y="-83.0" />
+      <point x="166.25" y="1141.0" />
+      <point x="153.0625" y="1141.0" />
+      <point x="-88.875" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService" target="com.senlacourses.electronicHotelAdministrator.dao.ServiceDao">
+      <point x="-232.7499999999999" y="-105.0" />
+      <point x="1715.6959219858154" y="1061.0" />
+      <point x="1201.0709219858154" y="1061.0" />
+      <point x="24.375" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.dao.CheckInRegistrationDao">
+      <point x="121.0666666666666" y="-226.0" />
+      <point x="867.7333333333331" y="1071.0" />
+      <point x="1433.7521572104024" y="1071.0" />
+      <point x="-101.625" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident">
+      <point x="-107.91666666666663" y="-82.5" />
+      <point x="1364.529255319149" y="500.0" />
+      <point x="306.8541666666665" y="500.0" />
+      <point x="42.25" y="71.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom" target="com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition">
+      <point x="-54.25" y="-138.0" />
+      <point x="2233.1896572104024" y="169.0" />
+      <point x="2264.356323877069" y="169.0" />
+      <point x="-77.33333333333331" y="72.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao" target="com.senlacourses.electronicHotelAdministrator.dao.Dao">
+      <point x="59.25" y="-38.5" />
+      <point x="301.1875" y="818.0" />
+      <point x="1186.4459219858154" y="818.0" />
+      <point x="-58.5" y="94.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom">
+      <point x="-90.79999999999995" y="-226.0" />
+      <point x="655.8666666666666" y="1101.0" />
+      <point x="422.6959219858154" y="1101.0" />
+      <point x="422.6959219858154" y="550.0" />
+      <point x="2194.4396572104024" y="550.0" />
+      <point x="-93.0" y="138.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.ServiceDao" target="com.senlacourses.electronicHotelAdministrator.domain.model.Service">
+      <point x="-48.75" y="-38.5" />
+      <point x="1127.9459219858154" y="808.0" />
+      <point x="1081.8906028368797" y="808.0" />
+      <point x="1081.8906028368797" y="520.0" />
+      <point x="1587.4396572104024" y="520.0" />
+      <point x="-35.75" y="49.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao">
+      <point x="-211.86666666666656" y="-226.0" />
+      <point x="534.8" y="1141.0" />
+      <point x="271.5625" y="1141.0" />
+      <point x="29.625" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao">
+      <point x="181.5999999999999" y="-226.0" />
+      <point x="928.2666666666664" y="1091.0" />
+      <point x="2208.585047281324" y="1091.0" />
+      <point x="-92.08333333333337" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService" target="com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao">
+      <point x="99.75000000000011" y="-105.0" />
+      <point x="2048.1959219858154" y="1111.0" />
+      <point x="2282.2517139479905" y="1111.0" />
+      <point x="-18.41666666666663" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.dao.ServiceDao">
+      <point x="60.5333333333333" y="-226.0" />
+      <point x="807.1999999999998" y="1051.0" />
+      <point x="1103.5709219858154" y="1051.0" />
+      <point x="-73.125" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident">
+      <point x="-33.25" y="-83.0" />
+      <point x="99.75" y="1141.0" />
+      <point x="112.9375" y="1141.0" />
+      <point x="112.9375" y="560.0" />
+      <point x="222.35416666666652" y="560.0" />
+      <point x="-42.25" y="71.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.domain.model.ServiceSortingCriteria">
+      <point x="0.0" y="-226.0" />
+      <point x="746.6666666666665" y="1071.0" />
+      <point x="589.1959219858154" y="1071.0" />
+      <point x="0.0" y="60.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.CheckInRegistrationService" target="com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration">
+      <point x="-60.5333333333333" y="-226.0" />
+      <point x="686.1333333333332" y="1091.0" />
+      <point x="433.6959219858154" y="1091.0" />
+      <point x="433.6959219858154" y="828.0" />
+      <point x="1375.3209219858154" y="828.0" />
+      <point x="-97.125" y="82.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom">
+      <point x="64.75" y="-82.5" />
+      <point x="1537.1959219858154" y="560.0" />
+      <point x="2225.4396572104024" y="560.0" />
+      <point x="-62.0" y="138.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.ServiceDao" target="com.senlacourses.electronicHotelAdministrator.dao.Dao">
+      <point x="48.75" y="-38.5" />
+      <point x="-19.5" y="94.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService" target="com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration">
+      <point x="0.0" y="-171.0" />
+      <point x="2419.4459219858154" y="1141.0" />
+      <point x="2432.6683806146575" y="1141.0" />
+      <point x="2432.6683806146575" y="798.0" />
+      <point x="1569.5709219858154" y="798.0" />
+      <point x="97.125" y="82.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService" target="com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom">
+      <point x="232.7500000000001" y="-105.0" />
+      <point x="2181.1959219858154" y="1131.0" />
+      <point x="2421.6683806146575" y="1131.0" />
+      <point x="2421.6683806146575" y="560.0" />
+      <point x="2318.4396572104024" y="560.0" />
+      <point x="31.0" y="138.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService" target="com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition">
+      <point x="164.44444444444457" y="-171.0" />
+      <point x="2583.8903664302597" y="1141.0" />
+      <point x="2744.1683806146575" y="1141.0" />
+      <point x="2744.1683806146575" y="169.0" />
+      <point x="2419.0229905437354" y="169.0" />
+      <point x="77.33333333333337" y="72.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.CheckInRegistrationDao" target="com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration">
+      <point x="67.75" y="-38.5" />
+      <point x="1603.1271572104024" y="838.0" />
+      <point x="1504.8209219858154" y="838.0" />
+      <point x="32.375" y="82.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration" target="com.senlacourses.electronicHotelAdministrator.domain.model.Service">
+      <point x="-21.583333333333258" y="-82.5" />
+      <point x="1450.8625886524821" y="530.0" />
+      <point x="1611.2729905437354" y="530.0" />
+      <point x="-11.916666666666742" y="49.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao" target="com.senlacourses.electronicHotelAdministrator.dao.Dao">
+      <point x="-55.25" y="-38.5" />
+      <point x="2245.4183806146575" y="808.0" />
+      <point x="1303.4459219858154" y="808.0" />
+      <point x="58.5" y="94.0" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService" target="com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao">
+      <point x="-82.22222222222223" y="-171.0" />
+      <point x="2337.223699763593" y="1121.0" />
+      <point x="2355.9183806146575" y="1121.0" />
+      <point x="55.25" y="38.5" />
+    </edge>
+    <edge source="com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService" target="com.senlacourses.electronicHotelAdministrator.domain.model.RoomSortingCriteria">
+      <point x="41.111111111111086" y="-171.0" />
+      <point x="2460.5570330969263" y="1111.0" />
+      <point x="2573.6683806146575" y="1111.0" />
+      <point x="0.0" y="71.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5511191772534785" x="1321.0" y="816.5000000000001" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,4 +1,4 @@
-package com.senlacourses.electronicHotelAdministrator.domain;
+package com.senlacourses.electronicHotelAdministrator.domain.model;
 
 public enum RoomCondition {
   REPAIRED("the room is being repaired"),

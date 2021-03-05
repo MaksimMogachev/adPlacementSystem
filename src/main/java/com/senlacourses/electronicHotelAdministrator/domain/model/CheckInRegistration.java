@@ -1,22 +1,29 @@
-package com.senlacourses.electronicHotelAdministrator.domain;
+package com.senlacourses.electronicHotelAdministrator.domain.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CheckInRegistration {
 
   private HotelRoom hotelRoom;
   private List<HotelResident> residents = new ArrayList<>();
-  private List<Service> services = new ArrayList<>();
-  private LocalDate arrivalDate;
+  private Map<LocalDateTime, Service> services = new TreeMap<>();
+  private LocalDate checkInDate;
   private LocalDate departureDate;
 
-  public CheckInRegistration(HotelRoom hotelRoom, HotelResident hotelResident, LocalDate arrivalDate, int daysOfStay) {
+  public CheckInRegistration() {
+  }
+
+  public CheckInRegistration(HotelRoom hotelRoom, HotelResident hotelResident, int daysOfStay) {
     this.hotelRoom = hotelRoom;
     this.residents.add(hotelResident);
-    this.arrivalDate = arrivalDate;
-    departureDate = arrivalDate.plusDays(daysOfStay);
+    this.checkInDate = LocalDate.now();
+    departureDate = checkInDate.plusDays(daysOfStay);
   }
 
   public HotelRoom getHotelRoom() {
@@ -35,20 +42,20 @@ public class CheckInRegistration {
     this.residents = residents;
   }
 
-  public List<Service> getServices() {
+  public Map<LocalDateTime, Service> getServices() {
     return services;
   }
 
-  public void setServices(List<Service> services) {
+  public void setServices(Map<LocalDateTime, Service> services) {
     this.services = services;
   }
 
   public LocalDate getCheckInDate() {
-    return arrivalDate;
+    return checkInDate;
   }
 
   public void setCheckInDate(LocalDate arrivalDate) {
-    this.arrivalDate = arrivalDate;
+    this.checkInDate = arrivalDate;
   }
 
   public LocalDate getDepartureDate() {
@@ -66,19 +73,18 @@ public class CheckInRegistration {
     stringBuilder.append("Hotel room: ").append(getHotelRoom().getNumberOfRoom())
         .append("; Room residents: ");
     for (HotelResident hotelResident : residents) {
-      stringBuilder.append(hotelResident.toString());
-      if (hotelResident != residents.get(residents.size() - 1)) {
-        stringBuilder.append("; ");
-      }
+      stringBuilder.append(hotelResident.toString()).append("; ");
     }
 
     if (services.size() != 0) {
-      stringBuilder.append("; Services: ");
-      for (Service service : services) {
-        stringBuilder.append(service.toString());
+      stringBuilder.append("Services: ");
+      for (Map.Entry<LocalDateTime, Service> service : services.entrySet()) {
+        stringBuilder.append(service.getValue().toString()).append(", ");
+        stringBuilder.append(service.getKey()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd"))).append("; ");
       }
     }
-    stringBuilder.append("; Arrival date: ").append(arrivalDate)
+    stringBuilder.append("Arrival date: ").append(checkInDate)
         .append("; Departure date: ").append(departureDate);
 
     return stringBuilder.toString();

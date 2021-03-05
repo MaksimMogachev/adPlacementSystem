@@ -1,16 +1,33 @@
 package com.senlacourses.electronicHotelAdministrator.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Dao<T> {
+public abstract class Dao<T> {
 
-  List<T> getAll();
+  private List<T> dataBase = new ArrayList<>();
 
-  void create(T t);
+  public List<T> getAll() {
+    return getClone();
+  }
 
-  T read(long id);
+  public void create(T t) {
+    dataBase.add(t);
+  }
 
-  void update(T t, int id);
+  public T read(int id) {
+    return getClone().get(id);
+  }
 
-  void delete(T t);
+  public void update(T t, int id) {
+    dataBase.set(id, t);
+  }
+
+  public void delete(T t) {
+    dataBase.remove(t);
+  }
+
+  private List<T> getClone() {
+    return new ArrayList<T>(dataBase);
+  }
 }

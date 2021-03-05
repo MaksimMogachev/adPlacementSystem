@@ -1,35 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.dao;
 
-import com.senlacourses.electronicHotelAdministrator.domain.CheckInRegistration;
-import java.util.ArrayList;
-import java.util.List;
+import com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration;
 
-public class CheckInRegistrationDao implements Dao<CheckInRegistration>{
+public class CheckInRegistrationDao extends Dao<CheckInRegistration>{
 
-  private List<CheckInRegistration> bookedRooms = new ArrayList<>();
+  private static CheckInRegistrationDao dataBase = new CheckInRegistrationDao();
 
-  @Override
-  public List<CheckInRegistration> getAll() {
-    return bookedRooms;
-  }
+  private CheckInRegistrationDao() {}
 
-  @Override
-  public void create(CheckInRegistration checkInRegistration) {
-    bookedRooms.add(checkInRegistration);
-  }
-
-  @Override
-  public CheckInRegistration read(long id) {
-    return bookedRooms.get((int) id);
-  }
-
-  @Override
-  public void update(CheckInRegistration checkInRegistration, int id) {
-    bookedRooms.add(id, checkInRegistration);
-  }
-
-  @Override
-  public void delete(CheckInRegistration checkInRegistration) {
-    bookedRooms.remove(checkInRegistration);
+  public static CheckInRegistrationDao getInstance() {
+    if(dataBase == null){
+      dataBase = new CheckInRegistrationDao();
+    }
+    return dataBase;
   }
 }

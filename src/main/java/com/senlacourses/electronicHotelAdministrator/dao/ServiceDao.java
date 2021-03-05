@@ -1,35 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.dao;
 
-import com.senlacourses.electronicHotelAdministrator.domain.Service;
-import java.util.ArrayList;
-import java.util.List;
+import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 
-public class ServiceDao implements Dao<Service>{
+public class ServiceDao extends Dao<Service>{
 
-  private List<Service> services = new ArrayList<>();
+  private static ServiceDao dataBase = new ServiceDao();
 
-  @Override
-  public List<Service> getAll() {
-    return services;
-  }
+  private ServiceDao() {}
 
-  @Override
-  public void create(Service service) {
-    services.add(service);
-  }
-
-  @Override
-  public Service read(long id) {
-    return services.get((int) id);
-  }
-
-  @Override
-  public void update(Service service, int id) {
-    services.add(id, service);
-  }
-
-  @Override
-  public void delete(Service service) {
-    services.remove(service);
+  public static ServiceDao getInstance() {
+    if(dataBase == null){
+      dataBase = new ServiceDao();
+    }
+    return dataBase;
   }
 }

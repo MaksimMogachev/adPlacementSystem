@@ -4,14 +4,14 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 
 public class HotelResidentDao extends Dao<HotelResident> {
 
-  private static HotelResidentDao dataBase = new HotelResidentDao();
+  private static HotelResidentDao residentDataBase = new HotelResidentDao();
 
   private HotelResidentDao() {}
 
   public static HotelResidentDao getInstance() {
-    if(dataBase == null){
-      dataBase = new HotelResidentDao();
+    if(residentDataBase == null){
+      residentDataBase = new HotelResidentDao();
     }
-    return dataBase;
+    return residentDataBase;
   }
 }

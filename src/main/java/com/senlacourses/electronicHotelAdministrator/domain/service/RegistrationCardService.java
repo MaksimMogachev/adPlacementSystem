@@ -1,44 +1,43 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.dao.CheckInRegistrationDao;
+import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
 import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
-import com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration;
+import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
-import com.senlacourses.electronicHotelAdministrator.domain.model.OccupiedRoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
-import com.senlacourses.electronicHotelAdministrator.domain.model.ServiceSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class CheckInRegistrationService {
+public class RegistrationCardService {
 
-  private CheckInRegistrationDao checkInRegistrationDao = CheckInRegistrationDao.getInstance();
+  private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
   private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private ServiceDao serviceDao = ServiceDao.getInstance();
 
 
-  public List<CheckInRegistration> getOccupiedRooms() {
-    return checkInRegistrationDao.getAll();
+  public List<RegistrationCard> getOccupiedRooms() {
+    return registrationCardDao.getAll();
   }
 
   public void showOccupiedRooms() {
-    for (CheckInRegistration checkInRegistration : checkInRegistrationDao.getAll()) {
-      System.out.println(checkInRegistration.toString());
+    for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
+      System.out.println(registrationCard.toString());
     }
   }
 
   public void putInTheRoom(int numberOfRoom, String fullNameOfResident, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
-    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     int indexOfResident = findIndexOfResident(fullNameOfResident);
 
     if (indexOfRoom == -1) {
@@ -49,8 +48,8 @@ public class CheckInRegistrationService {
       throw new IllegalArgumentException("the given resident is not registered");
     }
 
-    if (indexOfOccupiedRoom == -1) {
-      checkInRegistrationDao.create(new CheckInRegistration(hotelRoomDao.read(indexOfRoom),
+    if (indexOfRegistrationCard == -1) {
+      registrationCardDao.create(new RegistrationCard(hotelRoomDao.read(indexOfRoom),
           hotelResidentDao.read(indexOfResident), daysOfStay));
 
       HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
@@ -65,10 +64,10 @@ public class CheckInRegistrationService {
 
   public void putInTheRoom(int numberOfRoom, String fullNameOfResident) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
-    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     int indexOfResident = findIndexOfResident(fullNameOfResident);
 
-    if (indexOfOccupiedRoom == -1) {
+    if (indexOfRegistrationCard == -1) {
       throw new UnsupportedOperationException(
           "the given room is not occupied, use method with 3 arguments");
     }
@@ -81,13 +80,13 @@ public class CheckInRegistrationService {
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    if (checkInRegistrationDao.read(indexOfOccupiedRoom).getHotelRoom().getRoomCapacity()
-        > checkInRegistrationDao.read(indexOfOccupiedRoom).getResidents().size()) {
+    if (registrationCardDao.read(indexOfRegistrationCard).getHotelRoom().getRoomCapacity()
+        > registrationCardDao.read(indexOfRegistrationCard).getResidents().size()) {
 
-      CheckInRegistration checkInRegistration = checkInRegistrationDao.read(indexOfOccupiedRoom);
-      checkInRegistration.getResidents().add(hotelResidentDao.read(indexOfResident));
+      RegistrationCard registrationCard = registrationCardDao.read(indexOfRegistrationCard);
+      registrationCard.getResidents().add(hotelResidentDao.read(indexOfResident));
 
-      checkInRegistrationDao.update(checkInRegistration, indexOfOccupiedRoom);
+      registrationCardDao.update(registrationCard, indexOfRegistrationCard);
     } else {
       throw new UnsupportedOperationException("Maximum Size "
           + hotelRoomDao.read(indexOfRoom).getRoomCapacity() + " reached");
@@ -101,12 +100,12 @@ public class CheckInRegistrationService {
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
-    if (indexOfOccupiedRoom == -1) {
+    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
+    if (indexOfRegistrationCard == -1) {
       throw new IllegalArgumentException("this room is not occupied");
     }
 
-    if (checkInRegistrationDao.read(indexOfOccupiedRoom).getResidents().size() == 1) {
+    if (registrationCardDao.read(indexOfRegistrationCard).getResidents().size() == 1) {
       evictFromTheRoom(numberOfRoom);
       return;
     }
@@ -116,45 +115,45 @@ public class CheckInRegistrationService {
       hotelRoom.getLastResidents().remove(0);
     }
 
-    String stringBuilder = checkInRegistrationDao.read(indexOfOccupiedRoom)
+    String stringBuilder = registrationCardDao.read(indexOfRegistrationCard)
         .getResidents().get(indexOfResidentInRoom).toString() + "; "
-        + checkInRegistrationDao.read(indexOfOccupiedRoom).getCheckInDate().toString()
-        + " - " + checkInRegistrationDao.read(indexOfOccupiedRoom).getDepartureDate().toString();
+        + registrationCardDao.read(indexOfRegistrationCard).getCheckInDate().toString()
+        + " - " + registrationCardDao.read(indexOfRegistrationCard).getDepartureDate().toString();
 
     hotelRoom.getLastResidents().add(stringBuilder);
     hotelRoomDao.update(hotelRoom, indexOfRoom);
 
-    CheckInRegistration checkInRegistration = checkInRegistrationDao.read(indexOfOccupiedRoom);
-    checkInRegistration.getResidents().remove(checkInRegistrationDao
-        .read(indexOfOccupiedRoom).getResidents().get(indexOfResidentInRoom));
+    RegistrationCard registrationCard = registrationCardDao.read(indexOfRegistrationCard);
+    registrationCard.getResidents().remove(registrationCardDao
+        .read(indexOfRegistrationCard).getResidents().get(indexOfResidentInRoom));
 
-    checkInRegistrationDao.update(checkInRegistration, indexOfOccupiedRoom);
+    registrationCardDao.update(registrationCard, indexOfRegistrationCard);
   }
 
   public void evictFromTheRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
-    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
 
     if (indexOfRoom == -1) {
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    if (indexOfOccupiedRoom == -1) {
+    if (indexOfRegistrationCard == -1) {
       throw new IllegalArgumentException("this room is not occupied");
     }
 
     HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
 
-    for (int i = 0; i < checkInRegistrationDao.read(indexOfOccupiedRoom).getResidents().size();
+    for (int i = 0; i < registrationCardDao.read(indexOfRegistrationCard).getResidents().size();
         i++) {
       if (hotelRoom.getLastResidents().size() == 3) {
         hotelRoom.getLastResidents().remove(0);
       }
 
-      String stringBuilder = checkInRegistrationDao.read(indexOfOccupiedRoom)
+      String stringBuilder = registrationCardDao.read(indexOfRegistrationCard)
           .getResidents().get(i).toString() + "; "
-          + checkInRegistrationDao.read(indexOfOccupiedRoom).getCheckInDate().toString()
-          + " - " + checkInRegistrationDao.read(indexOfOccupiedRoom).getDepartureDate().toString();
+          + registrationCardDao.read(indexOfRegistrationCard).getCheckInDate().toString()
+          + " - " + registrationCardDao.read(indexOfRegistrationCard).getDepartureDate().toString();
 
       hotelRoom.getLastResidents().add(stringBuilder);
     }
@@ -162,15 +161,15 @@ public class CheckInRegistrationService {
     hotelRoom.setRoomIsOccupied(false);
     hotelRoomDao.update(hotelRoom, indexOfRoom);
 
-    checkInRegistrationDao.delete(checkInRegistrationDao.read(indexOfOccupiedRoom));
+    registrationCardDao.delete(registrationCardDao.read(indexOfRegistrationCard));
 
   }
 
   public void addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {
-    int indexOfOccupiedRoom = findIndexOfCheckInRegistration(numberOfRoom);
+    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     int indexOfService = findIndexOfService(nameOfService);
 
-    if (indexOfOccupiedRoom == -1) {
+    if (indexOfRegistrationCard == -1) {
       throw new IllegalArgumentException("this room is not occupied");
     }
 
@@ -178,42 +177,42 @@ public class CheckInRegistrationService {
       throw new IllegalArgumentException("this service does not exist");
     }
 
-    CheckInRegistration checkInRegistration = checkInRegistrationDao.read(indexOfOccupiedRoom);
-    checkInRegistration.getServices().put(LocalDateTime.now(), serviceDao.read(indexOfService));
-    checkInRegistrationDao.update(checkInRegistration, indexOfOccupiedRoom);
+    RegistrationCard registrationCard = registrationCardDao.read(indexOfRegistrationCard);
+    registrationCard.getServices().put(LocalDateTime.now(), serviceDao.read(indexOfService));
+    registrationCardDao.update(registrationCard, indexOfRegistrationCard);
   }
 
   public void showOccupiedRoomsByCriterion(OccupiedRoomSortingCriteria criterion) {
-    List<CheckInRegistration> listForSorting = new ArrayList<>();
+    List<RegistrationCard> listForSorting = new ArrayList<>();
 
-    for (CheckInRegistration checkInRegistration : checkInRegistrationDao.getAll()) {
-      if (checkInRegistration.getHotelRoom().isRoomIsOccupied()) {
-        listForSorting.add(checkInRegistration);
+    for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
+      if (registrationCard.getHotelRoom().isRoomIsOccupied()) {
+        listForSorting.add(registrationCard);
       }
     }
 
     switch (criterion) {
 
       case ALPHABETICALLY -> {
-        for (CheckInRegistration checkInRegistration : listForSorting) {
-          checkInRegistration.getResidents().sort(Comparator.comparing(HotelResident::fullName));
+        for (RegistrationCard registrationCard : listForSorting) {
+          registrationCard.getResidents().sort(Comparator.comparing(HotelResident::fullName));
         }
 
-        listForSorting.sort(new Comparator<CheckInRegistration>() {
+        listForSorting.sort(new Comparator<RegistrationCard>() {
           @Override
-          public int compare(CheckInRegistration o1, CheckInRegistration o2) {
+          public int compare(RegistrationCard o1, RegistrationCard o2) {
             return o1.getResidents().get(0).fullName()
                 .compareTo(o2.getResidents().get(0).fullName());
           }
         });
 
-        for (CheckInRegistration checkInRegistration : listForSorting) {
+        for (RegistrationCard registrationCard : listForSorting) {
           StringBuilder stringBuilder = new StringBuilder();
 
           stringBuilder.append("Hotel room: ")
-              .append(checkInRegistration.getHotelRoom().getNumberOfRoom())
+              .append(registrationCard.getHotelRoom().getNumberOfRoom())
               .append("; Room residents: ");
-          for (HotelResident hotelResident : checkInRegistration.getResidents()) {
+          for (HotelResident hotelResident : registrationCard.getResidents()) {
             stringBuilder.append(hotelResident.toString());
           }
 
@@ -222,15 +221,15 @@ public class CheckInRegistrationService {
       }
 
       case ROOM_RELEASE_DATE -> {
-        listForSorting.sort(Comparator.comparing(CheckInRegistration::getDepartureDate));
+        listForSorting.sort(Comparator.comparing(RegistrationCard::getDepartureDate));
 
-        for (CheckInRegistration checkInRegistration : listForSorting) {
+        for (RegistrationCard registrationCard : listForSorting) {
           StringBuilder stringBuilder = new StringBuilder();
 
           stringBuilder.append("Hotel room: ")
-              .append(checkInRegistration.getHotelRoom().getNumberOfRoom())
+              .append(registrationCard.getHotelRoom().getNumberOfRoom())
               .append("; Room residents: ");
-          for (HotelResident hotelResident : checkInRegistration.getResidents()) {
+          for (HotelResident hotelResident : registrationCard.getResidents()) {
             stringBuilder.append(hotelResident.toString());
           }
 
@@ -243,9 +242,9 @@ public class CheckInRegistrationService {
   public void showNumberOfCurrentResidents() {
     int size = 0;
 
-    for (CheckInRegistration checkInRegistration : checkInRegistrationDao.getAll()) {
-      if (checkInRegistration.getHotelRoom().isRoomIsOccupied()) {
-        size += checkInRegistration.getResidents().size();
+    for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
+      if (registrationCard.getHotelRoom().isRoomIsOccupied()) {
+        size += registrationCard.getResidents().size();
       }
     }
     System.out.println("Total number of current residents: " + size);
@@ -262,10 +261,10 @@ public class CheckInRegistrationService {
       ServiceSortingCriteria sortingCriteria) {
     Map<LocalDateTime, Service> services = null;
 
-    for (int i = 0; i < checkInRegistrationDao.getAll().size(); i++) {
-      for (int j = 0; j < checkInRegistrationDao.read(i).getResidents().size(); j++) {
-        if (checkInRegistrationDao.read(i).getResidents().get(j).fullName().equals(fullName)) {
-          services = checkInRegistrationDao.read(i).getServices();
+    for (int i = 0; i < registrationCardDao.getAll().size(); i++) {
+      for (int j = 0; j < registrationCardDao.read(i).getResidents().size(); j++) {
+        if (registrationCardDao.read(i).getResidents().get(j).fullName().equals(fullName)) {
+          services = registrationCardDao.read(i).getServices();
           break;
         }
       }
@@ -308,16 +307,16 @@ public class CheckInRegistrationService {
     return indexOfRoom;
   }
 
-  private int findIndexOfCheckInRegistration(int numberOfRoom) {
-    int indexOfCheckInRegistration = -1;
+  private int findIndexOfRegistrationCard(int numberOfRoom) {
+    int indexOfRegistrationCard = -1;
 
-    for (int i = 0; i < checkInRegistrationDao.getAll().size(); i++) {
-      if (checkInRegistrationDao.read(i).getHotelRoom().getNumberOfRoom() == numberOfRoom) {
-        indexOfCheckInRegistration = i;
+    for (int i = 0; i < registrationCardDao.getAll().size(); i++) {
+      if (registrationCardDao.read(i).getHotelRoom().getNumberOfRoom() == numberOfRoom) {
+        indexOfRegistrationCard = i;
         break;
       }
     }
-    return indexOfCheckInRegistration;
+    return indexOfRegistrationCard;
   }
 
   private int findIndexOfResident(String name) {

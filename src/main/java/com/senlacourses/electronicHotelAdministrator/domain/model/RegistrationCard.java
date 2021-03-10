@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CheckInRegistration {
+public class RegistrationCard {
 
   private HotelRoom hotelRoom;
   private List<HotelResident> residents = new ArrayList<>();
@@ -16,10 +16,10 @@ public class CheckInRegistration {
   private LocalDate checkInDate;
   private LocalDate departureDate;
 
-  public CheckInRegistration() {
+  public RegistrationCard() {
   }
 
-  public CheckInRegistration(HotelRoom hotelRoom, HotelResident hotelResident, int daysOfStay) {
+  public RegistrationCard(HotelRoom hotelRoom, HotelResident hotelResident, int daysOfStay) {
     this.hotelRoom = hotelRoom;
     this.residents.add(hotelResident);
     this.checkInDate = LocalDate.now();

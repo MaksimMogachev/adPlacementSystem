@@ -1,11 +1,11 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.dao.CheckInRegistrationDao;
+import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
-import com.senlacourses.electronicHotelAdministrator.domain.model.CheckInRegistration;
+import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
-import com.senlacourses.electronicHotelAdministrator.domain.model.RoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,7 +14,7 @@ import java.util.List;
 public class HotelRoomService {
 
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
-  private CheckInRegistrationDao checkInRegistrationDao = CheckInRegistrationDao.getInstance();
+  private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
 
   public List<HotelRoom> getAllRooms() {
     return hotelRoomDao.getAll();
@@ -75,7 +75,7 @@ public class HotelRoomService {
 
   public void showNumberOfFreeRooms() {
     System.out.println("Total number of free rooms: "
-        + (hotelRoomDao.getAll().size() - checkInRegistrationDao.getAll().size()));
+        + (hotelRoomDao.getAll().size() - registrationCardDao.getAll().size()));
   }
 
   public void showAllRoomsByCriterion(RoomSortingCriteria criterion) {
@@ -141,14 +141,14 @@ public class HotelRoomService {
   }
 
   public void showFreeRoomsByDate(int year, int month, int dayOfMonth) {
-    for (CheckInRegistration checkInRegistration : checkInRegistrationDao.getAll()) {
+    for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
 
       if (LocalDate.of(year, month, dayOfMonth)
-          .isAfter(checkInRegistration.getDepartureDate())
+          .isAfter(registrationCard.getDepartureDate())
           || (LocalDate.of(year, month, dayOfMonth)
-          .equals(checkInRegistration.getDepartureDate()))) {
+          .equals(registrationCard.getDepartureDate()))) {
 
-        System.out.println(checkInRegistration.getHotelRoom().toString());
+        System.out.println(registrationCard.getHotelRoom().toString());
       }
     }
 

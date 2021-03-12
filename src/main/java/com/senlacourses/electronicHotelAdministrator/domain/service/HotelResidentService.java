@@ -6,8 +6,11 @@ import java.util.List;
 
 public class HotelResidentService {
 
-  private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
+  private HotelResidentDao hotelResidentDao;
 
+  public HotelResidentService(HotelResidentDao hotelResidentDao) {
+    this.hotelResidentDao = hotelResidentDao;
+  }
 
   public List<HotelResident> getResidents() {
     return hotelResidentDao.getAll();

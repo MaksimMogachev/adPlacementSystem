@@ -13,8 +13,15 @@ import java.util.List;
 
 public class HotelRoomService {
 
-  private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
-  private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
+  private HotelRoomDao hotelRoomDao;
+  private RegistrationCardDao registrationCardDao;
+
+  public HotelRoomService(
+      HotelRoomDao hotelRoomDao,
+      RegistrationCardDao registrationCardDao) {
+    this.hotelRoomDao = hotelRoomDao;
+    this.registrationCardDao = registrationCardDao;
+  }
 
   public List<HotelRoom> getAllRooms() {
     return hotelRoomDao.getAll();

@@ -8,7 +8,7 @@ public abstract class Dao<T> {
   private List<T> dataBase = new ArrayList<>();
 
   public List<T> getAll() {
-    return getClone();
+    return dataBase;
   }
 
   public void create(T t) {
@@ -16,7 +16,7 @@ public abstract class Dao<T> {
   }
 
   public T read(int id) {
-    return getClone().get(id);
+    return dataBase.get(id);
   }
 
   public void update(T t, int id) {
@@ -25,9 +25,5 @@ public abstract class Dao<T> {
 
   public void delete(T t) {
     dataBase.remove(t);
-  }
-
-  private List<T> getClone() {
-    return new ArrayList<T>(dataBase);
   }
 }

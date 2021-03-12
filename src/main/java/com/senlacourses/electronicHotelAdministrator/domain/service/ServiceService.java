@@ -11,8 +11,13 @@ import java.util.List;
 
 public class ServiceService {
 
-  private ServiceDao serviceDao = ServiceDao.getInstance();
-  private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
+  private ServiceDao serviceDao;
+  private HotelRoomDao hotelRoomDao;
+
+  public ServiceService(ServiceDao serviceDao, HotelRoomDao hotelRoomDao) {
+    this.serviceDao = serviceDao;
+    this.hotelRoomDao = hotelRoomDao;
+  }
 
 
   public List<Service> getServices() {

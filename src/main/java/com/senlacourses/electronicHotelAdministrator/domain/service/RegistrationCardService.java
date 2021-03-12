@@ -19,10 +19,21 @@ import java.util.Map;
 
 public class RegistrationCardService {
 
-  private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
-  private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
-  private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
-  private ServiceDao serviceDao = ServiceDao.getInstance();
+  private RegistrationCardDao registrationCardDao;
+  private HotelResidentDao hotelResidentDao;
+  private HotelRoomDao hotelRoomDao;
+  private ServiceDao serviceDao;
+
+  public RegistrationCardService(
+      RegistrationCardDao registrationCardDao,
+      HotelResidentDao hotelResidentDao,
+      HotelRoomDao hotelRoomDao,
+      ServiceDao serviceDao) {
+    this.registrationCardDao = registrationCardDao;
+    this.hotelResidentDao = hotelResidentDao;
+    this.hotelRoomDao = hotelRoomDao;
+    this.serviceDao = serviceDao;
+  }
 
 
   public List<RegistrationCard> getOccupiedRooms() {

@@ -1,5 +1,9 @@
 package com.senlacourses.electronicHotelAdministrator;
 
+import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
+import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
+import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
+import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
@@ -11,10 +15,16 @@ import com.senlacourses.electronicHotelAdministrator.domain.service.ServiceServi
 public class Main {
 
   public static void main(String[] args) {
-    RegistrationCardService registrationCardService = new RegistrationCardService();
-    HotelResidentService hotelResidentService = new HotelResidentService();
-    HotelRoomService hotelRoomService = new HotelRoomService();
-    ServiceService service = new ServiceService();
+    HotelResidentDao hotelResidentDao = new HotelResidentDao();
+    HotelRoomDao hotelRoomDao = new HotelRoomDao();
+    RegistrationCardDao registrationCardDao = new RegistrationCardDao();
+    ServiceDao serviceDao = new ServiceDao();
+
+    RegistrationCardService registrationCardService = new RegistrationCardService(
+        registrationCardDao, hotelResidentDao, hotelRoomDao, serviceDao);
+    HotelResidentService hotelResidentService = new HotelResidentService(hotelResidentDao);
+    HotelRoomService hotelRoomService = new HotelRoomService(hotelRoomDao, registrationCardDao);
+    ServiceService service = new ServiceService(serviceDao, hotelRoomDao);
 
     hotelRoomService.addNewRoom(1, 6, 2, 500);
     hotelRoomService.addNewRoom(2, 8, 4, 400);

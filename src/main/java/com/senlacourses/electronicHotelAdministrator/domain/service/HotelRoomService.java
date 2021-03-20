@@ -13,15 +13,8 @@ import java.util.List;
 
 public class HotelRoomService {
 
-  private HotelRoomDao hotelRoomDao;
-  private RegistrationCardDao registrationCardDao;
-
-  public HotelRoomService(
-      HotelRoomDao hotelRoomDao,
-      RegistrationCardDao registrationCardDao) {
-    this.hotelRoomDao = hotelRoomDao;
-    this.registrationCardDao = registrationCardDao;
-  }
+  private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
+  private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
 
   public List<HotelRoom> getAllRooms() {
     return hotelRoomDao.getAll();
@@ -147,7 +140,7 @@ public class HotelRoomService {
     }
   }
 
-  public void showFreeRoomsByDate(int year, int month, int dayOfMonth) {
+  public void showRoomsByDate(int year, int month, int dayOfMonth) {
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
 
       if (LocalDate.of(year, month, dayOfMonth)

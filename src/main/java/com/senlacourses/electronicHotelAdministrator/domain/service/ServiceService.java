@@ -11,14 +11,8 @@ import java.util.List;
 
 public class ServiceService {
 
-  private ServiceDao serviceDao;
-  private HotelRoomDao hotelRoomDao;
-
-  public ServiceService(ServiceDao serviceDao, HotelRoomDao hotelRoomDao) {
-    this.serviceDao = serviceDao;
-    this.hotelRoomDao = hotelRoomDao;
-  }
-
+  private ServiceDao serviceDao = ServiceDao.getInstance();
+  private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
 
   public List<Service> getServices() {
     return serviceDao.getAll();
@@ -48,7 +42,7 @@ public class ServiceService {
     serviceDao.update(new Service(nameOfService, newPrice), indexOfService);
   }
 
-  public void showPricesOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion) {
+  public void showPriceOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion) {
 
     switch (criterion) {
 

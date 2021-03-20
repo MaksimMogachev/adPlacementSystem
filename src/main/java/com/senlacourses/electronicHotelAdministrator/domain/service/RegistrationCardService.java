@@ -19,22 +19,10 @@ import java.util.Map;
 
 public class RegistrationCardService {
 
-  private RegistrationCardDao registrationCardDao;
-  private HotelResidentDao hotelResidentDao;
-  private HotelRoomDao hotelRoomDao;
-  private ServiceDao serviceDao;
-
-  public RegistrationCardService(
-      RegistrationCardDao registrationCardDao,
-      HotelResidentDao hotelResidentDao,
-      HotelRoomDao hotelRoomDao,
-      ServiceDao serviceDao) {
-    this.registrationCardDao = registrationCardDao;
-    this.hotelResidentDao = hotelResidentDao;
-    this.hotelRoomDao = hotelRoomDao;
-    this.serviceDao = serviceDao;
-  }
-
+  private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
+  private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
+  private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
+  private ServiceDao serviceDao = ServiceDao.getInstance();
 
   public List<RegistrationCard> getOccupiedRooms() {
     return registrationCardDao.getAll();
@@ -209,13 +197,8 @@ public class RegistrationCardService {
           registrationCard.getResidents().sort(Comparator.comparing(HotelResident::fullName));
         }
 
-        listForSorting.sort(new Comparator<RegistrationCard>() {
-          @Override
-          public int compare(RegistrationCard o1, RegistrationCard o2) {
-            return o1.getResidents().get(0).fullName()
-                .compareTo(o2.getResidents().get(0).fullName());
-          }
-        });
+        listForSorting.sort((o1, o2) -> o1.getResidents().get(0).fullName()
+            .compareTo(o2.getResidents().get(0).fullName()));
 
         for (RegistrationCard registrationCard : listForSorting) {
           StringBuilder stringBuilder = new StringBuilder();

@@ -23,9 +23,7 @@ public class ServiceService {
   }
 
   public void showCurrentServices() {
-    for (Service service : serviceDao.getAll()) {
-      System.out.println(service.toString());
-    }
+    serviceDao.getAll().forEach(service -> System.out.println(service.toString()));
   }
 
   public void changeServicePrice(String nameOfService, int newPrice) {
@@ -48,9 +46,8 @@ public class ServiceService {
 
       case SECTION -> {
         showCurrentServices();
-        for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
-          System.out.println("Hotel room: " + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice());
-        }
+        hotelRoomDao.getAll().forEach(hotelRoom -> System.out.println("Hotel room: "
+            + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice()));
       }
       case PRICE -> {
         List<Service> services = new ArrayList<>(serviceDao.getAll());
@@ -59,13 +56,10 @@ public class ServiceService {
         services.sort(Comparator.comparing(Service::getPrice));
         hotelRooms.sort(Comparator.comparing(HotelRoom::getPrice));
 
-        for (Service service : services) {
-          System.out.println(service.toString());
-        }
+        services.forEach(service -> System.out.println(service.toString()));
 
-        for (HotelRoom hotelRoom : hotelRooms) {
-          System.out.println("Hotel room: " + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice());
-        }
+        hotelRooms.forEach(hotelRoom -> System.out.println("Hotel room: "
+            + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice()));
       }
     }
   }

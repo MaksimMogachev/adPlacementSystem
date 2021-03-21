@@ -85,23 +85,20 @@ public class HotelRoomService {
 
       case PRICE -> {
         listForSorting.sort(Comparator.comparing(HotelRoom::getPrice));
-        for (HotelRoom hotelRoom : listForSorting) {
-          System.out.println(hotelRoom.toString());
-        }
+
+        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
       }
 
       case ROOM_CAPACITY -> {
         listForSorting.sort(Comparator.comparing(HotelRoom::getRoomCapacity));
-        for (HotelRoom hotelRoom : listForSorting) {
-          System.out.println(hotelRoom.toString());
-        }
+
+        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
       }
 
       case NUMBER_OF_STARS -> {
         listForSorting.sort(Comparator.comparing(HotelRoom::getNumberOfStars));
-        for (HotelRoom hotelRoom : listForSorting) {
-          System.out.println(hotelRoom.toString());
-        }
+
+        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
       }
     }
   }
@@ -119,23 +116,20 @@ public class HotelRoomService {
 
       case PRICE -> {
         listForSorting.sort(Comparator.comparing(HotelRoom::getPrice));
-        for (HotelRoom hotelRoom : listForSorting) {
-          System.out.println(hotelRoom.toString());
-        }
+
+        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
       }
 
       case ROOM_CAPACITY -> {
         listForSorting.sort(Comparator.comparing(HotelRoom::getRoomCapacity));
-        for (HotelRoom hotelRoom : listForSorting) {
-          System.out.println(hotelRoom.toString());
-        }
+
+        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
       }
 
       case NUMBER_OF_STARS -> {
         listForSorting.sort(Comparator.comparing(HotelRoom::getNumberOfStars));
-        for (HotelRoom hotelRoom : listForSorting) {
-          System.out.println(hotelRoom.toString());
-        }
+
+        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
       }
     }
   }
@@ -151,12 +145,12 @@ public class HotelRoomService {
         System.out.println(registrationCard.getHotelRoom().toString());
       }
     }
-
-    for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
-      if (!hotelRoom.isRoomIsOccupied()) {
-        System.out.println(hotelRoom.toString());
-      }
-    }
+//
+//    for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
+//      if (!hotelRoom.isRoomIsOccupied()) {
+//        System.out.println(hotelRoom.toString());
+//      }
+//    }
   }
 
   public void showLastResidentsOfRoom(int numberOfRoom) {

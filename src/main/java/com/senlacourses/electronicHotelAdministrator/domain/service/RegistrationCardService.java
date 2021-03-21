@@ -182,23 +182,15 @@ public class RegistrationCardService {
   }
 
   public void showOccupiedRoomsByCriterion(OccupiedRoomSortingCriteria criterion) {
-    List<RegistrationCard> listForSorting = new ArrayList<>();
-
-    for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
-      if (registrationCard.getHotelRoom().isRoomIsOccupied()) {
-        listForSorting.add(registrationCard);
-      }
-    }
+    List<RegistrationCard> listForSorting = new ArrayList<>(registrationCardDao.getAll());
 
     switch (criterion) {
 
       case ALPHABETICALLY -> {
-        for (RegistrationCard registrationCard : listForSorting) {
-          registrationCard.getResidents().sort(Comparator.comparing(HotelResident::fullName));
-        }
+        listForSorting.forEach(registrationCard ->
+            registrationCard.getResidents().sort(Comparator.comparing(HotelResident::fullName)));
 
-        listForSorting.sort((o1, o2) -> o1.getResidents().get(0).fullName()
-            .compareTo(o2.getResidents().get(0).fullName()));
+        listForSorting.sort(Comparator.comparing(o -> o.getResidents().get(0).fullName()));
 
         for (RegistrationCard registrationCard : listForSorting) {
           StringBuilder stringBuilder = new StringBuilder();

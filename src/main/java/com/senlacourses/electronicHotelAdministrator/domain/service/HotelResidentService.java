@@ -13,9 +13,7 @@ public class HotelResidentService {
   }
 
   public void showAllResidents() {
-    for (HotelResident hotelResident : hotelResidentDao.getAll()) {
-      System.out.println(hotelResident.toString());
-    }
+    hotelResidentDao.getAll().forEach(hotelResident -> System.out.println(hotelResident.toString()));
   }
 
   public void addNewResident(String fullName, int passportNumber) {

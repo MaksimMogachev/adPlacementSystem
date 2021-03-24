@@ -15,6 +15,7 @@ public class HotelRoomService {
 
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
+  private ExceptionWriter exceptionWriter = ExceptionWriter.getInstance();
 
   public List<HotelRoom> getAllRooms() {
     return hotelRoomDao.getAll();
@@ -34,6 +35,7 @@ public class HotelRoomService {
       hotelRoom.setPrice(price);
       hotelRoomDao.create(hotelRoom);
     } else {
+      exceptionWriter.writeException("IllegalArgumentException(\"this room already exists\")");
       throw new IllegalArgumentException("this room already exists");
     }
   }
@@ -42,10 +44,13 @@ public class HotelRoomService {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
+      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
     if (hotelRoomDao.read(indexOfRoom).isRoomIsOccupied()) {
+      exceptionWriter.writeException
+          ("UnsupportedOperationException(\"the room must be vacated before changing the condition\")");
       throw new UnsupportedOperationException(
           "the room must be vacated before changing the condition");
     }
@@ -60,10 +65,12 @@ public class HotelRoomService {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
+      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
     if (newPrice < 0) {
+      exceptionWriter.writeException("IllegalArgumentException(\"incorrect price\")");
       throw new IllegalArgumentException("incorrect price");
     }
 
@@ -157,6 +164,7 @@ public class HotelRoomService {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
+      exceptionWriter.writeException("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
     System.out.println("Last residents of room " + numberOfRoom + ": ");
@@ -169,6 +177,7 @@ public class HotelRoomService {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
+      exceptionWriter.writeException("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
     System.out.println(hotelRoomDao.read(indexOfRoom).toString());

@@ -12,5 +12,4 @@ public class HotelResidentDao extends Dao<HotelResident> {
     }
     return hotelResidentDataBase;
   }
-
 }

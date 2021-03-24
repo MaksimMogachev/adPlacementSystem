@@ -13,6 +13,7 @@ public class ServiceService {
 
   private ServiceDao serviceDao = ServiceDao.getInstance();
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
+  private ExceptionWriter exceptionWriter = ExceptionWriter.getInstance();
 
   public List<Service> getServices() {
     return serviceDao.getAll();
@@ -30,10 +31,12 @@ public class ServiceService {
     int indexOfService = findIndexOfService(nameOfService);
 
     if (indexOfService == -1) {
+      exceptionWriter.writeException("IllegalArgumentException(\"this service does not exist\")");
       throw new IllegalArgumentException("this service does not exist");
     }
 
     if (newPrice < 0) {
+      exceptionWriter.writeException("IllegalArgumentException(\"incorrect newPrice\")");
       throw new IllegalArgumentException("incorrect newPrice");
     }
 

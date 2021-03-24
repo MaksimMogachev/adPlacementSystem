@@ -7,6 +7,7 @@ import java.util.List;
 public class HotelResidentService {
 
   private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
+  private ExceptionWriter exceptionWriter = ExceptionWriter.getInstance();
 
   public List<HotelResident> getResidents() {
     return hotelResidentDao.getAll();
@@ -24,6 +25,7 @@ public class HotelResidentService {
     int indexOfResident = findIndexOfResident(fullName);
 
     if (indexOfResident == -1) {
+      exceptionWriter.writeException("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
 

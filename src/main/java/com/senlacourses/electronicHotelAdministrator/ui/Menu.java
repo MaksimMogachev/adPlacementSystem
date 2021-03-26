@@ -75,15 +75,24 @@ public class Menu {
     private String name;
     private MenuItem[] menuItems;
 
-    private final static IHotelResidentService residentService = new HotelResidentService();
-    private final static IHotelRoomService roomService = new HotelRoomService();
-    private final static IRegistrationCardService registrationCardService = new RegistrationCardService();
-    private final static IServiceService serviceService = new ServiceService();
+    private static IHotelResidentController residentController;
+    private static IHotelRoomController roomController;
+    private static IRegistrationCardController registrationCardController;
+    private static IServiceController serviceController;
 
-    private final static IHotelResidentController residentController = new HotelResidentController(residentService);
-    private final static IHotelRoomController roomController = new HotelRoomController(roomService);
-    private final static IRegistrationCardController registrationCardController = new RegistrationCardController(registrationCardService);
-    private final static IServiceController serviceController = new ServiceController(serviceService);
+    public Builder(IHotelResidentService residentService,
+        IHotelRoomService roomService,
+        IRegistrationCardService registrationCardService,
+        IServiceService serviceService) {
+
+      residentController = new HotelResidentController(residentService);
+      roomController = new HotelRoomController(roomService);
+      registrationCardController = new RegistrationCardController(registrationCardService);
+      serviceController = new ServiceController(serviceService);
+    }
+
+    public Builder() {}
+
 
     public Builder name(String name) {
       this.name = name;

@@ -1,11 +1,9 @@
 package com.senlacourses.electronicHotelAdministrator.ui;
 
-import com.senlacourses.electronicHotelAdministrator.ui.Menu.Builder;
 import java.util.Scanner;
 
 public class MenuController {
 
-  private Builder builder = new Builder();
   private Navigator navigator = new Navigator();
 
   public void run() {

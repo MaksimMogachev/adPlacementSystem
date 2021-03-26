@@ -1,11 +1,27 @@
 package com.senlacourses.electronicHotelAdministrator;
 
+import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
+import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
+import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
+import com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelResidentService;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
+import com.senlacourses.electronicHotelAdministrator.ui.Menu.Builder;
 import com.senlacourses.electronicHotelAdministrator.ui.MenuController;
 import java.io.IOException;
 
 public class Main {
 
   public static void main(String[] args) throws IOException {
+
+    final IHotelResidentService residentService = new HotelResidentService();
+    final IHotelRoomService roomService = new HotelRoomService();
+    final IRegistrationCardService registrationCardService = new RegistrationCardService();
+    final IServiceService serviceService = new ServiceService();
+    new Builder(residentService, roomService, registrationCardService, serviceService);
+
     MenuController menuController = new MenuController();
     menuController.run();
 //    HotelResidentDao hotelResidentDao = new HotelResidentDao();

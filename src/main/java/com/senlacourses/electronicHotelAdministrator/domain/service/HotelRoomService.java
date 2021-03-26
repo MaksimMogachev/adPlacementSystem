@@ -6,12 +6,13 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCa
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class HotelRoomService {
+public class HotelRoomService implements IHotelRoomService {
 
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
@@ -20,12 +21,14 @@ public class HotelRoomService {
     return hotelRoomDao.getAll();
   }
 
+  @Override
   public void showAllRooms() {
     for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
       System.out.println(hotelRoom.toString());
     }
   }
 
+  @Override
   public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
     if (findIndexOfRoom(numberOfRoom) == -1) {
       HotelRoom hotelRoom = new HotelRoom(numberOfRoom);
@@ -38,6 +41,7 @@ public class HotelRoomService {
     }
   }
 
+  @Override
   public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
@@ -56,6 +60,7 @@ public class HotelRoomService {
     hotelRoomDao.update(hotelRoom, indexOfRoom);
   }
 
+  @Override
   public void changeRoomPrice(int numberOfRoom, int newPrice) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
@@ -73,11 +78,13 @@ public class HotelRoomService {
     hotelRoomDao.update(hotelRoom, indexOfRoom);
   }
 
+  @Override
   public void showNumberOfFreeRooms() {
     System.out.println("Total number of free rooms: "
         + (hotelRoomDao.getAll().size() - registrationCardDao.getAll().size()));
   }
 
+  @Override
   public void showAllRoomsByCriterion(RoomSortingCriteria criterion) {
     List<HotelRoom> listForSorting = new ArrayList<>(hotelRoomDao.getAll());
 
@@ -103,6 +110,7 @@ public class HotelRoomService {
     }
   }
 
+  @Override
   public void showFreeRoomsByCriterion(RoomSortingCriteria criterion) {
     List<HotelRoom> listForSorting = new ArrayList<>();
 
@@ -134,6 +142,7 @@ public class HotelRoomService {
     }
   }
 
+  @Override
   public void showRoomsByDate(int year, int month, int dayOfMonth) {
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
 
@@ -153,6 +162,7 @@ public class HotelRoomService {
 //    }
   }
 
+  @Override
   public void showLastResidentsOfRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
@@ -165,6 +175,7 @@ public class HotelRoomService {
     }
   }
 
+  @Override
   public void showRoomDetails(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 

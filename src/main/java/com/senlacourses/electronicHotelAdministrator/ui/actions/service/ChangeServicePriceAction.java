@@ -1,10 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.service;
 
+import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IServiceController;
 import com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class ChangeServicePriceAction implements IAction {
+
+  private IServiceController controller;
+
+  public ChangeServicePriceAction(IServiceController controller) {
+    this.controller = controller;
+  }
 
   @Override
   public void execute() {
@@ -16,6 +23,6 @@ public class ChangeServicePriceAction implements IAction {
     name = scanner.nextLine();
     System.out.print("\nEnter new price of service: ");
     price = scanner.nextInt();
-    new ServiceService().changeServicePrice(name,price);
+    controller.changeServicePrice(name,price);
   }
 }

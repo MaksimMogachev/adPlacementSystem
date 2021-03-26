@@ -5,11 +5,12 @@ import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class ServiceService {
+public class ServiceService implements IServiceService {
 
   private ServiceDao serviceDao = ServiceDao.getInstance();
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
@@ -18,14 +19,17 @@ public class ServiceService {
     return serviceDao.getAll();
   }
 
+  @Override
   public void addNewService(String name, int price) {
     serviceDao.create(new Service(name, price));
   }
 
+  @Override
   public void showCurrentServices() {
     serviceDao.getAll().forEach(service -> System.out.println(service.toString()));
   }
 
+  @Override
   public void changeServicePrice(String nameOfService, int newPrice) {
     int indexOfService = findIndexOfService(nameOfService);
 
@@ -40,6 +44,7 @@ public class ServiceService {
     serviceDao.update(new Service(nameOfService, newPrice), indexOfService);
   }
 
+  @Override
   public void showPriceOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion) {
 
     switch (criterion) {

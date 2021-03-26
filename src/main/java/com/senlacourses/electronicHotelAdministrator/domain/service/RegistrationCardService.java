@@ -10,6 +10,7 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class RegistrationCardService {
+public class RegistrationCardService implements IRegistrationCardService {
 
   private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
   private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
@@ -28,12 +29,14 @@ public class RegistrationCardService {
     return registrationCardDao.getAll();
   }
 
+  @Override
   public void showOccupiedRooms() {
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
       System.out.println(registrationCard.toString());
     }
   }
 
+  @Override
   public void putInTheRoom(int numberOfRoom, String fullNameOfResident, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
@@ -61,6 +64,7 @@ public class RegistrationCardService {
     }
   }
 
+  @Override
   public void putInTheRoom(int numberOfRoom, String fullNameOfResident) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
@@ -92,6 +96,7 @@ public class RegistrationCardService {
     }
   }
 
+  @Override
   public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
@@ -129,6 +134,7 @@ public class RegistrationCardService {
     registrationCardDao.update(registrationCard, indexOfRegistrationCard);
   }
 
+  @Override
   public void evictFromTheRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
@@ -164,6 +170,7 @@ public class RegistrationCardService {
 
   }
 
+  @Override
   public void addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     int indexOfService = findIndexOfService(nameOfService);
@@ -181,6 +188,7 @@ public class RegistrationCardService {
     registrationCardDao.update(registrationCard, indexOfRegistrationCard);
   }
 
+  @Override
   public void showOccupiedRoomsByCriterion(OccupiedRoomSortingCriteria criterion) {
     List<RegistrationCard> listForSorting = new ArrayList<>(registrationCardDao.getAll());
 
@@ -225,6 +233,7 @@ public class RegistrationCardService {
     }
   }
 
+  @Override
   public void showNumberOfCurrentResidents() {
     int size = 0;
 
@@ -236,6 +245,7 @@ public class RegistrationCardService {
     System.out.println("Total number of current residents: " + size);
   }
 
+  @Override
   public void showAmountOfPayment(int numberOfRoom, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
@@ -243,6 +253,7 @@ public class RegistrationCardService {
         + (hotelRoomDao.read(indexOfRoom).getPrice() * daysOfStay));
   }
 
+  @Override
   public void showResidentServicesByCriterion(String fullName,
       ServiceSortingCriteria sortingCriteria) {
     Map<LocalDateTime, Service> services = null;

@@ -1,10 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.residentCard;
 
+import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
 import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class ShowAmountOfPayment implements IAction {
+
+  private IRegistrationCardController controller;
+
+  public ShowAmountOfPayment(IRegistrationCardController controller) {
+    this.controller = controller;
+  }
 
   @Override
   public void execute() {
@@ -16,6 +23,6 @@ public class ShowAmountOfPayment implements IAction {
     numberOfRoom = scanner.nextInt();
     System.out.print("\nEnter days of stay: ");
     daysOfStay = scanner.nextInt();
-    new RegistrationCardService().showAmountOfPayment(numberOfRoom, daysOfStay);
+    controller.showAmountOfPayment(numberOfRoom, daysOfStay);
   }
 }

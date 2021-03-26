@@ -1,10 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.hotelResident;
 
+import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelResidentController;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class RemoveResidentAction implements IAction {
+
+  private IHotelResidentController controller;
+
+  public RemoveResidentAction(IHotelResidentController controller) {
+    this.controller = controller;
+  }
 
   @Override
   public void execute() {
@@ -14,6 +21,6 @@ public class RemoveResidentAction implements IAction {
 
     System.out.print("Enter full name: ");
     fullName = scanner.nextLine();
-    new HotelResidentService().removeResident(fullName);
+    controller.removeResident(fullName);
   }
 }

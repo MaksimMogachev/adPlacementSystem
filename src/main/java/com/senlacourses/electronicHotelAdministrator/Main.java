@@ -1,21 +1,11 @@
 package com.senlacourses.electronicHotelAdministrator;
 
-import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
-import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
-import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
-import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
-import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
-import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
-import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
-import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
-import com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService;
 import com.senlacourses.electronicHotelAdministrator.ui.MenuController;
+import java.io.IOException;
 
 public class Main {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     MenuController menuController = new MenuController();
     menuController.run();
 //    HotelResidentDao hotelResidentDao = new HotelResidentDao();

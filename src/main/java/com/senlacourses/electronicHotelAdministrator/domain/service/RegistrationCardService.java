@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
+import com.senlacourses.electronicHotelAdministrator.Main;
 import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
@@ -10,44 +11,48 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class RegistrationCardService {
+public class RegistrationCardService implements IRegistrationCardService {
 
   private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
   private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private ServiceDao serviceDao = ServiceDao.getInstance();
-  private ExceptionWriter exceptionWriter = ExceptionWriter.getInstance();
+  private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
   public List<RegistrationCard> getOccupiedRooms() {
     return registrationCardDao.getAll();
   }
 
+  @Override
   public void showOccupiedRooms() {
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
       System.out.println(registrationCard.toString());
     }
   }
 
+  @Override
   public void putInTheRoom(int numberOfRoom, String fullNameOfResident, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     int indexOfResident = findIndexOfResident(fullNameOfResident);
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
+      logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
     if (indexOfResident == -1) {
-      exceptionWriter
-          .writeException("IllegalArgumentException(\"the given resident is not registered\")");
+      logger.error("IllegalArgumentException(\"the given resident is not registered\")");
       throw new IllegalArgumentException("the given resident is not registered");
     }
 
@@ -60,32 +65,33 @@ public class RegistrationCardService {
       hotelRoomDao.update(hotelRoom, indexOfRoom);
 
     } else {
-      exceptionWriter.writeException("IUnsupportedOperationException(\n"
+      logger.error("IUnsupportedOperationException(\n"
           + "\"the given room is occupied, use method with 2 arguments\")");
       throw new UnsupportedOperationException(
           "the given room is occupied, use method with 2 arguments");
     }
   }
 
+  @Override
   public void putInTheRoom(int numberOfRoom, String fullNameOfResident) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     int indexOfResident = findIndexOfResident(fullNameOfResident);
 
     if (indexOfRegistrationCard == -1) {
-      exceptionWriter.writeException("UnsupportedOperationException(\n"
+      logger.error("UnsupportedOperationException(\n"
           + "\"the given room is not occupied, use method with 3 arguments\")");
       throw new UnsupportedOperationException(
           "the given room is not occupied, use method with 3 arguments");
     }
 
     if (indexOfResident == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"the given resident is not registered\")");
+      logger.error("IllegalArgumentException(\"the given resident is not registered\")");
       throw new IllegalArgumentException("the given resident is not registered");
     }
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
+      logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
@@ -97,24 +103,25 @@ public class RegistrationCardService {
 
       registrationCardDao.update(registrationCard, indexOfRegistrationCard);
     } else {
-      exceptionWriter.writeException("new UnsupportedOperationException(\"Maximum Size "
+      logger.error("new UnsupportedOperationException(\"Maximum Size "
           + hotelRoomDao.read(indexOfRoom).getRoomCapacity() + " reached\")");
       throw new UnsupportedOperationException("Maximum Size "
           + hotelRoomDao.read(indexOfRoom).getRoomCapacity() + " reached");
     }
   }
 
+  @Override
   public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
+      logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     if (indexOfRegistrationCard == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not occupied\")");
+      logger.error("IllegalArgumentException(\"this room does not occupied\")");
       throw new IllegalArgumentException("this room is not occupied");
     }
 
@@ -143,17 +150,18 @@ public class RegistrationCardService {
     registrationCardDao.update(registrationCard, indexOfRegistrationCard);
   }
 
+  @Override
   public void evictFromTheRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
+      logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
     if (indexOfRegistrationCard == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not occupied\")");
+      logger.error("IllegalArgumentException(\"this room does not occupied\")");
       throw new IllegalArgumentException("this room is not occupied");
     }
 
@@ -177,20 +185,20 @@ public class RegistrationCardService {
     hotelRoomDao.update(hotelRoom, indexOfRoom);
 
     registrationCardDao.delete(registrationCardDao.read(indexOfRegistrationCard));
-
   }
 
+  @Override
   public void addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
     int indexOfService = findIndexOfService(nameOfService);
 
     if (indexOfRegistrationCard == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not occupied\")");
+      logger.error("IllegalArgumentException(\"this room does not occupied\")");
       throw new IllegalArgumentException("this room is not occupied");
     }
 
     if (indexOfService == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
+      logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this service does not exist");
     }
 
@@ -199,6 +207,7 @@ public class RegistrationCardService {
     registrationCardDao.update(registrationCard, indexOfRegistrationCard);
   }
 
+  @Override
   public void showOccupiedRoomsByCriterion(OccupiedRoomSortingCriteria criterion) {
     List<RegistrationCard> listForSorting = new ArrayList<>(registrationCardDao.getAll());
 
@@ -243,6 +252,7 @@ public class RegistrationCardService {
     }
   }
 
+  @Override
   public void showNumberOfCurrentResidents() {
     int size = 0;
 
@@ -254,6 +264,7 @@ public class RegistrationCardService {
     System.out.println("Total number of current residents: " + size);
   }
 
+  @Override
   public void showAmountOfPayment(int numberOfRoom, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
@@ -261,6 +272,7 @@ public class RegistrationCardService {
         + (hotelRoomDao.read(indexOfRoom).getPrice() * daysOfStay));
   }
 
+  @Override
   public void showResidentServicesByCriterion(String fullName,
       ServiceSortingCriteria sortingCriteria) {
     Map<LocalDateTime, Service> services = null;
@@ -274,7 +286,7 @@ public class RegistrationCardService {
       }
     }
     if (services == null) {
-      exceptionWriter.writeException("IllegalArgumentException(\"incorrect argument\")");
+      logger.error("IllegalArgumentException(\"incorrect argument\")");
       throw new IllegalArgumentException("incorrect argument");
     }
 
@@ -283,7 +295,7 @@ public class RegistrationCardService {
       case DATE -> {
         for (Map.Entry<LocalDateTime, Service> service : services.entrySet()) {
           System.out.println(service.getValue().toString() + ", " + service.getKey()
-              .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+              .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
         }
       }
 
@@ -294,7 +306,7 @@ public class RegistrationCardService {
 
         for (Map.Entry<LocalDateTime, Service> map : entryList) {
           System.out.println(map.getValue().toString() + ", "
-              + map.getKey().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+              + map.getKey().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
         }
       }
     }

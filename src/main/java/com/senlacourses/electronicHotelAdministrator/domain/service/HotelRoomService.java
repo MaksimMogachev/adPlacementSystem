@@ -1,32 +1,38 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
+import com.senlacourses.electronicHotelAdministrator.Main;
 import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class HotelRoomService {
+public class HotelRoomService implements IHotelRoomService {
 
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
-  private ExceptionWriter exceptionWriter = ExceptionWriter.getInstance();
+  private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
   public List<HotelRoom> getAllRooms() {
     return hotelRoomDao.getAll();
   }
 
+  @Override
   public void showAllRooms() {
     for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
       System.out.println(hotelRoom.toString());
     }
   }
 
+  @Override
   public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
     if (findIndexOfRoom(numberOfRoom) == -1) {
       HotelRoom hotelRoom = new HotelRoom(numberOfRoom);
@@ -35,21 +41,22 @@ public class HotelRoomService {
       hotelRoom.setPrice(price);
       hotelRoomDao.create(hotelRoom);
     } else {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room already exists\")");
+      logger.error("IllegalArgumentException(\"this room already exists\")");
       throw new IllegalArgumentException("this room already exists");
     }
   }
 
+  @Override
   public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
+      logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
     if (hotelRoomDao.read(indexOfRoom).isRoomIsOccupied()) {
-      exceptionWriter.writeException
+      logger.error
           ("UnsupportedOperationException(\"the room must be vacated before changing the condition\")");
       throw new UnsupportedOperationException(
           "the room must be vacated before changing the condition");
@@ -61,18 +68,20 @@ public class HotelRoomService {
     hotelRoomDao.update(hotelRoom, indexOfRoom);
   }
 
+  @Override
   public void changeRoomPrice(int numberOfRoom, int newPrice) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"this room does not exist\")");
+      logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
     if (newPrice < 0) {
-      exceptionWriter.writeException("IllegalArgumentException(\"incorrect price\")");
+      logger.error("IllegalArgumentException(\"incorrect price\")");
       throw new IllegalArgumentException("incorrect price");
     }
+
 
     HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
     hotelRoom.setPrice(newPrice);
@@ -80,11 +89,13 @@ public class HotelRoomService {
     hotelRoomDao.update(hotelRoom, indexOfRoom);
   }
 
+  @Override
   public void showNumberOfFreeRooms() {
     System.out.println("Total number of free rooms: "
         + (hotelRoomDao.getAll().size() - registrationCardDao.getAll().size()));
   }
 
+  @Override
   public void showAllRoomsByCriterion(RoomSortingCriteria criterion) {
     List<HotelRoom> listForSorting = new ArrayList<>(hotelRoomDao.getAll());
 
@@ -110,6 +121,7 @@ public class HotelRoomService {
     }
   }
 
+  @Override
   public void showFreeRoomsByCriterion(RoomSortingCriteria criterion) {
     List<HotelRoom> listForSorting = new ArrayList<>();
 
@@ -141,6 +153,7 @@ public class HotelRoomService {
     }
   }
 
+  @Override
   public void showRoomsByDate(int year, int month, int dayOfMonth) {
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
 
@@ -160,11 +173,12 @@ public class HotelRoomService {
 //    }
   }
 
+  @Override
   public void showLastResidentsOfRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"Incorrect argument\")");
+      logger.error("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
     System.out.println("Last residents of room " + numberOfRoom + ": ");
@@ -173,11 +187,12 @@ public class HotelRoomService {
     }
   }
 
+  @Override
   public void showRoomDetails(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
 
     if (indexOfRoom == -1) {
-      exceptionWriter.writeException("IllegalArgumentException(\"Incorrect argument\")");
+      logger.error("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
     System.out.println(hotelRoomDao.read(indexOfRoom).toString());

@@ -1,10 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.residentCard;
 
+import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
 import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class PutInTheRoomActon implements IAction {
+
+  private IRegistrationCardController controller;
+
+  public PutInTheRoomActon(IRegistrationCardController controller) {
+    this.controller = controller;
+  }
 
   @Override
   public void execute() {
@@ -23,7 +30,6 @@ public class PutInTheRoomActon implements IAction {
       new RegistrationCardService().putInTheRoom(numberOfRoom, fullNameOfResident);
       return;
     }
-    new RegistrationCardService()
-        .putInTheRoom(numberOfRoom, fullNameOfResident, Integer.parseInt(daysOfStay));
+    controller.putInTheRoom(numberOfRoom, fullNameOfResident, Integer.parseInt(daysOfStay));
   }
 }

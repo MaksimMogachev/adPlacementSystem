@@ -1,10 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.hotelRoom;
 
+import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelRoomController;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class ShowRoomsByDateAction implements IAction {
+
+  private IHotelRoomController controller;
+
+  public ShowRoomsByDateAction(IHotelRoomController controller) {
+    this.controller = controller;
+  }
 
   @Override
   public void execute() {
@@ -19,6 +26,6 @@ public class ShowRoomsByDateAction implements IAction {
     month = scanner.nextInt();
     System.out.print("\nEnter dayOfMonth: ");
     dayOfMonth = scanner.nextInt();
-    new HotelRoomService().showRoomsByDate(year, month, dayOfMonth);
+    controller.showRoomsByDate(year, month, dayOfMonth);
   }
 }

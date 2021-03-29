@@ -19,7 +19,7 @@ public class HotelRoomService implements IHotelRoomService {
 
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(Main.class);
+  private final static Logger logger = LoggerFactory.getLogger(HotelRoomService.class);
 
   public List<HotelRoom> getAllRooms() {
     return hotelRoomDao.getAll();

@@ -27,7 +27,7 @@ public class RegistrationCardService implements IRegistrationCardService {
   private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private ServiceDao serviceDao = ServiceDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(Main.class);
+  private final static Logger logger = LoggerFactory.getLogger(RegistrationCardService.class);
 
   public List<RegistrationCard> getOccupiedRooms() {
     return registrationCardDao.getAll();

@@ -17,7 +17,7 @@ public class ServiceService implements IServiceService {
 
   private ServiceDao serviceDao = ServiceDao.getInstance();
   private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(Main.class);
+  private final static Logger logger = LoggerFactory.getLogger(ServiceService.class);
 
   public List<Service> getServices() {
     return serviceDao.getAll();

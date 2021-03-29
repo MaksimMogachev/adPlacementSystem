@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class HotelResidentService implements IHotelResidentService {
 
   private HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(Main.class);
+  private final static Logger logger = LoggerFactory.getLogger(HotelResidentService.class);
 
   public List<HotelResident> getResidents() {
     return hotelResidentDao.getAll();

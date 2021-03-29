@@ -1,6 +1,5 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.Main;
 import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
@@ -17,19 +16,13 @@ import org.slf4j.LoggerFactory;
 
 public class HotelRoomService implements IHotelRoomService {
 
-  private HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
-  private RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
+  private final HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
+  private final RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
   private final static Logger logger = LoggerFactory.getLogger(HotelRoomService.class);
-
-  public List<HotelRoom> getAllRooms() {
-    return hotelRoomDao.getAll();
-  }
 
   @Override
   public void showAllRooms() {
-    for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
-      System.out.println(hotelRoom.toString());
-    }
+    hotelRoomDao.getAll().forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
   }
 
   @Override
@@ -101,23 +94,17 @@ public class HotelRoomService implements IHotelRoomService {
 
     switch (criterion) {
 
-      case PRICE -> {
-        listForSorting.sort(Comparator.comparing(HotelRoom::getPrice));
+      case PRICE -> listForSorting.stream()
+          .sorted(Comparator.comparing(HotelRoom::getPrice))
+          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
 
-        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
-      }
+      case ROOM_CAPACITY -> listForSorting.stream()
+          .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
+          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
 
-      case ROOM_CAPACITY -> {
-        listForSorting.sort(Comparator.comparing(HotelRoom::getRoomCapacity));
-
-        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
-      }
-
-      case NUMBER_OF_STARS -> {
-        listForSorting.sort(Comparator.comparing(HotelRoom::getNumberOfStars));
-
-        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
-      }
+      case NUMBER_OF_STARS -> listForSorting.stream()
+          .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
+          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
     }
   }
 
@@ -125,31 +112,22 @@ public class HotelRoomService implements IHotelRoomService {
   public void showFreeRoomsByCriterion(RoomSortingCriteria criterion) {
     List<HotelRoom> listForSorting = new ArrayList<>();
 
-    for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
-      if (!hotelRoom.isRoomIsOccupied()) {
-        listForSorting.add(hotelRoom);
-      }
-    }
+    hotelRoomDao.getAll().stream().filter(hotelRoom -> !hotelRoom.isRoomIsOccupied())
+        .forEach(listForSorting::add);
 
     switch (criterion) {
 
-      case PRICE -> {
-        listForSorting.sort(Comparator.comparing(HotelRoom::getPrice));
+      case PRICE -> listForSorting.stream()
+          .sorted(Comparator.comparing(HotelRoom::getPrice))
+          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
 
-        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
-      }
+      case ROOM_CAPACITY -> listForSorting.stream()
+          .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
+          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
 
-      case ROOM_CAPACITY -> {
-        listForSorting.sort(Comparator.comparing(HotelRoom::getRoomCapacity));
-
-        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
-      }
-
-      case NUMBER_OF_STARS -> {
-        listForSorting.sort(Comparator.comparing(HotelRoom::getNumberOfStars));
-
-        listForSorting.forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
-      }
+      case NUMBER_OF_STARS -> listForSorting.stream()
+          .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
+          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
     }
   }
 
@@ -165,12 +143,6 @@ public class HotelRoomService implements IHotelRoomService {
         System.out.println(registrationCard.getHotelRoom().toString());
       }
     }
-//
-//    for (HotelRoom hotelRoom : hotelRoomDao.getAll()) {
-//      if (!hotelRoom.isRoomIsOccupied()) {
-//        System.out.println(hotelRoom.toString());
-//      }
-//    }
   }
 
   @Override

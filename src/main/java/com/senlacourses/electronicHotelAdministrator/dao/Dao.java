@@ -3,9 +3,9 @@ package com.senlacourses.electronicHotelAdministrator.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Dao<T> {
+public abstract class Dao<T> implements IDao<T> {
 
-  private List<T> dataBase = new ArrayList<>();
+  private final List<T> dataBase = new ArrayList<>();
 
   public List<T> getAll() {
     return dataBase;

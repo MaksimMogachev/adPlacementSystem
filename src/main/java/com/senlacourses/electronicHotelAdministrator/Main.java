@@ -10,11 +10,10 @@ import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.I
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
 import com.senlacourses.electronicHotelAdministrator.ui.Menu;
 import com.senlacourses.electronicHotelAdministrator.ui.MenuController;
-import java.io.IOException;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
 
     IHotelResidentService residentService = new HotelResidentService();
     IHotelRoomService roomService = new HotelRoomService();
@@ -24,22 +23,18 @@ public class Main {
 
     MenuController menuController = new MenuController();
     menuController.run();
-//    HotelResidentDao hotelResidentDao = new HotelResidentDao();
-//    HotelRoomDao hotelRoomDao = new HotelRoomDao();
-//    RegistrationCardDao registrationCardDao = new RegistrationCardDao();
-//    ServiceDao serviceDao = new ServiceDao();
-//
-//    RegistrationCardService registrationCardService = new RegistrationCardService(
-//        registrationCardDao, hotelResidentDao, hotelRoomDao, serviceDao);
-//    HotelResidentService hotelResidentService = new HotelResidentService(hotelResidentDao);
-//    HotelRoomService hotelRoomService = new HotelRoomService(hotelRoomDao, registrationCardDao);
-//    ServiceService service = new ServiceService(serviceDao, hotelRoomDao);
+
+//    RegistrationCardService registrationCardService = new RegistrationCardService();
+//    HotelResidentService hotelResidentService = new HotelResidentService();
+//    HotelRoomService hotelRoomService = new HotelRoomService();
+//    ServiceService service = new ServiceService();
 //
 //    hotelRoomService.addNewRoom(1, 6, 2, 500);
 //    hotelRoomService.addNewRoom(2, 8, 4, 400);
 //    hotelRoomService.addNewRoom(3, 2, 6, 300);
 //    hotelRoomService.addNewRoom(4, 3, 3, 800);
 //    hotelRoomService.showAllRooms();
+//    hotelRoomService.showAllRoomsByCriterion(RoomSortingCriteria.PRICE);
 //    System.out.println();
 //    hotelResidentService.addNewResident("kakoi-to zhilec", 2204014);
 //    hotelResidentService.addNewResident("drugoi zhilec", 2204015);

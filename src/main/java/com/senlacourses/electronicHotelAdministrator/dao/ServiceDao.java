@@ -6,6 +6,8 @@ public class ServiceDao extends Dao<Service> {
 
   private static ServiceDao serviceDataBase = new ServiceDao();
 
+  private ServiceDao() {}
+
   public static ServiceDao getInstance() {
     if(serviceDataBase == null){
       serviceDataBase = new ServiceDao();

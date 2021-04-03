@@ -115,6 +115,7 @@ public class Menu {
       menuItemList.add(new MenuItem("1. Menu to adding information", null, getAddingMenu()));
       menuItemList.add(new MenuItem("2. Menu to Updating/deleting information", null, getUpdatingMenu()));
       menuItemList.add(new MenuItem("3. Menu to display information", null, getDisplayMenu()));
+      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }
@@ -130,6 +131,7 @@ public class Menu {
       menuItemList.add(new MenuItem("4. Add new service", new AddNewServiceAction(serviceController), null));
       menuItemList.add(new MenuItem("5. Add new resident", new AddNewResidentAction(residentController), null));
       menuItemList.add(new MenuItem("0. Back to main menu", null, null));
+      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }
@@ -144,6 +146,7 @@ public class Menu {
       menuItemList.add(new MenuItem("4. Change service price", new ChangeServicePriceAction(serviceController), null));
       menuItemList.add(new MenuItem("5. Evict resident from the room", new EvictFromTheRoomAction(registrationCardController), null));
       menuItemList.add(new MenuItem("0. Back to main menu", null, null));
+      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }
@@ -178,6 +181,7 @@ public class Menu {
       menuItemList.add(new MenuItem("15. Show Price Of Services And Rooms By Criterion",
           new ShowPriceOfServicesAndRoomsByCriterionAction(serviceController), null));
       menuItemList.add(new MenuItem("0. Back to main menu", null, null));
+      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }

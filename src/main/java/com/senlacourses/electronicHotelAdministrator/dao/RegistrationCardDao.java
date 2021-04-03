@@ -6,6 +6,8 @@ public class RegistrationCardDao extends Dao<RegistrationCard> {
 
   private static RegistrationCardDao registrationCardDataBase = new RegistrationCardDao();
 
+  private RegistrationCardDao() {}
+
   public static RegistrationCardDao getInstance() {
     if(registrationCardDataBase == null){
       registrationCardDataBase = new RegistrationCardDao();

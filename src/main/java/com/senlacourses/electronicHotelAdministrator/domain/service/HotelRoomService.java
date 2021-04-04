@@ -7,10 +7,13 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +45,7 @@ public class HotelRoomService implements IHotelRoomService {
   @Override
   public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    Properties properties = new Properties();
 
     if (indexOfRoom == -1) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
@@ -53,6 +57,17 @@ public class HotelRoomService implements IHotelRoomService {
           ("UnsupportedOperationException(\"the room must be vacated before changing the condition\")");
       throw new UnsupportedOperationException(
           "the room must be vacated before changing the condition");
+    }
+
+    try {
+      properties.load(new FileInputStream("config.properties"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    if (properties.getProperty("changeNumberStatus").equals("off")) {
+      System.out.println("no access to change the state of the room");
+      return;
     }
 
     HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);

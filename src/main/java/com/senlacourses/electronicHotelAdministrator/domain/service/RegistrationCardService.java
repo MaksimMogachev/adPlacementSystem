@@ -11,12 +11,15 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSor
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,6 +111,7 @@ public class RegistrationCardService implements IRegistrationCardService {
   @Override
   public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    Properties properties = new Properties();
 
     if (indexOfRoom == -1) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
@@ -126,7 +130,13 @@ public class RegistrationCardService implements IRegistrationCardService {
     }
     HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
 
-    if (hotelRoom.getLastResidents().size() == 3) {
+    try {
+      properties.load(new FileInputStream("config.properties"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    if (hotelRoom.getLastResidents().size() == Integer.parseInt(properties.getProperty("numberOfResidentRecords"))) {
       hotelRoom.getLastResidents().remove(0);
     }
 
@@ -149,6 +159,7 @@ public class RegistrationCardService implements IRegistrationCardService {
   public void evictFromTheRoom(int numberOfRoom) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
+    Properties properties = new Properties();
 
     if (indexOfRoom == -1) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
@@ -162,9 +173,15 @@ public class RegistrationCardService implements IRegistrationCardService {
 
     HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
 
+    try {
+      properties.load(new FileInputStream("config.properties"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     for (int i = 0; i < registrationCardDao.read(indexOfRegistrationCard).getResidents().size();
         i++) {
-      if (hotelRoom.getLastResidents().size() == 3) {
+      if (hotelRoom.getLastResidents().size() == Integer.parseInt(properties.getProperty("numberOfResidentRecords"))) {
         hotelRoom.getLastResidents().remove(0);
       }
 

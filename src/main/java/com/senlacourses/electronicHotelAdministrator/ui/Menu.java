@@ -8,10 +8,6 @@ import com.senlacourses.electronicHotelAdministrator.domain.controller.interface
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelRoomController;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IServiceController;
-import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
-import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
-import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
-import com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelResidentService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
@@ -115,7 +111,6 @@ public class Menu {
       menuItemList.add(new MenuItem("1. Menu to adding information", null, getAddingMenu()));
       menuItemList.add(new MenuItem("2. Menu to Updating/deleting information", null, getUpdatingMenu()));
       menuItemList.add(new MenuItem("3. Menu to display information", null, getDisplayMenu()));
-      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }
@@ -131,7 +126,6 @@ public class Menu {
       menuItemList.add(new MenuItem("4. Add new service", new AddNewServiceAction(serviceController), null));
       menuItemList.add(new MenuItem("5. Add new resident", new AddNewResidentAction(residentController), null));
       menuItemList.add(new MenuItem("0. Back to main menu", null, null));
-      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }
@@ -146,7 +140,6 @@ public class Menu {
       menuItemList.add(new MenuItem("4. Change service price", new ChangeServicePriceAction(serviceController), null));
       menuItemList.add(new MenuItem("5. Evict resident from the room", new EvictFromTheRoomAction(registrationCardController), null));
       menuItemList.add(new MenuItem("0. Back to main menu", null, null));
-      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }
@@ -181,7 +174,6 @@ public class Menu {
       menuItemList.add(new MenuItem("15. Show Price Of Services And Rooms By Criterion",
           new ShowPriceOfServicesAndRoomsByCriterionAction(serviceController), null));
       menuItemList.add(new MenuItem("0. Back to main menu", null, null));
-      menuItemList.add(new MenuItem("Exit. Exit the application", null, null));
 
       return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
     }

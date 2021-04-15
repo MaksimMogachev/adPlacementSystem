@@ -9,9 +9,6 @@ public class HotelResidentDao extends Dao<HotelResident> {
   private HotelResidentDao() {}
 
   public static HotelResidentDao getInstance() {
-    if(hotelResidentDataBase == null){
-      hotelResidentDataBase = new HotelResidentDao();
-    }
     return hotelResidentDataBase;
   }
 

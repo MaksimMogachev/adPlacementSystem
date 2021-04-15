@@ -1,5 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,7 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class RegistrationCard {
+public class RegistrationCard implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = -5759790726158021751L;
 
   private HotelRoom hotelRoom;
   private List<HotelResident> residents = new ArrayList<>();

@@ -9,9 +9,6 @@ public class RegistrationCardDao extends Dao<RegistrationCard> {
   private RegistrationCardDao() {}
 
   public static RegistrationCardDao getInstance() {
-    if(registrationCardDataBase == null){
-      registrationCardDataBase = new RegistrationCardDao();
-    }
     return registrationCardDataBase;
   }
 }

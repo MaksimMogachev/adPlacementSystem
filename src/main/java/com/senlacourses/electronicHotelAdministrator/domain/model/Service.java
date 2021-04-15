@@ -1,6 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
-public class Service {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Service implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = -1000592815847945978L;
 
   private String name;
   private int price;

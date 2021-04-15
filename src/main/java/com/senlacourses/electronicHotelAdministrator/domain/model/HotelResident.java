@@ -1,6 +1,8 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
-public record HotelResident(String fullName, int passportNumber) {
+import java.io.Serializable;
+
+public record HotelResident(String fullName, int passportNumber) implements Serializable {
 
   @Override
   public String toString() {

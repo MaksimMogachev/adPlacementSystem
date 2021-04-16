@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class PutInTheRoomActon implements IAction {
 
-  private IRegistrationCardController controller;
+  private final IRegistrationCardController controller;
 
   public PutInTheRoomActon(IRegistrationCardController controller) {
     this.controller = controller;

@@ -1,10 +1,8 @@
 package com.senlacourses.electronicHotelAdministrator.ui;
 
-import com.senlacourses.electronicHotelAdministrator.ui.Menu.Builder;
-
 public class Navigator {
 
-  private Menu currentMenu = Builder.getRootMenu();
+  private Menu currentMenu = Menus.getRootMenu();
 
   public void printMenu() {
     System.out.println(currentMenu.getName() + "\n");
@@ -21,7 +19,7 @@ public class Navigator {
     }
 
     if (index == 0) {
-      currentMenu = Builder.getRootMenu();
+      currentMenu = Menus.getRootMenu();
       return;
     }
 

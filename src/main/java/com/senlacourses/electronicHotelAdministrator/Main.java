@@ -10,6 +10,7 @@ import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.I
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
 import com.senlacourses.electronicHotelAdministrator.ui.Menu;
 import com.senlacourses.electronicHotelAdministrator.ui.MenuController;
+import com.senlacourses.electronicHotelAdministrator.ui.Menus;
 
 public class Main {
 
@@ -19,7 +20,7 @@ public class Main {
     IHotelRoomService roomService = new HotelRoomService();
     IRegistrationCardService registrationCardService = new RegistrationCardService();
     IServiceService serviceService = new ServiceService();
-    new Menu.Builder(residentService, roomService, registrationCardService, serviceService);
+    new Menus(residentService, roomService, registrationCardService, serviceService);
 
     MenuController menuController = new MenuController();
     menuController.run();

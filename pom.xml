@@ -26,11 +26,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.chfourie</groupId>
-      <artifactId>uml-java-doclet</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>

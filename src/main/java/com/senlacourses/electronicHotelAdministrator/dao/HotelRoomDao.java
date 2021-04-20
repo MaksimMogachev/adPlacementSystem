@@ -4,7 +4,7 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 
 public class HotelRoomDao extends Dao<HotelRoom> {
 
-  private static HotelRoomDao hotelRoomDataBase = new HotelRoomDao();
+  private static final HotelRoomDao hotelRoomDataBase = new HotelRoomDao();
 
   private HotelRoomDao() {}
 

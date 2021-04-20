@@ -48,7 +48,8 @@ public class Menus {
   private static IRegistrationCardController registrationCardController;
   private static IServiceController serviceController;
 
-  public Menus(IHotelResidentService residentService,
+  public Menus(
+      IHotelResidentService residentService,
       IHotelRoomService roomService,
       IRegistrationCardService registrationCardService,
       IServiceService serviceService) {
@@ -64,7 +65,8 @@ public class Menus {
     List<MenuItem> menuItemList = new ArrayList<>();
 
     menuItemList.add(new MenuItem("1. Menu to adding information", null, getAddingMenu()));
-    menuItemList.add(new MenuItem("2. Menu to Updating/deleting information", null, getUpdatingMenu()));
+    menuItemList.add(
+        new MenuItem("2. Menu to Updating/deleting information", null, getUpdatingMenu()));
     menuItemList.add(new MenuItem("3. Menu to display information", null, getDisplayMenu()));
 
     return new Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
@@ -74,12 +76,19 @@ public class Menus {
     String name = "Add information";
     List<MenuItem> menuItemList = new ArrayList<>();
 
-    menuItemList.add(new MenuItem("1. Put in the room", new PutInTheRoomActon(registrationCardController), null));
-    menuItemList.add(new MenuItem("2. Add service to occupied room",
-        new AddServiceToOccupiedRoomAction(registrationCardController), null));
+    menuItemList.add(
+        new MenuItem(
+            "1. Put in the room", new PutInTheRoomActon(registrationCardController), null));
+    menuItemList.add(
+        new MenuItem(
+            "2. Add service to occupied room",
+            new AddServiceToOccupiedRoomAction(registrationCardController),
+            null));
     menuItemList.add(new MenuItem("3. Add new room", new AddNewRoomAction(roomController), null));
-    menuItemList.add(new MenuItem("4. Add new service", new AddNewServiceAction(serviceController), null));
-    menuItemList.add(new MenuItem("5. Add new resident", new AddNewResidentAction(residentController), null));
+    menuItemList.add(
+        new MenuItem("4. Add new service", new AddNewServiceAction(serviceController), null));
+    menuItemList.add(
+        new MenuItem("5. Add new resident", new AddNewResidentAction(residentController), null));
     menuItemList.add(new MenuItem("0. Back to main menu", null, null));
 
     return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
@@ -89,11 +98,24 @@ public class Menus {
     String name = "Update/delete information";
     List<MenuItem> menuItemList = new ArrayList<>();
 
-    menuItemList.add(new MenuItem("1. Remove resident from database", new RemoveResidentAction(residentController), null));
-    menuItemList.add(new MenuItem("2. Change room condition", new ChangeRoomConditionAction(roomController), null));
-    menuItemList.add(new MenuItem("3. Change room price", new ChangeRoomPriceAction(roomController), null));
-    menuItemList.add(new MenuItem("4. Change service price", new ChangeServicePriceAction(serviceController), null));
-    menuItemList.add(new MenuItem("5. Evict resident from the room", new EvictFromTheRoomAction(registrationCardController), null));
+    menuItemList.add(
+        new MenuItem(
+            "1. Remove resident from database",
+            new RemoveResidentAction(residentController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "2. Change room condition", new ChangeRoomConditionAction(roomController), null));
+    menuItemList.add(
+        new MenuItem("3. Change room price", new ChangeRoomPriceAction(roomController), null));
+    menuItemList.add(
+        new MenuItem(
+            "4. Change service price", new ChangeServicePriceAction(serviceController), null));
+    menuItemList.add(
+        new MenuItem(
+            "5. Evict resident from the room",
+            new EvictFromTheRoomAction(registrationCardController),
+            null));
     menuItemList.add(new MenuItem("0. Back to main menu", null, null));
 
     return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();
@@ -103,31 +125,67 @@ public class Menus {
     String name = "Show information";
     List<MenuItem> menuItemList = new ArrayList<>();
 
-    menuItemList.add(new MenuItem("1. Show all residents", new ShowAllResidentsAction(residentController), null));
-    menuItemList.add(new MenuItem("2. Show all rooms", new ShowAllRoomsAction(roomController), null));
-    menuItemList.add(new MenuItem("3. Show all rooms by criterion",
-        new ShowAllRoomsByCriterionAction(roomController), null));
-    menuItemList.add(new MenuItem("4. Show all free rooms by criterion",
-        new ShowFreeRoomsByCriterionAction(roomController), null));
-    menuItemList.add(new MenuItem("5. Show last residents of room",
-        new ShowLastResidentsOfRoomAction(roomController), null));
-    menuItemList.add(new MenuItem("6. Show number of free rooms",
-        new ShowNumberOfFreeRoomsAction(roomController), null));
-    menuItemList.add(new MenuItem("7. Show room details", new ShowRoomDetailsAction(roomController), null));
-    menuItemList.add(new MenuItem("8. Show rooms by release date",
-        new ShowRoomsByDateAction(roomController), null));
-    menuItemList.add(new MenuItem("9. Show amount of payment", new ShowAmountOfPayment(registrationCardController), null));
-    menuItemList.add(new MenuItem("10. Show number of current residents",
-        new ShowNumberOfCurrentResidentsAction(registrationCardController), null));
-    menuItemList.add(new MenuItem("11. Show occupied rooms by criterion",
-        new ShowOccupiedRoomByCriterionAction(registrationCardController), null));
-    menuItemList.add(new MenuItem("12. Show occupied rooms",
-        new ShowOccupiedRoomsAction(registrationCardController), null));
-    menuItemList.add(new MenuItem("13. Show resident services by criterion",
-        new ShowResidentServicesByCriterion(registrationCardController), null));
-    menuItemList.add(new MenuItem("14. Show current services", new ShowCurrentServicesAction(serviceController), null));
-    menuItemList.add(new MenuItem("15. Show Price Of Services And Rooms By Criterion",
-        new ShowPriceOfServicesAndRoomsByCriterionAction(serviceController), null));
+    menuItemList.add(
+        new MenuItem(
+            "1. Show all residents", new ShowAllResidentsAction(residentController), null));
+    menuItemList.add(
+        new MenuItem("2. Show all rooms", new ShowAllRoomsAction(roomController), null));
+    menuItemList.add(
+        new MenuItem(
+            "3. Show all rooms by criterion",
+            new ShowAllRoomsByCriterionAction(roomController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "4. Show all free rooms by criterion",
+            new ShowFreeRoomsByCriterionAction(roomController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "5. Show last residents of room",
+            new ShowLastResidentsOfRoomAction(roomController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "6. Show number of free rooms", new ShowNumberOfFreeRoomsAction(roomController), null));
+    menuItemList.add(
+        new MenuItem("7. Show room details", new ShowRoomDetailsAction(roomController), null));
+    menuItemList.add(
+        new MenuItem(
+            "8. Show rooms by release date", new ShowRoomsByDateAction(roomController), null));
+    menuItemList.add(
+        new MenuItem(
+            "9. Show amount of payment",
+            new ShowAmountOfPayment(registrationCardController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "10. Show number of current residents",
+            new ShowNumberOfCurrentResidentsAction(registrationCardController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "11. Show occupied rooms by criterion",
+            new ShowOccupiedRoomByCriterionAction(registrationCardController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "12. Show occupied rooms",
+            new ShowOccupiedRoomsAction(registrationCardController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "13. Show resident services by criterion",
+            new ShowResidentServicesByCriterion(registrationCardController),
+            null));
+    menuItemList.add(
+        new MenuItem(
+            "14. Show current services", new ShowCurrentServicesAction(serviceController), null));
+    menuItemList.add(
+        new MenuItem(
+            "15. Show Price Of Services And Rooms By Criterion",
+            new ShowPriceOfServicesAndRoomsByCriterionAction(serviceController),
+            null));
     menuItemList.add(new MenuItem("0. Back to main menu", null, null));
 
     return new Menu.Builder().name(name).menuItems(menuItemList.toArray(new MenuItem[0])).build();

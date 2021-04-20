@@ -2,15 +2,13 @@ package com.senlacourses.electronicHotelAdministrator.domain.controller;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IServiceController;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
-import com.senlacourses.electronicHotelAdministrator.domain.service.ServiceService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
 
 public class ServiceController implements IServiceController {
 
   private final IServiceService serviceService;
 
-  public ServiceController(
-      IServiceService serviceService) {
+  public ServiceController(IServiceService serviceService) {
     this.serviceService = serviceService;
   }
 

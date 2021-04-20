@@ -1,14 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.residentCard;
 
-import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelRoomController;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
-import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class AddServiceToOccupiedRoomAction implements IAction {
 
-  private IRegistrationCardController controller;
+  private final IRegistrationCardController controller;
 
   public AddServiceToOccupiedRoomAction(IRegistrationCardController controller) {
     this.controller = controller;
@@ -24,6 +22,6 @@ public class AddServiceToOccupiedRoomAction implements IAction {
     numberOfRoom = scanner.nextInt();
     System.out.print("\nEnter name of service: ");
     nameOfService = scanner.nextLine();
-    controller.addServiceToOccupiedRoom(numberOfRoom,nameOfService);
+    controller.addServiceToOccupiedRoom(numberOfRoom, nameOfService);
   }
 }

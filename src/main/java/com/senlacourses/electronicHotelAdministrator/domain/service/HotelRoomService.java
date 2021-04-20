@@ -1,9 +1,9 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
-import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
+import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
+import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
 
 public class HotelRoomService implements IHotelRoomService {
 
+  private final static Logger logger = LoggerFactory.getLogger(HotelRoomService.class);
   private final HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private final RegistrationCardDao registrationCardDao = RegistrationCardDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(HotelRoomService.class);
 
   @Override
   public void showAllRooms() {
@@ -53,8 +53,8 @@ public class HotelRoomService implements IHotelRoomService {
     }
 
     if (hotelRoomDao.read(indexOfRoom).isRoomIsOccupied()) {
-      logger.error
-          ("UnsupportedOperationException(\"the room must be vacated before changing the condition\")");
+      logger.error(
+          "UnsupportedOperationException(\"the room must be vacated before changing the condition\")");
       throw new UnsupportedOperationException(
           "the room must be vacated before changing the condition");
     }

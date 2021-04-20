@@ -1,14 +1,14 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
+import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
 import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
-import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
+import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 import java.io.FileInputStream;
@@ -29,7 +29,7 @@ public class RegistrationCardService implements IRegistrationCardService {
   private final HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
   private final HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
   private final ServiceDao serviceDao = ServiceDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(RegistrationCardService.class);
+  private final Logger logger = LoggerFactory.getLogger(RegistrationCardService.class);
 
   @Override
   public void showOccupiedRooms() {
@@ -136,7 +136,8 @@ public class RegistrationCardService implements IRegistrationCardService {
       e.printStackTrace();
     }
 
-    if (hotelRoom.getLastResidents().size() == Integer.parseInt(properties.getProperty("numberOfResidentRecords"))) {
+    if (hotelRoom.getLastResidents().size()
+        == Integer.parseInt(properties.getProperty("numberOfResidentRecords"))) {
       hotelRoom.getLastResidents().remove(0);
     }
 
@@ -181,7 +182,8 @@ public class RegistrationCardService implements IRegistrationCardService {
 
     for (int i = 0; i < registrationCardDao.read(indexOfRegistrationCard).getResidents().size();
         i++) {
-      if (hotelRoom.getLastResidents().size() == Integer.parseInt(properties.getProperty("numberOfResidentRecords"))) {
+      if (hotelRoom.getLastResidents().size()
+          == Integer.parseInt(properties.getProperty("numberOfResidentRecords"))) {
         hotelRoom.getLastResidents().remove(0);
       }
 

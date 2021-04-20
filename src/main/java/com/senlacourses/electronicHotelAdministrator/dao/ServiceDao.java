@@ -4,7 +4,7 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 
 public class ServiceDao extends Dao<Service> {
 
-  private static ServiceDao serviceDataBase = new ServiceDao();
+  private static final ServiceDao serviceDataBase = new ServiceDao();
 
   private ServiceDao() {}
 

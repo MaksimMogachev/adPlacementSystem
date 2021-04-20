@@ -31,7 +31,6 @@ public class Menu {
     private String name;
     private MenuItem[] menuItems;
 
-
     public Builder() {}
 
     public Builder name(String name) {

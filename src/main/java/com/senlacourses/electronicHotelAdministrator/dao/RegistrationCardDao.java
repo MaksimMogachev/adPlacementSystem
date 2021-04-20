@@ -4,7 +4,7 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCa
 
 public class RegistrationCardDao extends Dao<RegistrationCard> {
 
-  private static RegistrationCardDao registrationCardDataBase = new RegistrationCardDao();
+  private static final RegistrationCardDao registrationCardDataBase = new RegistrationCardDao();
 
   private RegistrationCardDao() {}
 

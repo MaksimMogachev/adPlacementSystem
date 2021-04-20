@@ -3,15 +3,13 @@ package com.senlacourses.electronicHotelAdministrator.domain.controller;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelRoomController;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
-import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
 
 public class HotelRoomController implements IHotelRoomController {
 
   private final IHotelRoomService hotelRoomService;
 
-  public HotelRoomController(
-      IHotelRoomService hotelRoomService) {
+  public HotelRoomController(IHotelRoomService hotelRoomService) {
     this.hotelRoomService = hotelRoomService;
   }
 

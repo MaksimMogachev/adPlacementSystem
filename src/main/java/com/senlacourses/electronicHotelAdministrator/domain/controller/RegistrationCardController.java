@@ -3,15 +3,13 @@ package com.senlacourses.electronicHotelAdministrator.domain.controller;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
-import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 
 public class RegistrationCardController implements IRegistrationCardController {
 
   private final IRegistrationCardService registrationCardService;
 
-  public RegistrationCardController(
-      IRegistrationCardService registrationCardService) {
+  public RegistrationCardController(IRegistrationCardService registrationCardService) {
     this.registrationCardService = registrationCardService;
   }
 
@@ -61,8 +59,8 @@ public class RegistrationCardController implements IRegistrationCardController {
   }
 
   @Override
-  public void showResidentServicesByCriterion(String fullName,
-      ServiceSortingCriteria sortingCriteria) {
+  public void showResidentServicesByCriterion(
+      String fullName, ServiceSortingCriteria sortingCriteria) {
     registrationCardService.showResidentServicesByCriterion(fullName, sortingCriteria);
   }
 }

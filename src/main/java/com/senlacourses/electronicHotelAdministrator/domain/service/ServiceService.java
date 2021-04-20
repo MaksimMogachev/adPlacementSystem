@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 
 public class ServiceService implements IServiceService {
 
+  private final static Logger logger = LoggerFactory.getLogger(ServiceService.class);
   private final ServiceDao serviceDao = ServiceDao.getInstance();
   private final HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(ServiceService.class);
 
   @Override
   public void addNewService(String name, int price) {

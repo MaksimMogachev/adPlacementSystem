@@ -23,6 +23,5 @@ public interface IRegistrationCardController {
 
   void showAmountOfPayment(int numberOfRoom, int daysOfStay);
 
-  void showResidentServicesByCriterion(String fullName,
-      ServiceSortingCriteria sortingCriteria);
+  void showResidentServicesByCriterion(String fullName, ServiceSortingCriteria sortingCriteria);
 }

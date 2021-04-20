@@ -1,15 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.hotelRoom;
 
-import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelResidentController;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelRoomController;
-import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
-import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class AddNewRoomAction implements IAction {
 
-  private IHotelRoomController controller;
+  private final IHotelRoomController controller;
 
   public AddNewRoomAction(IHotelRoomController controller) {
     this.controller = controller;

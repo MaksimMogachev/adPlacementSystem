@@ -23,10 +23,10 @@ public class Navigator {
       return;
     }
 
-    if (currentMenu.getMenuItems()[index-1].nextMenu() != null) {
-      currentMenu =  currentMenu.getMenuItems()[index-1].nextMenu();
+    if (currentMenu.getMenuItems()[index - 1].nextMenu() != null) {
+      currentMenu = currentMenu.getMenuItems()[index - 1].nextMenu();
     } else {
-      currentMenu.getMenuItems()[index-1].action().execute();
+      currentMenu.getMenuItems()[index - 1].action().execute();
     }
   }
 }

@@ -12,17 +12,13 @@ import java.util.TreeMap;
 
 public class RegistrationCard implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = -5759790726158021751L;
+  @Serial private static final long serialVersionUID = -5759790726158021751L;
 
   private HotelRoom hotelRoom;
   private List<HotelResident> residents = new ArrayList<>();
   private Map<LocalDateTime, Service> services = new TreeMap<>();
   private LocalDate checkInDate;
   private LocalDate departureDate;
-
-  public RegistrationCard() {
-  }
 
   public RegistrationCard(HotelRoom hotelRoom, HotelResident hotelResident, int daysOfStay) {
     this.hotelRoom = hotelRoom;
@@ -75,7 +71,9 @@ public class RegistrationCard implements Serializable {
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder();
 
-    stringBuilder.append("Hotel room: ").append(getHotelRoom().getNumberOfRoom())
+    stringBuilder
+        .append("Hotel room: ")
+        .append(getHotelRoom().getNumberOfRoom())
         .append("; Room residents: ");
     for (HotelResident hotelResident : residents) {
       stringBuilder.append(hotelResident.toString()).append("; ");
@@ -85,12 +83,16 @@ public class RegistrationCard implements Serializable {
       stringBuilder.append("Services: ");
       for (Map.Entry<LocalDateTime, Service> service : services.entrySet()) {
         stringBuilder.append(service.getValue().toString()).append(", ");
-        stringBuilder.append(service.getKey()
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd"))).append("; ");
+        stringBuilder
+            .append(service.getKey().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")))
+            .append("; ");
       }
     }
-    stringBuilder.append("Arrival date: ").append(checkInDate)
-        .append("; Departure date: ").append(departureDate);
+    stringBuilder
+        .append("Arrival date: ")
+        .append(checkInDate)
+        .append("; Departure date: ")
+        .append(departureDate);
 
     return stringBuilder.toString();
   }

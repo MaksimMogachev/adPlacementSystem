@@ -7,8 +7,7 @@ import java.util.List;
 
 public class HotelRoom implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 7840286392549324936L;
+  @Serial private static final long serialVersionUID = 7840286392549324936L;
 
   private final int numberOfRoom;
   private int numberOfStars;
@@ -95,8 +94,14 @@ public class HotelRoom implements Serializable {
 
   @Override
   public String toString() {
-    return ("Number of room: " + getNumberOfRoom() + "; Number of stars: " + getNumberOfStars()
-        + "; Room capacity: " + getRoomCapacity() + "; Price: " + getPrice()
+    return (" Number of room: "
+        + getNumberOfRoom()
+        + "; Number of stars: "
+        + getNumberOfStars()
+        + "; Room capacity: "
+        + getRoomCapacity()
+        + "; Price: "
+        + getPrice()
         + (roomCondition != null ? "; Room condition: " + getRoomCondition() : "")
         + (roomIsOccupied ? "; Room is occupied now" : "; Room is not occupied now"));
   }

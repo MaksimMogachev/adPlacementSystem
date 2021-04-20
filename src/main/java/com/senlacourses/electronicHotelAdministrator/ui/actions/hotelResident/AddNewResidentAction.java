@@ -1,13 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.hotelResident;
 
-import com.senlacourses.electronicHotelAdministrator.domain.controller.HotelResidentController;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelResidentController;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class AddNewResidentAction implements IAction {
 
-  private IHotelResidentController controller;
+  private final IHotelResidentController controller;
 
   public AddNewResidentAction(IHotelResidentController controller) {
     this.controller = controller;
@@ -18,7 +17,6 @@ public class AddNewResidentAction implements IAction {
     Scanner scanner = new Scanner(System.in);
     String fullName;
     int passportNumber;
-
 
     System.out.print("Enter full name: ");
     fullName = scanner.nextLine();

@@ -1,13 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.residentCard;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
-import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
 public class ShowAmountOfPayment implements IAction {
 
-  private IRegistrationCardController controller;
+  private final IRegistrationCardController controller;
 
   public ShowAmountOfPayment(IRegistrationCardController controller) {
     this.controller = controller;

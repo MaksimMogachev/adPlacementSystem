@@ -8,12 +8,13 @@ import org.slf4j.LoggerFactory;
 
 public class HotelResidentService implements IHotelResidentService {
 
+  private static final Logger logger = LoggerFactory.getLogger(HotelResidentService.class);
   private final HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
-  private final static Logger logger = LoggerFactory.getLogger(HotelResidentService.class);
 
   @Override
   public void showAllResidents() {
-    hotelResidentDao.getAll()
+    hotelResidentDao
+        .getAll()
         .forEach(hotelResident -> System.out.println(hotelResident.toString()));
   }
 

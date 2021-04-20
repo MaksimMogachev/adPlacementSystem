@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class PutInTheRoomActon implements IAction {
 
-  private IRegistrationCardController controller;
+  private final IRegistrationCardController controller;
 
   public PutInTheRoomActon(IRegistrationCardController controller) {
     this.controller = controller;
@@ -24,7 +24,8 @@ public class PutInTheRoomActon implements IAction {
     numberOfRoom = scanner.nextInt();
     System.out.print("Enter full name of resident: ");
     fullNameOfResident = scanner.next();
-    System.out.print("Enter days of stay or press '0', if this room is already occupied by someone: ");
+    System.out.print(
+        "Enter days of stay or press '0', if this room is already occupied by someone: ");
     daysOfStay = scanner.nextInt();
     if (daysOfStay == 0) {
       controller.putInTheRoom(numberOfRoom, fullNameOfResident, daysOfStay);

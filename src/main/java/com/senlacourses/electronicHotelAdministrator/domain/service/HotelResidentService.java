@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
+import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelResidentService;
@@ -9,7 +10,8 @@ import org.slf4j.LoggerFactory;
 public class HotelResidentService implements IHotelResidentService {
 
   private static final Logger logger = LoggerFactory.getLogger(HotelResidentService.class);
-  private final HotelResidentDao hotelResidentDao = HotelResidentDao.getInstance();
+  @ConfigSingleton
+  private HotelResidentDao hotelResidentDao;
 
   @Override
   public void showAllResidents() {

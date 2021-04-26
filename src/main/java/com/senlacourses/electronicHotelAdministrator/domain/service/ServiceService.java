@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
+import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
 import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
 import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
@@ -15,8 +16,10 @@ import org.slf4j.LoggerFactory;
 public class ServiceService implements IServiceService {
 
   private final static Logger logger = LoggerFactory.getLogger(ServiceService.class);
-  private final ServiceDao serviceDao = ServiceDao.getInstance();
-  private final HotelRoomDao hotelRoomDao = HotelRoomDao.getInstance();
+  @ConfigSingleton
+  private ServiceDao serviceDao;
+  @ConfigSingleton
+  private HotelRoomDao hotelRoomDao;
 
   @Override
   public void addNewService(String name, int price) {

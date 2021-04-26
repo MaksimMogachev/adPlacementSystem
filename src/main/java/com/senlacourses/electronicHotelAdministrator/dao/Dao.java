@@ -101,7 +101,7 @@ public abstract class Dao<T> implements IDao<T> {
 
       case "HotelResidentDao" -> {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(hotelResidentData))) {
-          oos.writeObject(HotelResidentDao.getInstance().getAll());
+          oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -109,7 +109,7 @@ public abstract class Dao<T> implements IDao<T> {
 
       case "HotelRoomDao" -> {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(hotelRoomData))) {
-          oos.writeObject(HotelRoomDao.getInstance().getAll());
+          oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -117,7 +117,7 @@ public abstract class Dao<T> implements IDao<T> {
 
       case "RegistrationCardDao" -> {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(registrationCardData))) {
-          oos.writeObject(RegistrationCardDao.getInstance().getAll());
+          oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -125,7 +125,7 @@ public abstract class Dao<T> implements IDao<T> {
 
       case "ServiceDao" -> {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serviceData))) {
-          oos.writeObject(ServiceDao.getInstance().getAll());
+          oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }

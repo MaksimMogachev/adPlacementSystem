@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator;
 
+import com.senlacourses.electronicHotelAdministrator.annotations.InjectorOfDependency;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
@@ -10,15 +11,18 @@ import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.I
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
 import com.senlacourses.electronicHotelAdministrator.ui.MenuController;
 import com.senlacourses.electronicHotelAdministrator.ui.Menus;
+import java.lang.reflect.InvocationTargetException;
 
 public class Main {
 
-  public static void main(String[] args) {
+  public static void main(String[] args)
+      throws ClassNotFoundException, InvocationTargetException,
+      InstantiationException, IllegalAccessException {
 
-    IHotelResidentService residentService = new HotelResidentService();
-    IHotelRoomService roomService = new HotelRoomService();
-    IRegistrationCardService registrationCardService = new RegistrationCardService();
-    IServiceService serviceService = new ServiceService();
+    IHotelResidentService residentService = InjectorOfDependency.getSingleton(new HotelResidentService());
+    IHotelRoomService roomService = InjectorOfDependency.getSingleton(new HotelRoomService());
+    IRegistrationCardService registrationCardService = InjectorOfDependency.getSingleton(new RegistrationCardService());
+    IServiceService serviceService = InjectorOfDependency.getSingleton(new ServiceService());
     new Menus(residentService, roomService, registrationCardService, serviceService);
 
     MenuController menuController = new MenuController();

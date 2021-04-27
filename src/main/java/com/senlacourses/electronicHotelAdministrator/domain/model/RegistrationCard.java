@@ -84,7 +84,7 @@ public class RegistrationCard implements Serializable {
       for (Map.Entry<LocalDateTime, Service> service : services.entrySet()) {
         stringBuilder.append(service.getValue().toString()).append(", ");
         stringBuilder
-            .append(service.getKey().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")))
+            .append(service.getKey().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
             .append("; ");
       }
     }

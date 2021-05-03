@@ -11,7 +11,7 @@ public class InjectorOfDependency {
 
   private static final Map<Class<?>, Object> singletons = new HashMap();
   private static Set<Class<?>> classesWithAnnotation;
-  private static String defaultPathToDao = "com.senlacourses.electronicHotelAdministrator.dao";
+  private static final String defaultPathToDao = "com.senlacourses.electronicHotelAdministrator.dao";
 
   public static  <T> T getSingleton(Object obj)
       throws ClassNotFoundException, IllegalAccessException,
@@ -27,7 +27,7 @@ public class InjectorOfDependency {
 
     for (Field field : clazz.getDeclaredFields()) {
       if (field.isAnnotationPresent(ConfigSingleton.class)) {
-        if (classesWithAnnotation.contains(field.getType().getName())) {
+        if (!classesWithAnnotation.contains(field.getType())) {
           throw new RuntimeException("the class of this field has no annotation");
         }
         fieldClass = Class.forName(field.getType().getName());

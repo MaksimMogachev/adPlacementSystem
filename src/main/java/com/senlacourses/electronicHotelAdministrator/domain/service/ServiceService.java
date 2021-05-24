@@ -53,12 +53,13 @@ public class ServiceService implements IServiceService {
 
     switch (criterion) {
 
-      case SECTION -> {
+      case SECTION:
         showCurrentServices();
         hotelRoomDao.getAll().forEach(hotelRoom -> System.out.println("Hotel room: "
             + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice()));
-      }
-      case PRICE -> {
+        break;
+
+      case PRICE:
         List<Service> services = new ArrayList<>(serviceDao.getAll());
         List<HotelRoom> hotelRooms = new ArrayList<>(hotelRoomDao.getAll());
 
@@ -69,7 +70,7 @@ public class ServiceService implements IServiceService {
 
         hotelRooms.forEach(hotelRoom -> System.out.println("Hotel room: "
             + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice()));
-      }
+        break;
     }
   }
 

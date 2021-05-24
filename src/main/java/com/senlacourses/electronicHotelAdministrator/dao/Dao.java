@@ -54,19 +54,19 @@ public abstract class Dao<T> implements IDao<T> {
 
     switch (className) {
 
-      case "HotelResidentDao" -> {
+      case "HotelResidentDao": {
         return getDataBase(className, hotelResidentData);
       }
 
-      case "HotelRoomDao" -> {
+      case "HotelRoomDao": {
         return getDataBase(className, hotelRoomData);
       }
 
-      case "RegistrationCardDao" -> {
+      case "RegistrationCardDao": {
         return getDataBase(className, registrationCardData);
       }
 
-      case "ServiceDao" -> {
+      case "ServiceDao": {
         return getDataBase(className, serviceData);
       }
     }
@@ -99,37 +99,41 @@ public abstract class Dao<T> implements IDao<T> {
 
     switch (className) {
 
-      case "HotelResidentDao" -> {
+      case "HotelResidentDao": {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(hotelResidentData))) {
           oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }
+        break;
       }
 
-      case "HotelRoomDao" -> {
+      case "HotelRoomDao": {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(hotelRoomData))) {
           oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }
+        break;
       }
 
-      case "RegistrationCardDao" -> {
+      case "RegistrationCardDao": {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(registrationCardData))) {
           oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }
+        break;
       }
 
-      case "ServiceDao" -> {
+      case "ServiceDao": {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serviceData))) {
           oos.writeObject(this.getAll());
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
+      break;
     }
   }
 }

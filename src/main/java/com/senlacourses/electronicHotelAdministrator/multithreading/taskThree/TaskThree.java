@@ -1,16 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.multithreading.taskThree;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TaskThree implements Runnable {
 
   private final int maxBufferSize;
-  private final List<Integer> buffer = new ArrayList<>();
+  private final List<Integer> buffer;
 
   public TaskThree(int maxBufferSize) {
     this.maxBufferSize = maxBufferSize;
+    this.buffer = new CopyOnWriteArrayList<>();
   }
 
   public void startSelection() {
@@ -19,11 +20,16 @@ public class TaskThree implements Runnable {
     while (true) {
       if (buffer.size() != 0) {
         randomNumber = buffer.get(ThreadLocalRandom.current().nextInt(0, buffer.size()));
-        System.out.println("Removing number - " + randomNumber
-                + "\nCurrent buffer size: " + (getCurrentBufferSize() - randomNumber));
         buffer.remove(Integer.valueOf(randomNumber));
+        showCurrentBuffer();
         try {
-          Thread.sleep((long) randomNumber * 200);
+          Thread.sleep((long) randomNumber * 50);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      } else {
+        try {
+          Thread.sleep(2000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -31,13 +37,9 @@ public class TaskThree implements Runnable {
     }
   }
 
-  private int getCurrentBufferSize() {
-    int currentBufferSize = 0;
 
-    for (int i : buffer) {
-      currentBufferSize = currentBufferSize + i;
-    }
-    return currentBufferSize;
+  private void showCurrentBuffer() {
+    System.out.println("buffer: " + buffer);
   }
 
   @Override
@@ -45,15 +47,22 @@ public class TaskThree implements Runnable {
     int randomNumber = 0;
 
     while (true) {
-      if (maxBufferSize != getCurrentBufferSize())
-      randomNumber = ThreadLocalRandom.current().nextInt(0, maxBufferSize - getCurrentBufferSize());
+      if (maxBufferSize != buffer.size()) {
+        randomNumber = ThreadLocalRandom.current().nextInt(0, 10);
+      } else {
+        try {
+          Thread.sleep(2000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
       if (randomNumber == 0) {
         continue;
       }
       buffer.add(randomNumber);
-      System.out.println("Adding number - " + randomNumber + "\nCurrent buffer size: " + getCurrentBufferSize());
+      showCurrentBuffer();
       try {
-        Thread.sleep((long) randomNumber * 100);
+        Thread.sleep((long) randomNumber * 50);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }

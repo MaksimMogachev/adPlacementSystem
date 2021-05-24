@@ -1,13 +1,10 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelRoom implements Serializable {
-
-  @Serial private static final long serialVersionUID = 7840286392549324936L;
 
   private final int numberOfRoom;
   private int numberOfStars;

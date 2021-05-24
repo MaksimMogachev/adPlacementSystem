@@ -112,17 +112,20 @@ public class HotelRoomService implements IHotelRoomService {
 
     switch (criterion) {
 
-      case PRICE -> listForSorting.stream()
+      case PRICE: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getPrice))
           .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+      break;
 
-      case ROOM_CAPACITY -> listForSorting.stream()
+      case ROOM_CAPACITY: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
           .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+      break;
 
-      case NUMBER_OF_STARS -> listForSorting.stream()
+      case NUMBER_OF_STARS: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
           .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+      break;
     }
   }
 
@@ -135,17 +138,20 @@ public class HotelRoomService implements IHotelRoomService {
 
     switch (criterion) {
 
-      case PRICE -> listForSorting.stream()
+      case PRICE: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getPrice))
           .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+      break;
 
-      case ROOM_CAPACITY -> listForSorting.stream()
+      case ROOM_CAPACITY: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
           .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+      break;
 
-      case NUMBER_OF_STARS -> listForSorting.stream()
+      case NUMBER_OF_STARS: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
           .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+      break;
     }
   }
 

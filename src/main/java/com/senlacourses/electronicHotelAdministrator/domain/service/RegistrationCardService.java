@@ -24,6 +24,8 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria.PRICE;
+
 public class RegistrationCardService implements IRegistrationCardService {
 
   @ConfigSingleton
@@ -232,7 +234,7 @@ public class RegistrationCardService implements IRegistrationCardService {
 
     switch (criterion) {
 
-      case ALPHABETICALLY -> {
+      case ALPHABETICALLY:
         listForSorting.forEach(registrationCard ->
             registrationCard.getResidents().sort(Comparator.comparing(HotelResident::fullName)));
 
@@ -248,11 +250,11 @@ public class RegistrationCardService implements IRegistrationCardService {
             stringBuilder.append(hotelResident.toString());
           }
 
-          System.out.println(stringBuilder.toString());
+          System.out.println(stringBuilder);
         }
-      }
+      break;
 
-      case ROOM_RELEASE_DATE -> {
+      case ROOM_RELEASE_DATE:
         listForSorting.sort(Comparator.comparing(RegistrationCard::getDepartureDate));
 
         for (RegistrationCard registrationCard : listForSorting) {
@@ -265,11 +267,11 @@ public class RegistrationCardService implements IRegistrationCardService {
             stringBuilder.append(hotelResident.toString());
           }
 
-          System.out.println(stringBuilder.toString());
+          System.out.println(stringBuilder);
         }
+        break;
       }
     }
-  }
 
   @Override
   public void showNumberOfCurrentResidents() {
@@ -311,14 +313,14 @@ public class RegistrationCardService implements IRegistrationCardService {
 
     switch (sortingCriteria) {
 
-      case DATE -> {
+      case DATE:
         for (Map.Entry<LocalDateTime, Service> service : services.entrySet()) {
           System.out.println(service.getValue().toString() + ", " + service.getKey()
               .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
         }
-      }
+      break;
 
-      case PRICE -> {
+    case PRICE:
         List<Map.Entry<LocalDateTime, Service>> entryList = new ArrayList<>(services.entrySet());
 
         entryList.sort(Comparator.comparingInt(o -> o.getValue().getPrice()));
@@ -327,9 +329,9 @@ public class RegistrationCardService implements IRegistrationCardService {
           System.out.println(map.getValue().toString() + ", "
               + map.getKey().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
         }
+        break;
       }
     }
-  }
 
   private int findIndexOfRoom(int numberOfRoom) {
     int indexOfRoom = -1;

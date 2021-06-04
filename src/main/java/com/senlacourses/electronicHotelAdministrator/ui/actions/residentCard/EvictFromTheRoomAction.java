@@ -25,7 +25,7 @@ public class EvictFromTheRoomAction implements IAction {
         "\nEnter index of resident in room or press 'enter', if you want to evict everyone: ");
     indexOfResidentInRoom = scanner.nextLine();
     if (indexOfResidentInRoom == null) {
-      new RegistrationCardService().evictFromTheRoom(numberOfRoom);
+      controller.evictFromTheRoom(numberOfRoom);
       return;
     }
     controller.evictFromTheRoom(numberOfRoom, Integer.parseInt(indexOfResidentInRoom));

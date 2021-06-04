@@ -22,7 +22,7 @@ public class HotelResidentController implements IHotelResidentController {
   }
 
   @Override
-  public void removeResident(String fullName) {
-    hotelResidentService.removeResident(fullName);
+  public void removeResident(int passportNumber) {
+    hotelResidentService.removeResident(passportNumber);
   }
 }

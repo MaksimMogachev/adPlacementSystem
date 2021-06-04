@@ -17,20 +17,20 @@ public class PutInTheRoomActon implements IAction {
   public void execute() {
     Scanner scanner = new Scanner(System.in);
     int numberOfRoom;
-    String fullNameOfResident;
+    int passportNumber;
     int daysOfStay;
 
     System.out.print("Enter number of room: ");
     numberOfRoom = scanner.nextInt();
-    System.out.print("Enter full name of resident: ");
-    fullNameOfResident = scanner.next();
+    System.out.print("Enter passport number of resident: ");
+    passportNumber = scanner.nextInt();
     System.out.print(
         "Enter days of stay or press '0', if this room is already occupied by someone: ");
     daysOfStay = scanner.nextInt();
     if (daysOfStay == 0) {
-      controller.putInTheRoom(numberOfRoom, fullNameOfResident, daysOfStay);
+      controller.putInTheRoom(numberOfRoom, passportNumber, daysOfStay);
       return;
     }
-    new RegistrationCardService().putInTheRoom(numberOfRoom, fullNameOfResident);
+    controller.putInTheRoom(numberOfRoom, passportNumber);
   }
 }

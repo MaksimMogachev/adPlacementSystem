@@ -15,19 +15,19 @@ CREATE SCHEMA IF NOT EXISTS `EHA` DEFAULT CHARACTER SET utf8 ;
 USE `EHA` ;
 
 -- -----------------------------------------------------
--- Table `EHA`.`hotel_residents`
+-- Table `EHA`.`HotelResidents`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EHA`.`hotel_residents` (
-  `full_name` VARCHAR(45) NOT NULL,
+CREATE TABLE IF NOT EXISTS `EHA`.`HotelResidents` (
   `passport_number` INT NOT NULL,
-  PRIMARY KEY (`full_name`))
+  `full_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`passport_number`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `EHA`.`hotel_rooms`
+-- Table `EHA`.`HotelRooms`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EHA`.`hotel_rooms` (
+CREATE TABLE IF NOT EXISTS `EHA`.`HotelRooms` (
   `number_of_room` INT NOT NULL,
   `number_of_stars` INT NOT NULL,
   `room_capacity` INT NOT NULL,
@@ -39,9 +39,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `EHA`.`registration_cards`
+-- Table `EHA`.`RegistrationCards`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EHA`.`registration_cards` (
+CREATE TABLE IF NOT EXISTS `EHA`.`RegistrationCards` (
   `hotel_room` INT NOT NULL,
   `residents` VARCHAR(45) NOT NULL,
   `services` VARCHAR(45) NULL,
@@ -50,16 +50,16 @@ CREATE TABLE IF NOT EXISTS `EHA`.`registration_cards` (
   PRIMARY KEY (`hotel_room`),
   CONSTRAINT `fk_hotel_rooms_registration_cards1`
     FOREIGN KEY (`hotel_room`)
-    REFERENCES `EHA`.`hotel_rooms` (`number_of_room`)
+    REFERENCES `EHA`.`HotelRooms` (`number_of_room`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `EHA`.`services`
+-- Table `EHA`.`Services`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EHA`.`services` (
+CREATE TABLE IF NOT EXISTS `EHA`.`Services` (
   `name` VARCHAR(45) NOT NULL,
   `price` DECIMAL(15,2) NOT NULL,
   PRIMARY KEY (`name`))
@@ -71,18 +71,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EHA`.`last_residents_rooms` (
   `number_of_room` INT NOT NULL,
-  `full_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`number_of_room`, `full_name`),
+  `passport_number` INT NOT NULL,
+  PRIMARY KEY (`number_of_room`, `passport_number`),
   INDEX `fk_residents_rooms_hotel_rooms_idx` (`number_of_room` ASC) VISIBLE,
-  INDEX `fk_residents_rooms_hotel_residents1_idx` (`full_name` ASC) VISIBLE,
+  INDEX `fk_residents_rooms_hotel_residents1_idx` (`passport_number` ASC) VISIBLE,
   CONSTRAINT `fk_residents_rooms_hotel_rooms`
     FOREIGN KEY (`number_of_room`)
-    REFERENCES `EHA`.`hotel_rooms` (`number_of_room`)
+    REFERENCES `EHA`.`HotelRooms` (`number_of_room`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_residents_rooms_hotel_residents1`
-    FOREIGN KEY (`full_name`)
-    REFERENCES `EHA`.`hotel_residents` (`full_name`)
+    FOREIGN KEY (`passport_number`)
+    REFERENCES `EHA`.`HotelResidents` (`passport_number`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -93,17 +93,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EHA`.`residents_cards` (
   `hotel_room` INT NOT NULL,
-  `full_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`hotel_room`, `full_name`),
-  INDEX `fk_residents_cards_hotel_residents1_idx` (`full_name` ASC) VISIBLE,
+  `passport_number` INT NOT NULL,
+  PRIMARY KEY (`hotel_room`, `passport_number`),
+  INDEX `fk_residents_cards_hotel_residents1_idx` (`passport_number` ASC) VISIBLE,
   CONSTRAINT `fk_residents_cards_registration_cards1`
     FOREIGN KEY (`hotel_room`)
-    REFERENCES `EHA`.`registration_cards` (`hotel_room`)
+    REFERENCES `EHA`.`RegistrationCards` (`hotel_room`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_residents_cards_hotel_residents1`
-    FOREIGN KEY (`full_name`)
-    REFERENCES `EHA`.`hotel_residents` (`full_name`)
+    FOREIGN KEY (`passport_number`)
+    REFERENCES `EHA`.`HotelResidents` (`full_name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -119,12 +119,12 @@ CREATE TABLE IF NOT EXISTS `EHA`.`cards_services` (
   INDEX `fk_cards_services_registration_cards1_idx` (`hotel_room` ASC) VISIBLE,
   CONSTRAINT `fk_cards_services_services1`
     FOREIGN KEY (`name`)
-    REFERENCES `EHA`.`services` (`name`)
+    REFERENCES `EHA`.`Services` (`name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cards_services_registration_cards1`
     FOREIGN KEY (`hotel_room`)
-    REFERENCES `EHA`.`registration_cards` (`hotel_room`)
+    REFERENCES `EHA`.`RegistrationCards` (`hotel_room`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

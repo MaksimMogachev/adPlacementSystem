@@ -21,7 +21,7 @@ public class RegistrationCard implements Serializable {
     this.hotelRoom = hotelRoom;
     this.residents.add(hotelResident);
     this.checkInDate = LocalDate.now();
-    departureDate = checkInDate.plusDays(daysOfStay);
+    this.departureDate = checkInDate.plusDays(daysOfStay);
   }
 
   public HotelRoom getHotelRoom() {

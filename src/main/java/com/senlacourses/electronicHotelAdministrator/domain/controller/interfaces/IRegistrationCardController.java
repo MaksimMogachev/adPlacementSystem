@@ -7,9 +7,9 @@ public interface IRegistrationCardController {
 
   void showOccupiedRooms();
 
-  void putInTheRoom(int numberOfRoom, String fullNameOfResident, int daysOfStay);
+  void putInTheRoom(int numberOfRoom, int passportNumber, int daysOfStay);
 
-  void putInTheRoom(int numberOfRoom, String fullNameOfResident);
+  void putInTheRoom(int numberOfRoom, int passportNumber);
 
   void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom);
 
@@ -23,5 +23,5 @@ public interface IRegistrationCardController {
 
   void showAmountOfPayment(int numberOfRoom, int daysOfStay);
 
-  void showResidentServicesByCriterion(String fullName, ServiceSortingCriteria sortingCriteria);
+  void showResidentServicesByCriterion(int passportNumber, ServiceSortingCriteria sortingCriteria);
 }

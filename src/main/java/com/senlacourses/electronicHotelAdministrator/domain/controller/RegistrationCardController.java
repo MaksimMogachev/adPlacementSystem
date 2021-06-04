@@ -19,13 +19,13 @@ public class RegistrationCardController implements IRegistrationCardController {
   }
 
   @Override
-  public void putInTheRoom(int numberOfRoom, String fullNameOfResident, int daysOfStay) {
-    registrationCardService.putInTheRoom(numberOfRoom, fullNameOfResident, daysOfStay);
+  public void putInTheRoom(int numberOfRoom, int passportNumber, int daysOfStay) {
+    registrationCardService.putInTheRoom(numberOfRoom, passportNumber, daysOfStay);
   }
 
   @Override
-  public void putInTheRoom(int numberOfRoom, String fullNameOfResident) {
-    registrationCardService.putInTheRoom(numberOfRoom, fullNameOfResident);
+  public void putInTheRoom(int numberOfRoom, int passportNumber) {
+    registrationCardService.putInTheRoom(numberOfRoom, passportNumber);
   }
 
   @Override
@@ -60,7 +60,7 @@ public class RegistrationCardController implements IRegistrationCardController {
 
   @Override
   public void showResidentServicesByCriterion(
-      String fullName, ServiceSortingCriteria sortingCriteria) {
-    registrationCardService.showResidentServicesByCriterion(fullName, sortingCriteria);
+          int passportNumber, ServiceSortingCriteria sortingCriteria) {
+    registrationCardService.showResidentServicesByCriterion(passportNumber, sortingCriteria);
   }
 }

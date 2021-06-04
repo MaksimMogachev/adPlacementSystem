@@ -15,10 +15,10 @@ public class RemoveResidentAction implements IAction {
   @Override
   public void execute() {
     Scanner scanner = new Scanner(System.in);
-    String fullName;
+    int passportNumber;
 
-    System.out.print("Enter full name: ");
-    fullName = scanner.nextLine();
-    controller.removeResident(fullName);
+    System.out.print("Enter passport number: ");
+    passportNumber = scanner.nextInt();
+    controller.removeResident(passportNumber);
   }
 }

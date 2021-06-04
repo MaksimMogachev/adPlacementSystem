@@ -16,13 +16,13 @@ public class ShowResidentServicesByCriterion implements IAction {
   @Override
   public void execute() {
     Scanner scanner = new Scanner(System.in);
-    String fullName;
+    int passportNumber;
     ServiceSortingCriteria criterion;
 
-    System.out.print("Enter occupied room sorting criteria: ");
-    fullName = scanner.nextLine();
+    System.out.print("Enter passport number of resident: ");
+    passportNumber = scanner.nextInt();
     System.out.print("\nEnter occupied room sorting criteria: ");
     criterion = ServiceSortingCriteria.valueOf(scanner.next().toUpperCase());
-    controller.showResidentServicesByCriterion(fullName, criterion);
+    controller.showResidentServicesByCriterion(passportNumber, criterion);
   }
 }

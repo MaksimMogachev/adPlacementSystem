@@ -26,8 +26,8 @@ public class HotelResidentService implements IHotelResidentService {
   }
 
   @Override
-  public void removeResident(String fullName) {
-    int indexOfResident = findIndexOfResident(fullName);
+  public void removeResident(int passportNumber) {
+    int indexOfResident = findIndexOfResident(passportNumber);
 
     if (indexOfResident == -1) {
       logger.error("IllegalArgumentException(\"Incorrect argument\")");
@@ -37,11 +37,11 @@ public class HotelResidentService implements IHotelResidentService {
     hotelResidentDao.delete(hotelResidentDao.read(indexOfResident));
   }
 
-  private int findIndexOfResident(String name) {
+  private int findIndexOfResident(int passportNumber) {
     int indexOfResident = -1;
 
     for (int i = 0; i < hotelResidentDao.getAll().size(); i++) {
-      if (hotelResidentDao.read(i).fullName().equals(name)) {
+      if (hotelResidentDao.read(i).passportNumber() == passportNumber) {
         indexOfResident = i;
         break;
       }

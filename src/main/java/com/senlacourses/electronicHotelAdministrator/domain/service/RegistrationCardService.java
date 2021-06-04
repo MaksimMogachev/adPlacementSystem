@@ -46,10 +46,10 @@ public class RegistrationCardService implements IRegistrationCardService {
   }
 
   @Override
-  public void putInTheRoom(int numberOfRoom, String fullNameOfResident, int daysOfStay) {
+  public void putInTheRoom(int numberOfRoom, int passportNumber, int daysOfStay) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
-    int indexOfResident = findIndexOfResident(fullNameOfResident);
+    int indexOfResident = findIndexOfResident(passportNumber);
 
     if (indexOfRoom == -1) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
@@ -78,10 +78,10 @@ public class RegistrationCardService implements IRegistrationCardService {
   }
 
   @Override
-  public void putInTheRoom(int numberOfRoom, String fullNameOfResident) {
+  public void putInTheRoom(int numberOfRoom, int passportNumber) {
     int indexOfRoom = findIndexOfRoom(numberOfRoom);
     int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
-    int indexOfResident = findIndexOfResident(fullNameOfResident);
+    int indexOfResident = findIndexOfResident(passportNumber);
 
     if (indexOfRegistrationCard == -1) {
       logger.error("UnsupportedOperationException(\n"
@@ -294,13 +294,13 @@ public class RegistrationCardService implements IRegistrationCardService {
   }
 
   @Override
-  public void showResidentServicesByCriterion(String fullName,
+  public void showResidentServicesByCriterion(int passportNumber,
       ServiceSortingCriteria sortingCriteria) {
     Map<LocalDateTime, Service> services = null;
 
     for (int i = 0; i < registrationCardDao.getAll().size(); i++) {
       for (int j = 0; j < registrationCardDao.read(i).getResidents().size(); j++) {
-        if (registrationCardDao.read(i).getResidents().get(j).fullName().equals(fullName)) {
+        if (registrationCardDao.read(i).getResidents().get(j).passportNumber() == passportNumber) {
           services = registrationCardDao.read(i).getServices();
           break;
         }
@@ -357,11 +357,11 @@ public class RegistrationCardService implements IRegistrationCardService {
     return indexOfRegistrationCard;
   }
 
-  private int findIndexOfResident(String name) {
+  private int findIndexOfResident(int passportNumber) {
     int indexOfResident = -1;
 
     for (int i = 0; i < hotelResidentDao.getAll().size(); i++) {
-      if (hotelResidentDao.read(i).fullName().equals(name)) {
+      if (hotelResidentDao.read(i).passportNumber() == passportNumber) {
         indexOfResident = i;
         break;
       }

@@ -17,17 +17,17 @@ public class EvictFromTheRoomAction implements IAction {
   public void execute() {
     Scanner scanner = new Scanner(System.in);
     int numberOfRoom;
-    String indexOfResidentInRoom;
+    int indexOfResidentInRoom;
 
     System.out.print("Enter number of room: ");
     numberOfRoom = scanner.nextInt();
     System.out.print(
-        "\nEnter index of resident in room or press 'enter', if you want to evict everyone: ");
-    indexOfResidentInRoom = scanner.nextLine();
-    if (indexOfResidentInRoom == null) {
+        "\nEnter index of resident in room or enter '-1', if you want to evict everyone: ");
+    indexOfResidentInRoom = scanner.nextInt();
+    if (indexOfResidentInRoom == -1) {
       controller.evictFromTheRoom(numberOfRoom);
       return;
     }
-    controller.evictFromTheRoom(numberOfRoom, Integer.parseInt(indexOfResidentInRoom));
+    controller.evictFromTheRoom(numberOfRoom, indexOfResidentInRoom);
   }
 }

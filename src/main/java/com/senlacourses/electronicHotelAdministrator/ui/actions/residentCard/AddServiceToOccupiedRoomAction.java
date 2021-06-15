@@ -21,7 +21,7 @@ public class AddServiceToOccupiedRoomAction implements IAction {
     System.out.print("Enter number of room: ");
     numberOfRoom = scanner.nextInt();
     System.out.print("\nEnter name of service: ");
-    nameOfService = scanner.nextLine();
+    nameOfService = scanner.next();
     controller.addServiceToOccupiedRoom(numberOfRoom, nameOfService);
   }
 }

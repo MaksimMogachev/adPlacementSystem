@@ -1,5 +1,10 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,60 +14,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@Entity
+@Table(name = "registrationcard", schema = "eha")
 public class RegistrationCard implements Serializable {
 
-  private HotelRoom hotelRoom;
+  @Id
+  private int hotelRoom;
+  @ElementCollection
+  @CollectionTable(name = "residents_cards", schema = "eha")
   private List<HotelResident> residents = new ArrayList<>();
+  @ElementCollection
+  @CollectionTable(name = "cards_services", schema = "eha")
   private Map<LocalDateTime, Service> services = new TreeMap<>();
   private LocalDate checkInDate;
   private LocalDate departureDate;
 
-  public RegistrationCard(HotelRoom hotelRoom, HotelResident hotelResident, int daysOfStay) {
-    this.hotelRoom = hotelRoom;
-    this.residents.add(hotelResident);
-    this.checkInDate = LocalDate.now();
-    this.departureDate = checkInDate.plusDays(daysOfStay);
-  }
-
-  public HotelRoom getHotelRoom() {
-    return hotelRoom;
-  }
-
-  public void setHotelRoom(HotelRoom hotelRoom) {
-    this.hotelRoom = hotelRoom;
-  }
-
-  public List<HotelResident> getResidents() {
-    return residents;
-  }
-
-  public void setResidents(List<HotelResident> residents) {
-    this.residents = residents;
-  }
-
-  public Map<LocalDateTime, Service> getServices() {
-    return services;
-  }
-
-  public void setServices(Map<LocalDateTime, Service> services) {
-    this.services = services;
-  }
-
-  public LocalDate getCheckInDate() {
-    return checkInDate;
-  }
-
-  public void setCheckInDate(LocalDate arrivalDate) {
-    this.checkInDate = arrivalDate;
-  }
-
-  public LocalDate getDepartureDate() {
-    return departureDate;
-  }
-
-  public void setDepartureDate(LocalDate departureDate) {
-    this.departureDate = departureDate;
-  }
+  public RegistrationCard() {}
 
   @Override
   public String toString() {
@@ -70,7 +40,7 @@ public class RegistrationCard implements Serializable {
 
     stringBuilder
         .append("Hotel room: ")
-        .append(getHotelRoom().getNumberOfRoom())
+        .append(getHotelRoom())
         .append("; Room residents: ");
     for (HotelResident hotelResident : residents) {
       stringBuilder.append(hotelResident.toString()).append("; ");

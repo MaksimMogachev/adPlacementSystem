@@ -1,7 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
-import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
+import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelResidentService;
 import org.slf4j.Logger;
@@ -10,8 +9,11 @@ import org.slf4j.LoggerFactory;
 public class HotelResidentService implements IHotelResidentService {
 
   private static final Logger logger = LoggerFactory.getLogger(HotelResidentService.class);
-  @ConfigSingleton
-  private HotelResidentDao hotelResidentDao;
+  private final IGenericDao<HotelResident> hotelResidentDao;
+
+  public HotelResidentService(IGenericDao<HotelResident> hotelResidentDao) {
+    this.hotelResidentDao = hotelResidentDao;
+  }
 
   @Override
   public void showAllResidents() {
@@ -22,30 +24,21 @@ public class HotelResidentService implements IHotelResidentService {
 
   @Override
   public void addNewResident(String fullName, int passportNumber) {
-    hotelResidentDao.create(new HotelResident(fullName, passportNumber));
+    HotelResident hotelResident = new HotelResident();
+    hotelResident.setFullName(fullName);
+    hotelResident.setPassportNumber(passportNumber);
+    hotelResidentDao.create(hotelResident);
   }
 
   @Override
   public void removeResident(int passportNumber) {
-    int indexOfResident = findIndexOfResident(passportNumber);
+    HotelResident hotelResident = hotelResidentDao.read(passportNumber);
 
-    if (indexOfResident == -1) {
+    if (hotelResident == null) {
       logger.error("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
 
-    hotelResidentDao.delete(hotelResidentDao.read(indexOfResident));
-  }
-
-  private int findIndexOfResident(int passportNumber) {
-    int indexOfResident = -1;
-
-    for (int i = 0; i < hotelResidentDao.getAll().size(); i++) {
-      if (hotelResidentDao.read(i).passportNumber() == passportNumber) {
-        indexOfResident = i;
-        break;
-      }
-    }
-    return indexOfResident;
+    hotelResidentDao.delete(hotelResident);
   }
 }

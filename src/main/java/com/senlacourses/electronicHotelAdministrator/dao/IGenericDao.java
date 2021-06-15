@@ -1,16 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface IDao<T> {
+public interface IGenericDao<T extends Serializable> {
 
   List<T> getAll();
 
   void create(T t);
 
-  T read(int id);
+  <R> T read(R id);
 
-  void update(T t, int id);
+  void update(T t);
 
   void delete(T t);
 }

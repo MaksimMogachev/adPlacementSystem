@@ -1,10 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
-import com.senlacourses.electronicHotelAdministrator.dao.HotelResidentDao;
-import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
-import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
-import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
+import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
@@ -14,6 +10,7 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSor
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,19 +21,23 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria.PRICE;
-
 public class RegistrationCardService implements IRegistrationCardService {
 
-  @ConfigSingleton
-  private RegistrationCardDao registrationCardDao;
-  @ConfigSingleton
-  private HotelResidentDao hotelResidentDao;
-  @ConfigSingleton
-  private HotelRoomDao hotelRoomDao;
-  @ConfigSingleton
-  private ServiceDao serviceDao;
   private final Logger logger = LoggerFactory.getLogger(RegistrationCardService.class);
+  private final IGenericDao<RegistrationCard> registrationCardDao;
+  private final IGenericDao<HotelResident> hotelResidentDao;
+  private final IGenericDao<HotelRoom> hotelRoomDao;
+  private final IGenericDao<Service> serviceDao;
+
+  public RegistrationCardService(IGenericDao<RegistrationCard> registrationCardDao,
+                                 IGenericDao<HotelResident> hotelResidentDao,
+                                 IGenericDao<HotelRoom> hotelRoomDao,
+                                 IGenericDao<Service> serviceDao) {
+    this.registrationCardDao = registrationCardDao;
+    this.hotelResidentDao = hotelResidentDao;
+    this.hotelRoomDao = hotelRoomDao;
+    this.serviceDao = serviceDao;
+  }
 
   @Override
   public void showOccupiedRooms() {
@@ -47,27 +48,30 @@ public class RegistrationCardService implements IRegistrationCardService {
 
   @Override
   public void putInTheRoom(int numberOfRoom, int passportNumber, int daysOfStay) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
-    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
-    int indexOfResident = findIndexOfResident(passportNumber);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
+    RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
+    HotelResident hotelResident = hotelResidentDao.read(passportNumber);
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    if (indexOfResident == -1) {
+    if (hotelResident == null) {
       logger.error("IllegalArgumentException(\"the given resident is not registered\")");
       throw new IllegalArgumentException("the given resident is not registered");
     }
 
-    if (indexOfRegistrationCard == -1) {
-      registrationCardDao.create(new RegistrationCard(hotelRoomDao.read(indexOfRoom),
-          hotelResidentDao.read(indexOfResident), daysOfStay));
+    if (registrationCard == null) {
+      registrationCard = new RegistrationCard();
+      registrationCard.setHotelRoom(numberOfRoom);
+      registrationCard.getResidents().add(hotelResident);
+      registrationCard.setCheckInDate(LocalDate.now());
+      registrationCard.setDepartureDate(LocalDate.now().plusDays(daysOfStay));
+      registrationCardDao.create(registrationCard);
 
-      HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
       hotelRoom.setRoomIsOccupied(true);
-      hotelRoomDao.update(hotelRoom, indexOfRoom);
+      hotelRoomDao.update(hotelRoom);
 
     } else {
       logger.error("IUnsupportedOperationException(\n"
@@ -79,66 +83,64 @@ public class RegistrationCardService implements IRegistrationCardService {
 
   @Override
   public void putInTheRoom(int numberOfRoom, int passportNumber) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
-    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
-    int indexOfResident = findIndexOfResident(passportNumber);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
+    RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
+    HotelResident hotelResident = hotelResidentDao.read(passportNumber);
 
-    if (indexOfRegistrationCard == -1) {
+    if (registrationCard == null) {
       logger.error("UnsupportedOperationException(\n"
           + "\"the given room is not occupied, use method with 3 arguments\")");
       throw new UnsupportedOperationException(
           "the given room is not occupied, use method with 3 arguments");
     }
 
-    if (indexOfResident == -1) {
+    if (hotelResident == null) {
       logger.error("IllegalArgumentException(\"the given resident is not registered\")");
       throw new IllegalArgumentException("the given resident is not registered");
     }
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    if (registrationCardDao.read(indexOfRegistrationCard).getHotelRoom().getRoomCapacity()
-        > registrationCardDao.read(indexOfRegistrationCard).getResidents().size()) {
+    if (hotelRoom.getRoomCapacity()
+        > registrationCard.getResidents().size()) {
 
-      RegistrationCard registrationCard = registrationCardDao.read(indexOfRegistrationCard);
-      registrationCard.getResidents().add(hotelResidentDao.read(indexOfResident));
+      registrationCard.getResidents().add(hotelResident);
+      registrationCardDao.update(registrationCard);
 
-      registrationCardDao.update(registrationCard, indexOfRegistrationCard);
     } else {
       logger.error("new UnsupportedOperationException(\"Maximum Size "
-          + hotelRoomDao.read(indexOfRoom).getRoomCapacity() + " reached\")");
+          + hotelRoom.getRoomCapacity() + " reached\")");
       throw new UnsupportedOperationException("Maximum Size "
-          + hotelRoomDao.read(indexOfRoom).getRoomCapacity() + " reached");
+          + hotelRoom.getRoomCapacity() + " reached");
     }
   }
 
   @Override
   public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
+    RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
     Properties properties = new Properties();
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
-    if (indexOfRegistrationCard == -1) {
+    if (registrationCard == null) {
       logger.error("IllegalArgumentException(\"this room does not occupied\")");
       throw new IllegalArgumentException("this room is not occupied");
     }
 
-    if (registrationCardDao.read(indexOfRegistrationCard).getResidents().size() == 1) {
+    if (registrationCard.getResidents().size() == 1) {
       evictFromTheRoom(numberOfRoom);
       return;
     }
-    HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
 
     try {
-      properties.load(new FileInputStream("config.properties"));
+      properties.load(new FileInputStream("src/main/resources/config.properties"));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -148,84 +150,79 @@ public class RegistrationCardService implements IRegistrationCardService {
       hotelRoom.getLastResidents().remove(0);
     }
 
-    String stringBuilder = registrationCardDao.read(indexOfRegistrationCard)
+    String stringBuilder = registrationCard
         .getResidents().get(indexOfResidentInRoom).toString() + "; "
-        + registrationCardDao.read(indexOfRegistrationCard).getCheckInDate().toString()
-        + " - " + registrationCardDao.read(indexOfRegistrationCard).getDepartureDate().toString();
+        + registrationCard.getCheckInDate().toString()
+        + " - " + registrationCard.getDepartureDate().toString();
 
     hotelRoom.getLastResidents().add(stringBuilder);
-    hotelRoomDao.update(hotelRoom, indexOfRoom);
+    hotelRoomDao.update(hotelRoom);
 
-    RegistrationCard registrationCard = registrationCardDao.read(indexOfRegistrationCard);
-    registrationCard.getResidents().remove(registrationCardDao
-        .read(indexOfRegistrationCard).getResidents().get(indexOfResidentInRoom));
+    registrationCard.getResidents().remove(registrationCard.getResidents().get(indexOfResidentInRoom));
 
-    registrationCardDao.update(registrationCard, indexOfRegistrationCard);
+    registrationCardDao.update(registrationCard);
   }
 
   @Override
   public void evictFromTheRoom(int numberOfRoom) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
-    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
+    RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
     Properties properties = new Properties();
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    if (indexOfRegistrationCard == -1) {
+    if (registrationCard == null) {
       logger.error("IllegalArgumentException(\"this room does not occupied\")");
       throw new IllegalArgumentException("this room is not occupied");
     }
 
-    HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
-
     try {
-      properties.load(new FileInputStream("config.properties"));
+      properties.load(new FileInputStream("src/main/resources/config.properties"));
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    for (int i = 0; i < registrationCardDao.read(indexOfRegistrationCard).getResidents().size();
+    for (int i = 0; i < registrationCard.getResidents().size();
         i++) {
       if (hotelRoom.getLastResidents().size()
           == Integer.parseInt(properties.getProperty("numberOfResidentRecords"))) {
         hotelRoom.getLastResidents().remove(0);
       }
 
-      String stringBuilder = registrationCardDao.read(indexOfRegistrationCard)
+      String stringBuilder = registrationCard
           .getResidents().get(i).toString() + "; "
-          + registrationCardDao.read(indexOfRegistrationCard).getCheckInDate().toString()
-          + " - " + registrationCardDao.read(indexOfRegistrationCard).getDepartureDate().toString();
+          + registrationCard.getCheckInDate().toString()
+          + " - " + registrationCard.getDepartureDate().toString();
 
       hotelRoom.getLastResidents().add(stringBuilder);
     }
 
     hotelRoom.setRoomIsOccupied(false);
-    hotelRoomDao.update(hotelRoom, indexOfRoom);
+    hotelRoomDao.update(hotelRoom);
 
-    registrationCardDao.delete(registrationCardDao.read(indexOfRegistrationCard));
+    registrationCardDao.delete(registrationCard);
   }
 
   @Override
-  public void addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {
-    int indexOfRegistrationCard = findIndexOfRegistrationCard(numberOfRoom);
-    int indexOfService = findIndexOfService(nameOfService);
+  public void addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {;
+    RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
+    Service service = serviceDao.read(nameOfService);
 
-    if (indexOfRegistrationCard == -1) {
+    if (registrationCard == null) {
       logger.error("IllegalArgumentException(\"this room does not occupied\")");
       throw new IllegalArgumentException("this room is not occupied");
     }
 
-    if (indexOfService == -1) {
+    if (service == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this service does not exist");
     }
 
-    RegistrationCard registrationCard = registrationCardDao.read(indexOfRegistrationCard);
-    registrationCard.getServices().put(LocalDateTime.now(), serviceDao.read(indexOfService));
-    registrationCardDao.update(registrationCard, indexOfRegistrationCard);
+    registrationCard.getServices().put(LocalDateTime.now(), service);
+    registrationCardDao.update(registrationCard);
   }
 
   @Override
@@ -236,15 +233,15 @@ public class RegistrationCardService implements IRegistrationCardService {
 
       case ALPHABETICALLY:
         listForSorting.forEach(registrationCard ->
-            registrationCard.getResidents().sort(Comparator.comparing(HotelResident::fullName)));
+            registrationCard.getResidents().sort(Comparator.comparing(HotelResident::getFullName)));
 
-        listForSorting.sort(Comparator.comparing(o -> o.getResidents().get(0).fullName()));
+        listForSorting.sort(Comparator.comparing(o -> o.getResidents().get(0).getFullName()));
 
         for (RegistrationCard registrationCard : listForSorting) {
           StringBuilder stringBuilder = new StringBuilder();
 
           stringBuilder.append("Hotel room: ")
-              .append(registrationCard.getHotelRoom().getNumberOfRoom())
+              .append(registrationCard.getHotelRoom())
               .append("; Room residents: ");
           for (HotelResident hotelResident : registrationCard.getResidents()) {
             stringBuilder.append(hotelResident.toString());
@@ -261,7 +258,7 @@ public class RegistrationCardService implements IRegistrationCardService {
           StringBuilder stringBuilder = new StringBuilder();
 
           stringBuilder.append("Hotel room: ")
-              .append(registrationCard.getHotelRoom().getNumberOfRoom())
+              .append(registrationCard.getHotelRoom())
               .append("; Room residents: ");
           for (HotelResident hotelResident : registrationCard.getResidents()) {
             stringBuilder.append(hotelResident.toString());
@@ -278,7 +275,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     int size = 0;
 
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
-      if (registrationCard.getHotelRoom().isRoomIsOccupied()) {
+      if (hotelRoomDao.read(registrationCard.getHotelRoom()).isRoomIsOccupied()) {
         size += registrationCard.getResidents().size();
       }
     }
@@ -287,10 +284,10 @@ public class RegistrationCardService implements IRegistrationCardService {
 
   @Override
   public void showAmountOfPayment(int numberOfRoom, int daysOfStay) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
     System.out.println("Amount of payment for the room: "
-        + (hotelRoomDao.read(indexOfRoom).getPrice() * daysOfStay));
+        + (hotelRoom.getPrice() * daysOfStay));
   }
 
   @Override
@@ -300,7 +297,7 @@ public class RegistrationCardService implements IRegistrationCardService {
 
     for (int i = 0; i < registrationCardDao.getAll().size(); i++) {
       for (int j = 0; j < registrationCardDao.read(i).getResidents().size(); j++) {
-        if (registrationCardDao.read(i).getResidents().get(j).passportNumber() == passportNumber) {
+        if (registrationCardDao.read(i).getResidents().get(j).getPassportNumber() == passportNumber) {
           services = registrationCardDao.read(i).getServices();
           break;
         }
@@ -332,52 +329,4 @@ public class RegistrationCardService implements IRegistrationCardService {
         break;
       }
     }
-
-  private int findIndexOfRoom(int numberOfRoom) {
-    int indexOfRoom = -1;
-
-    for (int i = 0; i < hotelRoomDao.getAll().size(); i++) {
-      if (hotelRoomDao.read(i).getNumberOfRoom() == numberOfRoom) {
-        indexOfRoom = i;
-        break;
-      }
-    }
-    return indexOfRoom;
-  }
-
-  private int findIndexOfRegistrationCard(int numberOfRoom) {
-    int indexOfRegistrationCard = -1;
-
-    for (int i = 0; i < registrationCardDao.getAll().size(); i++) {
-      if (registrationCardDao.read(i).getHotelRoom().getNumberOfRoom() == numberOfRoom) {
-        indexOfRegistrationCard = i;
-        break;
-      }
-    }
-    return indexOfRegistrationCard;
-  }
-
-  private int findIndexOfResident(int passportNumber) {
-    int indexOfResident = -1;
-
-    for (int i = 0; i < hotelResidentDao.getAll().size(); i++) {
-      if (hotelResidentDao.read(i).passportNumber() == passportNumber) {
-        indexOfResident = i;
-        break;
-      }
-    }
-    return indexOfResident;
-  }
-
-  private int findIndexOfService(String name) {
-    int indexOfService = -1;
-
-    for (int i = 0; i < serviceDao.getAll().size(); i++) {
-      if (serviceDao.read(i).getName().equals(name)) {
-        indexOfService = i;
-        break;
-      }
-    }
-    return indexOfService;
-  }
 }

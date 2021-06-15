@@ -28,9 +28,9 @@ public class PutInTheRoomActon implements IAction {
         "Enter days of stay or press '0', if this room is already occupied by someone: ");
     daysOfStay = scanner.nextInt();
     if (daysOfStay == 0) {
-      controller.putInTheRoom(numberOfRoom, passportNumber, daysOfStay);
+      controller.putInTheRoom(numberOfRoom, passportNumber);
       return;
     }
-    controller.putInTheRoom(numberOfRoom, passportNumber);
+    controller.putInTheRoom(numberOfRoom, passportNumber, daysOfStay);
   }
 }

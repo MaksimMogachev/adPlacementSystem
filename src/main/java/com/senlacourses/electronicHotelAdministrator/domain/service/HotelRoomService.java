@@ -1,8 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
-import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
-import com.senlacourses.electronicHotelAdministrator.dao.RegistrationCardDao;
+import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
@@ -21,10 +19,13 @@ import org.slf4j.LoggerFactory;
 public class HotelRoomService implements IHotelRoomService {
 
   private final static Logger logger = LoggerFactory.getLogger(HotelRoomService.class);
-  @ConfigSingleton
-  private HotelRoomDao hotelRoomDao;
-  @ConfigSingleton
-  private RegistrationCardDao registrationCardDao;
+  private final IGenericDao<HotelRoom> hotelRoomDao;
+  private final IGenericDao<RegistrationCard> registrationCardDao;
+
+  public HotelRoomService(IGenericDao<HotelRoom> hotelRoomDao, IGenericDao<RegistrationCard> registrationCardDao) {
+    this.hotelRoomDao = hotelRoomDao;
+    this.registrationCardDao = registrationCardDao;
+  }
 
   @Override
   public void showAllRooms() {
@@ -33,37 +34,39 @@ public class HotelRoomService implements IHotelRoomService {
 
   @Override
   public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
-    if (findIndexOfRoom(numberOfRoom) == -1) {
-      HotelRoom hotelRoom = new HotelRoom(numberOfRoom);
-      hotelRoom.setNumberOfStars(numberOfStars);
-      hotelRoom.setRoomCapacity(roomCapacity);
-      hotelRoom.setPrice(price);
-      hotelRoomDao.create(hotelRoom);
-    } else {
-      logger.error("IllegalArgumentException(\"this room already exists\")");
-      throw new IllegalArgumentException("this room already exists");
-    }
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
+
+      if (hotelRoom == null) {
+        hotelRoom = new HotelRoom();
+        hotelRoom.setNumberOfRoom(numberOfRoom);
+        hotelRoom.setNumberOfStars(numberOfStars);
+        hotelRoom.setRoomCapacity(roomCapacity);
+        hotelRoom.setPrice(price);
+        hotelRoomDao.create(hotelRoom);
+      } else {
+        logger.error("IllegalArgumentException(\"this room already exists\")");
+        throw new IllegalArgumentException("this room already exists");
+      }
   }
 
   @Override
   public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
     Properties properties = new Properties();
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
+    } else {
+      if (hotelRoom.isRoomIsOccupied()) {
+        logger.error(
+                "UnsupportedOperationException(\"the room must be vacated before changing the condition\")");
+        throw new UnsupportedOperationException(
+                "the room must be vacated before changing the condition");
+      }
     }
-
-    if (hotelRoomDao.read(indexOfRoom).isRoomIsOccupied()) {
-      logger.error(
-          "UnsupportedOperationException(\"the room must be vacated before changing the condition\")");
-      throw new UnsupportedOperationException(
-          "the room must be vacated before changing the condition");
-    }
-
     try {
-      properties.load(new FileInputStream("config.properties"));
+      properties.load(new FileInputStream("src/main/resources/config.properties"));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -73,17 +76,15 @@ public class HotelRoomService implements IHotelRoomService {
       return;
     }
 
-    HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
     hotelRoom.setRoomCondition(roomCondition);
-
-    hotelRoomDao.update(hotelRoom, indexOfRoom);
+    hotelRoomDao.update(hotelRoom);
   }
 
   @Override
   public void changeRoomPrice(int numberOfRoom, int newPrice) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
@@ -93,11 +94,8 @@ public class HotelRoomService implements IHotelRoomService {
       throw new IllegalArgumentException("incorrect price");
     }
 
-
-    HotelRoom hotelRoom = hotelRoomDao.read(indexOfRoom);
     hotelRoom.setPrice(newPrice);
-
-    hotelRoomDao.update(hotelRoom, indexOfRoom);
+    hotelRoomDao.update(hotelRoom);
   }
 
   @Override
@@ -114,17 +112,17 @@ public class HotelRoomService implements IHotelRoomService {
 
       case PRICE: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getPrice))
-          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+          .forEach(System.out::println);
       break;
 
       case ROOM_CAPACITY: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
-          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+          .forEach(System.out::println);
       break;
 
       case NUMBER_OF_STARS: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
-          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+          .forEach(System.out::println);
       break;
     }
   }
@@ -140,17 +138,17 @@ public class HotelRoomService implements IHotelRoomService {
 
       case PRICE: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getPrice))
-          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+          .forEach(System.out::println);
       break;
 
       case ROOM_CAPACITY: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
-          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+          .forEach(System.out::println);
       break;
 
       case NUMBER_OF_STARS: listForSorting.stream()
           .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
-          .forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+          .forEach(System.out::println);
       break;
     }
   }
@@ -164,45 +162,33 @@ public class HotelRoomService implements IHotelRoomService {
           || (LocalDate.of(year, month, dayOfMonth)
           .equals(registrationCard.getDepartureDate()))) {
 
-        System.out.println(registrationCard.getHotelRoom().toString());
+        System.out.println(hotelRoomDao.read(registrationCard.getHotelRoom()).toString());
       }
     }
   }
 
   @Override
   public void showLastResidentsOfRoom(int numberOfRoom) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
     System.out.println("Last residents of room " + numberOfRoom + ": ");
-    for (String string : hotelRoomDao.read(indexOfRoom).getLastResidents()) {
+    for (String string : hotelRoom.getLastResidents()) {
       System.out.println(string);
     }
   }
 
   @Override
   public void showRoomDetails(int numberOfRoom) {
-    int indexOfRoom = findIndexOfRoom(numberOfRoom);
+    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
-    if (indexOfRoom == -1) {
+    if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
-    System.out.println(hotelRoomDao.read(indexOfRoom).toString());
-  }
-
-  private int findIndexOfRoom(int numberOfRoom) {
-    int indexOfRoom = -1;
-
-    for (int i = 0; i < hotelRoomDao.getAll().size(); i++) {
-      if (hotelRoomDao.read(i).getNumberOfRoom() == numberOfRoom) {
-        indexOfRoom = i;
-        break;
-      }
-    }
-    return indexOfRoom;
+    System.out.println(hotelRoom);
   }
 }

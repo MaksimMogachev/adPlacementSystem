@@ -1,8 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
-import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
-import com.senlacourses.electronicHotelAdministrator.dao.ServiceDao;
+import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
@@ -16,14 +14,20 @@ import org.slf4j.LoggerFactory;
 public class ServiceService implements IServiceService {
 
   private final static Logger logger = LoggerFactory.getLogger(ServiceService.class);
-  @ConfigSingleton
-  private ServiceDao serviceDao;
-  @ConfigSingleton
-  private HotelRoomDao hotelRoomDao;
+  private final IGenericDao<Service> serviceDao;
+  private final IGenericDao<HotelRoom> hotelRoomDao;
+
+  public ServiceService(IGenericDao<Service> serviceDao, IGenericDao<HotelRoom> hotelRoomDao) {
+    this.serviceDao = serviceDao;
+    this.hotelRoomDao = hotelRoomDao;
+  }
 
   @Override
   public void addNewService(String name, int price) {
-    serviceDao.create(new Service(name, price));
+    Service service = new Service();
+    service.setName(name);
+    service.setPrice(price);
+    serviceDao.create(service);
   }
 
   @Override
@@ -33,9 +37,9 @@ public class ServiceService implements IServiceService {
 
   @Override
   public void changeServicePrice(String nameOfService, int newPrice) {
-    int indexOfService = findIndexOfService(nameOfService);
+    Service service = serviceDao.read(nameOfService);
 
-    if (indexOfService == -1) {
+    if (service == null) {
       logger.error("IllegalArgumentException(\"this service does not exist\")");
       throw new IllegalArgumentException("this service does not exist");
     }
@@ -45,7 +49,9 @@ public class ServiceService implements IServiceService {
       throw new IllegalArgumentException("incorrect newPrice");
     }
 
-    serviceDao.update(new Service(nameOfService, newPrice), indexOfService);
+    service.setPrice(newPrice);
+
+    serviceDao.update(service);
   }
 
   @Override
@@ -72,17 +78,5 @@ public class ServiceService implements IServiceService {
             + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice()));
         break;
     }
-  }
-
-  private int findIndexOfService(String name) {
-    int indexOfService = -1;
-
-    for (int i = 0; i < serviceDao.getAll().size(); i++) {
-      if (serviceDao.read(i).getName().equals(name)) {
-        indexOfService = i;
-        break;
-      }
-    }
-    return indexOfService;
   }
 }

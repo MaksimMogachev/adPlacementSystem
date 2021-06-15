@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS EHA.RegistrationCard (
   CONSTRAINT fk_hotel_rooms_registration_cards1
     FOREIGN KEY (hotelRoom)
     REFERENCES EHA.HotelRoom (numberOfRoom)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ;
 
 

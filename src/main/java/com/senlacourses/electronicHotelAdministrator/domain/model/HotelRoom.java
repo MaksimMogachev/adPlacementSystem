@@ -1,11 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
-import jakarta.validation.constraints.Min;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,13 @@ public class HotelRoom implements Serializable {
 
   @Id
   private int numberOfRoom;
+  @NotNull
   @Min(0)
   private int numberOfStars;
+  @NotNull
   @Min(1)
   private int roomCapacity;
+  @NotNull
   @Min(0)
   private int price;
   private RoomCondition roomCondition;

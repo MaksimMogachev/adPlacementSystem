@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
@@ -16,7 +17,9 @@ import java.io.Serializable;
 public class HotelResident implements Serializable {
 
   @Id
+  @NotNull
   private int passportNumber;
+  @NotNull
   private String fullName;
 
   public HotelResident() {}

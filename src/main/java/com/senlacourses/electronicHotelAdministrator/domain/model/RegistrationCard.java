@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,7 +30,9 @@ public class RegistrationCard implements Serializable {
   @ElementCollection
   @CollectionTable(name = "cards_services", schema = "eha")
   private Map<LocalDateTime, Service> services = new TreeMap<>();
+  @NotNull
   private LocalDate checkInDate;
+  @NotNull
   private LocalDate departureDate;
 
   public RegistrationCard() {}

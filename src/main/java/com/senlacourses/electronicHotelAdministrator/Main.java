@@ -1,7 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator;
 
-import com.senlacourses.electronicHotelAdministrator.dao.GenericHibernateDao;
-import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.annotations.InjectorOfDependency;
+import com.senlacourses.electronicHotelAdministrator.dao.*;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
@@ -30,16 +30,10 @@ public class Main {
     EntityManager entityManager = HibernateUtil.getManagerFactory().createEntityManager();
     System.out.println(entityManager.toString());
 
-    IGenericDao<HotelResident> hotelResidentDao = new GenericHibernateDao<>(HotelResident.class);
-    IGenericDao<HotelRoom> hotelRoomDao = new GenericHibernateDao<>(HotelRoom.class);
-    IGenericDao<RegistrationCard> registrationCardDao = new GenericHibernateDao<>(RegistrationCard.class);
-    IGenericDao<Service> serviceDao = new GenericHibernateDao<>(Service.class);
-
-    IHotelResidentService hotelResidentService = new HotelResidentService(hotelResidentDao);
-    IHotelRoomService hotelRoomService = new HotelRoomService(hotelRoomDao, registrationCardDao);
-    IRegistrationCardService registrationCardService =
-            new RegistrationCardService(registrationCardDao, hotelResidentDao, hotelRoomDao, serviceDao);
-    IServiceService serviceService = new ServiceService(serviceDao, hotelRoomDao);
+    IHotelResidentService hotelResidentService = InjectorOfDependency.getSingleton(new HotelResidentService());
+    IHotelRoomService hotelRoomService = InjectorOfDependency.getSingleton(new HotelRoomService());
+    IRegistrationCardService registrationCardService = InjectorOfDependency.getSingleton(new RegistrationCardService());
+    IServiceService serviceService = InjectorOfDependency.getSingleton(new ServiceService());
 
     new Menus(hotelResidentService, hotelRoomService, registrationCardService, serviceService);
 

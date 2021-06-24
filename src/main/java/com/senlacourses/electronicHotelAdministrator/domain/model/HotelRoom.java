@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
+import jakarta.validation.constraints.Min;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +19,11 @@ public class HotelRoom implements Serializable {
 
   @Id
   private int numberOfRoom;
+  @Min(0)
   private int numberOfStars;
+  @Min(1)
   private int roomCapacity;
+  @Min(0)
   private int price;
   private RoomCondition roomCondition;
   private boolean roomIsOccupied;
@@ -29,27 +33,6 @@ public class HotelRoom implements Serializable {
   private List<String> lastResidents = new ArrayList<>();
 
   public HotelRoom() {}
-
-  public void setPrice(int price) {
-    if (price < 0) {
-      throw new IllegalArgumentException("Incorrect parameter");
-    }
-    this.price = price;
-  }
-
-  public void setNumberOfStars(int numberOfStars) {
-    if (numberOfStars < 0) {
-      throw new IllegalArgumentException("Incorrect parameter");
-    }
-    this.numberOfStars = numberOfStars;
-  }
-
-  public void setRoomCapacity(int roomCapacity) {
-    if (roomCapacity < 1) {
-      throw new IllegalArgumentException("Incorrect parameter");
-    }
-    this.roomCapacity = roomCapacity;
-  }
 
   @Override
   public String toString() {

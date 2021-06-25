@@ -1,6 +1,5 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
@@ -9,30 +8,37 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
+@Component
+@org.springframework.stereotype.Service
 public class RegistrationCardService implements IRegistrationCardService {
 
   private final Logger logger = LoggerFactory.getLogger(RegistrationCardService.class);
-  @ConfigSingleton(className = "RegistrationCardDao")
-  private IGenericDao<RegistrationCard> registrationCardDao;
-  @ConfigSingleton(className = "HotelResidentDao")
-  private IGenericDao<HotelResident> hotelResidentDao;
-  @ConfigSingleton(className = "HotelRoomDao")
-  private IGenericDao<HotelRoom> hotelRoomDao;
-  @ConfigSingleton(className = "ServiceDao")
-  private IGenericDao<Service> serviceDao;
+  private final IGenericDao<RegistrationCard> registrationCardDao;
+  private final IGenericDao<HotelResident> hotelResidentDao;
+  private final IGenericDao<HotelRoom> hotelRoomDao;
+  private final IGenericDao<Service> serviceDao;
+
+  public RegistrationCardService(IGenericDao<RegistrationCard> registrationCardDao,
+                                 IGenericDao<HotelResident> hotelResidentDao,
+                                 IGenericDao<HotelRoom> hotelRoomDao,
+                                 IGenericDao<Service> serviceDao) {
+    this.registrationCardDao = registrationCardDao;
+    this.hotelResidentDao = hotelResidentDao;
+    this.hotelRoomDao = hotelRoomDao;
+    this.serviceDao = serviceDao;
+  }
 
   @Override
   public void showOccupiedRooms() {
@@ -41,6 +47,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     }
   }
 
+  @Transactional
   @Override
   public void putInTheRoom(int numberOfRoom, int passportNumber, int daysOfStay) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
@@ -76,6 +83,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     }
   }
 
+  @Transactional
   @Override
   public void putInTheRoom(int numberOfRoom, int passportNumber) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
@@ -113,6 +121,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     }
   }
 
+  @Transactional
   @Override
   public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
@@ -158,6 +167,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     registrationCardDao.update(registrationCard);
   }
 
+  @Transactional
   @Override
   public void evictFromTheRoom(int numberOfRoom) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
@@ -201,6 +211,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     registrationCardDao.delete(registrationCard);
   }
 
+  @Transactional
   @Override
   public void addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {;
     RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);

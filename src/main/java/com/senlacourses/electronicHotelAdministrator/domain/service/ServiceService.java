@@ -1,6 +1,5 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
@@ -11,15 +10,24 @@ import java.util.Comparator;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
+@Component
+@org.springframework.stereotype.Service
 public class ServiceService implements IServiceService {
 
   private final static Logger logger = LoggerFactory.getLogger(ServiceService.class);
-  @ConfigSingleton(className = "ServiceDao")
-  private IGenericDao<Service> serviceDao;
-  @ConfigSingleton(className = "HotelRoomDao")
-  private IGenericDao<HotelRoom> hotelRoomDao;
+  private final IGenericDao<Service> serviceDao;
+  private final IGenericDao<HotelRoom> hotelRoomDao;
 
+  public ServiceService(IGenericDao<Service> serviceDao, IGenericDao<HotelRoom> hotelRoomDao) {
+    this.serviceDao = serviceDao;
+    this.hotelRoomDao = hotelRoomDao;
+  }
+
+  @Transactional
   @Override
   public void addNewService(String name, int price) {
     Service service = new Service();
@@ -33,6 +41,7 @@ public class ServiceService implements IServiceService {
     serviceDao.getAll().forEach(service -> System.out.println(service.toString()));
   }
 
+  @Transactional
   @Override
   public void changeServicePrice(String nameOfService, int newPrice) {
     Service service = serviceDao.read(nameOfService);

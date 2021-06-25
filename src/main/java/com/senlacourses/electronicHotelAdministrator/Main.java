@@ -1,11 +1,5 @@
 package com.senlacourses.electronicHotelAdministrator;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.InjectorOfDependency;
-import com.senlacourses.electronicHotelAdministrator.dao.*;
-import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
-import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
-import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
-import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;
@@ -14,26 +8,22 @@ import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.I
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
-import com.senlacourses.electronicHotelAdministrator.hibernate.HibernateUtil;
 import com.senlacourses.electronicHotelAdministrator.ui.MenuController;
 import com.senlacourses.electronicHotelAdministrator.ui.Menus;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import javax.persistence.EntityManager;
 import java.lang.reflect.InvocationTargetException;
 
 public class Main {
 
-  public static void main(String[] args)
-      throws ClassNotFoundException, InvocationTargetException,
-      InstantiationException, IllegalAccessException {
+  public static void main(String[] args) {
+    ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationContextConfigurator.class);
 
-    EntityManager entityManager = HibernateUtil.getManagerFactory().createEntityManager();
-    System.out.println(entityManager.toString());
-
-    IHotelResidentService hotelResidentService = InjectorOfDependency.getSingleton(new HotelResidentService());
-    IHotelRoomService hotelRoomService = InjectorOfDependency.getSingleton(new HotelRoomService());
-    IRegistrationCardService registrationCardService = InjectorOfDependency.getSingleton(new RegistrationCardService());
-    IServiceService serviceService = InjectorOfDependency.getSingleton(new ServiceService());
+    IHotelResidentService hotelResidentService = ctx.getBean(HotelResidentService.class);
+    IHotelRoomService hotelRoomService = ctx.getBean(HotelRoomService.class);
+    IRegistrationCardService registrationCardService = ctx.getBean(RegistrationCardService.class);
+    IServiceService serviceService = ctx.getBean(ServiceService.class);
 
     new Menus(hotelResidentService, hotelRoomService, registrationCardService, serviceService);
 

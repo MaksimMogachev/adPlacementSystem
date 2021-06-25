@@ -1,17 +1,26 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelResidentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.transaction.Transactional;
+
+@Component
+@Service
 public class HotelResidentService implements IHotelResidentService {
 
   private static final Logger logger = LoggerFactory.getLogger(HotelResidentService.class);
-  @ConfigSingleton(className = "HotelResidentDao")
-  private IGenericDao<HotelResident> hotelResidentDao;
+  private final IGenericDao<HotelResident> hotelResidentDao;
+
+  public HotelResidentService(IGenericDao<HotelResident> hotelResidentDao) {
+    this.hotelResidentDao = hotelResidentDao;
+  }
 
   @Override
   public void showAllResidents() {
@@ -20,6 +29,7 @@ public class HotelResidentService implements IHotelResidentService {
         .forEach(hotelResident -> System.out.println(hotelResident.toString()));
   }
 
+  @Transactional
   @Override
   public void addNewResident(String fullName, int passportNumber) {
     HotelResident hotelResident = new HotelResident();
@@ -28,6 +38,7 @@ public class HotelResidentService implements IHotelResidentService {
     hotelResidentDao.create(hotelResident);
   }
 
+  @Transactional
   @Override
   public void removeResident(int passportNumber) {
     HotelResident hotelResident = hotelResidentDao.read(passportNumber);

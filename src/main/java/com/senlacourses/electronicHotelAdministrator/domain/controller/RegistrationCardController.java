@@ -4,7 +4,11 @@ import com.senlacourses.electronicHotelAdministrator.domain.controller.interface
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
+@Controller
+@Component
 public class RegistrationCardController implements IRegistrationCardController {
 
   private final IRegistrationCardService registrationCardService;

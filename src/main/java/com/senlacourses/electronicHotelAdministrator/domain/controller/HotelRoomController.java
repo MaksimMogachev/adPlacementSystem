@@ -4,7 +4,11 @@ import com.senlacourses.electronicHotelAdministrator.domain.controller.interface
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
+@Controller
+@Component
 public class HotelRoomController implements IHotelRoomController {
 
   private final IHotelRoomService hotelRoomService;

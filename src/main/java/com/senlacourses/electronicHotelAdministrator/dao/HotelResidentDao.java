@@ -1,15 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.dao;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.Singleton;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
+import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-
-@Singleton
-public class HotelResidentDao<T extends Serializable>
-        extends AbstractHibernateDao<T> implements IGenericDao<T>{
+@Repository
+public class HotelResidentDao extends AbstractHibernateDao<HotelResident> implements IGenericDao<HotelResident>{
 
   public HotelResidentDao() {
-    super((Class<T>) HotelResident.class);
+    super(HotelResident.class);
   }
 }

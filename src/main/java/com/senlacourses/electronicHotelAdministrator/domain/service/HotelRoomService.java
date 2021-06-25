@@ -1,7 +1,5 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.annotations.ConfigSingleton;
-import com.senlacourses.electronicHotelAdministrator.dao.HotelRoomDao;
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
@@ -17,20 +15,31 @@ import java.util.List;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+@Component
+@Service
 public class HotelRoomService implements IHotelRoomService {
 
   private final static Logger logger = LoggerFactory.getLogger(HotelRoomService.class);
-  @ConfigSingleton(className = "HotelRoomDao")
-  private IGenericDao<HotelRoom> hotelRoomDao;
-  @ConfigSingleton(className = "RegistrationCardDao")
-  private IGenericDao<RegistrationCard> registrationCardDao;
+  private final IGenericDao<HotelRoom> hotelRoomDao;
+  private final IGenericDao<RegistrationCard> registrationCardDao;
+
+  public HotelRoomService(IGenericDao<HotelRoom> hotelRoomDao,
+                          IGenericDao<RegistrationCard> registrationCardDao) {
+    this.hotelRoomDao = hotelRoomDao;
+    this.registrationCardDao = registrationCardDao;
+  }
 
   @Override
   public void showAllRooms() {
     hotelRoomDao.getAll().forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
   }
 
+  @Transactional
   @Override
   public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
@@ -48,6 +57,7 @@ public class HotelRoomService implements IHotelRoomService {
       }
   }
 
+  @Transactional
   @Override
   public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
     Properties properties = new Properties();
@@ -79,6 +89,7 @@ public class HotelRoomService implements IHotelRoomService {
     hotelRoomDao.update(hotelRoom);
   }
 
+  @Transactional
   @Override
   public void changeRoomPrice(int numberOfRoom, int newPrice) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);

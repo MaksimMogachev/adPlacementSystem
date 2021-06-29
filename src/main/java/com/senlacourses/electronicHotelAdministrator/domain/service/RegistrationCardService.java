@@ -10,7 +10,6 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSor
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.io.FileInputStream;
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@Component
 @org.springframework.stereotype.Service
 public class RegistrationCardService implements IRegistrationCardService {
 

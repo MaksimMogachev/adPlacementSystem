@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 @Controller
-@Component
 public class HotelRoomController implements IHotelRoomController {
 
   private final IHotelRoomService hotelRoomService;

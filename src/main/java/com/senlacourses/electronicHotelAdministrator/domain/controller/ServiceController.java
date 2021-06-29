@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 @Controller
-@Component
 public class ServiceController implements IServiceController {
 
   private final IServiceService serviceService;

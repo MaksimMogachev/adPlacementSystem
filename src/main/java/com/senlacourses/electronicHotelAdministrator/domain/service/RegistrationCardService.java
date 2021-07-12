@@ -5,8 +5,8 @@ import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.OccupiedRoomSortingCriteria;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.OccupiedRoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IRegistrationCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @org.springframework.stereotype.Service
@@ -39,10 +38,8 @@ public class RegistrationCardService implements IRegistrationCardService {
   }
 
   @Override
-  public void showOccupiedRooms() {
-    for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
-      System.out.println(registrationCard.toString());
-    }
+  public List<RegistrationCard> showOccupiedRooms() {
+    return registrationCardDao.getAll();
   }
 
   @Transactional
@@ -83,7 +80,7 @@ public class RegistrationCardService implements IRegistrationCardService {
 
   @Transactional
   @Override
-  public void putInTheRoom(int numberOfRoom, int passportNumber) {
+  public RegistrationCard putInTheRoom(int numberOfRoom, int passportNumber) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
     RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
     HotelResident hotelResident = hotelResidentDao.read(passportNumber);
@@ -117,11 +114,12 @@ public class RegistrationCardService implements IRegistrationCardService {
       throw new UnsupportedOperationException("Maximum Size "
           + hotelRoom.getRoomCapacity() + " reached");
     }
+    return registrationCard;
   }
 
   @Transactional
   @Override
-  public void evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
+  public RegistrationCard evictFromTheRoom(int numberOfRoom, int indexOfResidentInRoom) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
     RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
     Properties properties = new Properties();
@@ -137,8 +135,8 @@ public class RegistrationCardService implements IRegistrationCardService {
     }
 
     if (registrationCard.getResidents().size() == 1) {
-      evictFromTheRoom(numberOfRoom);
-      return;
+      logger.error("IllegalArgumentException(\"the given room has only 1 resident, use method with 3 arguments\")");
+      throw new IllegalArgumentException("the given room has only 1 resident, use method with 3 arguments");
     }
 
     try {
@@ -161,8 +159,9 @@ public class RegistrationCardService implements IRegistrationCardService {
     hotelRoomDao.update(hotelRoom);
 
     registrationCard.getResidents().remove(registrationCard.getResidents().get(indexOfResidentInRoom));
-
     registrationCardDao.update(registrationCard);
+
+    return registrationCard;
   }
 
   @Transactional
@@ -211,7 +210,7 @@ public class RegistrationCardService implements IRegistrationCardService {
 
   @Transactional
   @Override
-  public void addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {;
+  public RegistrationCard addServiceToOccupiedRoom(int numberOfRoom, String nameOfService) {;
     RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
     Service service = serviceDao.read(nameOfService);
 
@@ -227,10 +226,11 @@ public class RegistrationCardService implements IRegistrationCardService {
 
     registrationCard.getServices().put(LocalDateTime.now(), service);
     registrationCardDao.update(registrationCard);
+    return registrationCard;
   }
 
   @Override
-  public void showOccupiedRoomsByCriterion(OccupiedRoomSortingCriteria criterion) {
+  public List<RegistrationCard> showOccupiedRoomsByCriterion(OccupiedRoomSortingCriteria criterion) {
     List<RegistrationCard> listForSorting = new ArrayList<>(registrationCardDao.getAll());
 
     switch (criterion) {
@@ -241,41 +241,19 @@ public class RegistrationCardService implements IRegistrationCardService {
 
         listForSorting.sort(Comparator.comparing(o -> o.getResidents().get(0).getFullName()));
 
-        for (RegistrationCard registrationCard : listForSorting) {
-          StringBuilder stringBuilder = new StringBuilder();
-
-          stringBuilder.append("Hotel room: ")
-              .append(registrationCard.getHotelRoom())
-              .append("; Room residents: ");
-          for (HotelResident hotelResident : registrationCard.getResidents()) {
-            stringBuilder.append(hotelResident.toString());
-          }
-
-          System.out.println(stringBuilder);
-        }
-      break;
+        return listForSorting;
 
       case ROOM_RELEASE_DATE:
         listForSorting.sort(Comparator.comparing(RegistrationCard::getDepartureDate));
 
-        for (RegistrationCard registrationCard : listForSorting) {
-          StringBuilder stringBuilder = new StringBuilder();
-
-          stringBuilder.append("Hotel room: ")
-              .append(registrationCard.getHotelRoom())
-              .append("; Room residents: ");
-          for (HotelResident hotelResident : registrationCard.getResidents()) {
-            stringBuilder.append(hotelResident.toString());
-          }
-
-          System.out.println(stringBuilder);
-        }
-        break;
+        return listForSorting;
       }
+
+      return null;
     }
 
   @Override
-  public void showNumberOfCurrentResidents() {
+  public String showNumberOfCurrentResidents() {
     int size = 0;
 
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
@@ -283,20 +261,20 @@ public class RegistrationCardService implements IRegistrationCardService {
         size += registrationCard.getResidents().size();
       }
     }
-    System.out.println("Total number of current residents: " + size);
+    return ("Total number of current residents: " + size);
   }
 
   @Override
-  public void showAmountOfPayment(int numberOfRoom, int daysOfStay) {
+  public String showAmountOfPayment(int numberOfRoom, int daysOfStay) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
-    System.out.println("Amount of payment for the room: "
+    return ("Amount of payment for the room: "
         + (hotelRoom.getPrice() * daysOfStay));
   }
 
   @Override
-  public void showResidentServicesByCriterion(int passportNumber,
-      ServiceSortingCriteria sortingCriteria) {
+  public Object[] showResidentServicesByCriterion(int passportNumber,
+                                                  ServiceSortingCriteria sortingCriteria) {
     Map<LocalDateTime, Service> services = null;
 
     for (int i = 0; i < registrationCardDao.getAll().size(); i++) {
@@ -315,22 +293,13 @@ public class RegistrationCardService implements IRegistrationCardService {
     switch (sortingCriteria) {
 
       case DATE:
-        for (Map.Entry<LocalDateTime, Service> service : services.entrySet()) {
-          System.out.println(service.getValue().toString() + ", " + service.getKey()
-              .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
-        }
-      break;
+        return services.entrySet().toArray();
 
     case PRICE:
-        List<Map.Entry<LocalDateTime, Service>> entryList = new ArrayList<>(services.entrySet());
+        return services.entrySet().stream()
+                .sorted(Comparator.comparingInt(o -> o.getValue().getPrice())).toArray();
 
-        entryList.sort(Comparator.comparingInt(o -> o.getValue().getPrice()));
-
-        for (Map.Entry<LocalDateTime, Service> map : entryList) {
-          System.out.println(map.getValue().toString() + ", "
-              + map.getKey().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
-        }
-        break;
       }
+    return null;
     }
 }

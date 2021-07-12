@@ -1,10 +1,12 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces;
 
+import org.springframework.http.ResponseEntity;
+
 public interface IHotelResidentController {
 
-  void showAllResidents();
+  ResponseEntity<?> showAllResidents();
 
-  void addNewResident(String fullName, int passportNumber);
+  ResponseEntity<?> addNewResident(String fullName, int passportNumber);
 
-  void removeResident(int passportNumber);
+  ResponseEntity<?> removeResident(int passportNumber);
 }

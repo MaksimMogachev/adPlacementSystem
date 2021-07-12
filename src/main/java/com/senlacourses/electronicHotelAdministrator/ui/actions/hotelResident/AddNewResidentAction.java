@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.hotelResident;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelResidentController;
+import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 

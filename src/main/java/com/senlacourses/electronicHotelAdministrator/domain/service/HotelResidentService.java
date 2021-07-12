@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class HotelResidentService implements IHotelResidentService {
@@ -20,10 +21,9 @@ public class HotelResidentService implements IHotelResidentService {
   }
 
   @Override
-  public void showAllResidents() {
-    hotelResidentDao
-        .getAll()
-        .forEach(hotelResident -> System.out.println(hotelResident.toString()));
+  public List<HotelResident> showAllResidents() {
+    return hotelResidentDao
+        .getAll();
   }
 
   @Transactional
@@ -37,7 +37,7 @@ public class HotelResidentService implements IHotelResidentService {
 
   @Transactional
   @Override
-  public void removeResident(int passportNumber) {
+  public boolean removeResident(int passportNumber) {
     HotelResident hotelResident = hotelResidentDao.read(passportNumber);
 
     if (hotelResident == null) {
@@ -46,5 +46,7 @@ public class HotelResidentService implements IHotelResidentService {
     }
 
     hotelResidentDao.delete(hotelResident);
+
+    return hotelResidentDao.read(passportNumber) == null;
   }
 }

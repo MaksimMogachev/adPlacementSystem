@@ -1,7 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.ui.actions.residentCard;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.ui.IAction;
 import java.util.Scanner;
 
@@ -23,6 +23,6 @@ public class ShowResidentServicesByCriterion implements IAction {
     passportNumber = scanner.nextInt();
     System.out.print("\nEnter occupied room sorting criteria: ");
     criterion = ServiceSortingCriteria.valueOf(scanner.next().toUpperCase());
-    controller.showResidentServicesByCriterion(passportNumber, criterion);
+//    controller.showResidentServicesByCriterion(passportNumber, criterion);
   }
 }

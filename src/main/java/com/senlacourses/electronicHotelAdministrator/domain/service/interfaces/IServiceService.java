@@ -1,14 +1,18 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service.interfaces;
 
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceAndRoomSortingCriteria;
+
+import java.util.List;
+import java.util.Map;
 
 public interface IServiceService {
 
   void addNewService(String name, int price);
 
-  void showCurrentServices();
+  List<Service> showCurrentServices();
 
-  void changeServicePrice(String nameOfService, int newPrice);
+  Service changeServicePrice(String nameOfService, int newPrice);
 
-  void showPriceOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion);
+  Map<String, List> showPriceOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion);
 }

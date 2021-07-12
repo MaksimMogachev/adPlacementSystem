@@ -1,27 +1,28 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces;
 
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.RoomSortingCriteria;
+import org.springframework.http.ResponseEntity;
 
 public interface IHotelRoomController {
 
-  void showAllRooms();
+  ResponseEntity<?> showAllRooms();
 
-  void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price);
+  ResponseEntity<?> addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price);
 
-  void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition);
+  ResponseEntity<?> changeRoomCondition(int numberOfRoom, String roomCondition);
 
-  void changeRoomPrice(int numberOfRoom, int newPrice);
+  ResponseEntity<?> changeRoomPrice(int numberOfRoom, int newPrice);
 
-  void showNumberOfFreeRooms();
+  ResponseEntity<?> showNumberOfFreeRooms();
 
-  void showAllRoomsByCriterion(RoomSortingCriteria criterion);
+  ResponseEntity<?> showAllRoomsByCriterion(String criterion);
 
-  void showFreeRoomsByCriterion(RoomSortingCriteria criterion);
+  ResponseEntity<?> showFreeRoomsByCriterion(String criterion);
 
-  void showRoomsByDate(int year, int month, int dayOfMonth);
+  ResponseEntity<?> showRoomsByDate(int year, int month, int dayOfMonth);
 
-  void showLastResidentsOfRoom(int numberOfRoom);
+  ResponseEntity<?> showLastResidentsOfRoom(int numberOfRoom);
 
-  void showRoomDetails(int numberOfRoom);
+  ResponseEntity<?> showRoomDetails(int numberOfRoom);
 }

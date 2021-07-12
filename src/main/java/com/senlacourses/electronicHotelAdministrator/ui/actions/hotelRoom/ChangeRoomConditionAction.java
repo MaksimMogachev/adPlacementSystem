@@ -23,6 +23,6 @@ public class ChangeRoomConditionAction implements IAction {
     numberOfRoom = scanner.nextInt();
     System.out.print("\nEnter room condition: ");
     roomCondition = RoomCondition.valueOf(scanner.next().toUpperCase());
-    controller.changeRoomCondition(numberOfRoom, roomCondition);
+//    controller.changeRoomCondition(numberOfRoom, roomCondition);
   }
 }

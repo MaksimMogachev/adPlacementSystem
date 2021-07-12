@@ -4,8 +4,9 @@ import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.RoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,8 +36,8 @@ public class HotelRoomService implements IHotelRoomService {
   }
 
   @Override
-  public void showAllRooms() {
-    hotelRoomDao.getAll().forEach(hotelRoom -> System.out.println(hotelRoom.toString()));
+  public List<HotelRoom> showAllRooms() {
+    return hotelRoomDao.getAll();
   }
 
   @Transactional
@@ -42,22 +45,23 @@ public class HotelRoomService implements IHotelRoomService {
   public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
-      if (hotelRoom == null) {
-        hotelRoom = new HotelRoom();
-        hotelRoom.setNumberOfRoom(numberOfRoom);
-        hotelRoom.setNumberOfStars(numberOfStars);
-        hotelRoom.setRoomCapacity(roomCapacity);
-        hotelRoom.setPrice(price);
-        hotelRoomDao.create(hotelRoom);
-      } else {
-        logger.error("IllegalArgumentException(\"this room already exists\")");
-        throw new IllegalArgumentException("this room already exists");
-      }
+    if (hotelRoom == null) {
+      hotelRoom = new HotelRoom();
+      hotelRoom.setNumberOfRoom(numberOfRoom);
+      hotelRoom.setNumberOfStars(numberOfStars);
+      hotelRoom.setRoomCapacity(roomCapacity);
+      hotelRoom.setPrice(price);
+      hotelRoom.setRoomCondition(RoomCondition.MAINTAINED);
+      hotelRoomDao.create(hotelRoom);
+    } else {
+      logger.error("IllegalArgumentException(\"this room already exists\")");
+      throw new IllegalArgumentException("this room already exists");
+    }
   }
 
   @Transactional
   @Override
-  public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
+  public HotelRoom changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
     Properties properties = new Properties();
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
@@ -80,16 +84,17 @@ public class HotelRoomService implements IHotelRoomService {
 
     if (properties.getProperty("changeNumberStatus").equals("off")) {
       System.out.println("no access to change the state of the room");
-      return;
+      return null;
     }
 
     hotelRoom.setRoomCondition(roomCondition);
     hotelRoomDao.update(hotelRoom);
+    return hotelRoom;
   }
 
   @Transactional
   @Override
-  public void changeRoomPrice(int numberOfRoom, int newPrice) {
+  public HotelRoom changeRoomPrice(int numberOfRoom, int newPrice) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
     if (hotelRoom == null) {
@@ -104,99 +109,103 @@ public class HotelRoomService implements IHotelRoomService {
 
     hotelRoom.setPrice(newPrice);
     hotelRoomDao.update(hotelRoom);
+    return hotelRoom;
   }
 
   @Override
-  public void showNumberOfFreeRooms() {
-    System.out.println("Total number of free rooms: "
-        + (hotelRoomDao.getAll().size() - registrationCardDao.getAll().size()));
+  public String showNumberOfFreeRooms() {
+    return ("Total number of free rooms: "
+            + (hotelRoomDao.getAll().size() - registrationCardDao.getAll().size()));
   }
 
   @Override
-  public void showAllRoomsByCriterion(RoomSortingCriteria criterion) {
+  public List<HotelRoom> showAllRoomsByCriterion(RoomSortingCriteria criterion) {
     List<HotelRoom> listForSorting = new ArrayList<>(hotelRoomDao.getAll());
 
     switch (criterion) {
 
-      case PRICE: listForSorting.stream()
-          .sorted(Comparator.comparing(HotelRoom::getPrice))
-          .forEach(System.out::println);
-      break;
+      case PRICE:
+        return listForSorting.stream()
+                .sorted(Comparator.comparing(HotelRoom::getPrice))
+                .collect(Collectors.toList());
 
-      case ROOM_CAPACITY: listForSorting.stream()
-          .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
-          .forEach(System.out::println);
-      break;
+      case ROOM_CAPACITY:
+        return listForSorting.stream()
+                .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
+                .collect(Collectors.toList());
 
-      case NUMBER_OF_STARS: listForSorting.stream()
-          .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
-          .forEach(System.out::println);
-      break;
+      case NUMBER_OF_STARS:
+        return listForSorting.stream()
+                .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
+                .collect(Collectors.toList());
     }
+    return null;
   }
 
   @Override
-  public void showFreeRoomsByCriterion(RoomSortingCriteria criterion) {
+  public List<HotelRoom> showFreeRoomsByCriterion(RoomSortingCriteria criterion) {
     List<HotelRoom> listForSorting = new ArrayList<>();
 
     hotelRoomDao.getAll().stream().filter(hotelRoom -> !hotelRoom.isRoomIsOccupied())
-        .forEach(listForSorting::add);
+            .forEach(listForSorting::add);
 
     switch (criterion) {
 
-      case PRICE: listForSorting.stream()
-          .sorted(Comparator.comparing(HotelRoom::getPrice))
-          .forEach(System.out::println);
-      break;
+      case PRICE:
+        return listForSorting.stream()
+                .sorted(Comparator.comparing(HotelRoom::getPrice))
+                .collect(Collectors.toList());
 
-      case ROOM_CAPACITY: listForSorting.stream()
-          .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
-          .forEach(System.out::println);
-      break;
+      case ROOM_CAPACITY:
+        return listForSorting.stream()
+                .sorted(Comparator.comparing(HotelRoom::getRoomCapacity))
+                .collect(Collectors.toList());
 
-      case NUMBER_OF_STARS: listForSorting.stream()
-          .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
-          .forEach(System.out::println);
-      break;
+      case NUMBER_OF_STARS:
+        return listForSorting.stream()
+                .sorted(Comparator.comparing(HotelRoom::getNumberOfStars))
+                .collect(Collectors.toList());
     }
+    return null;
   }
 
   @Override
-  public void showRoomsByDate(int year, int month, int dayOfMonth) {
+  public List<HotelRoom> showRoomsByDate(int year, int month, int dayOfMonth) {
+    List<HotelRoom> hotelRooms = new ArrayList<>();
+
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
 
       if (LocalDate.of(year, month, dayOfMonth)
-          .isAfter(registrationCard.getDepartureDate())
-          || (LocalDate.of(year, month, dayOfMonth)
-          .equals(registrationCard.getDepartureDate()))) {
+              .isAfter(registrationCard.getDepartureDate())
+              || (LocalDate.of(year, month, dayOfMonth)
+              .equals(registrationCard.getDepartureDate()))) {
 
-        System.out.println(hotelRoomDao.read(registrationCard.getHotelRoom()).toString());
+        hotelRooms.add(hotelRoomDao.read(registrationCard.getHotelRoom()));
       }
     }
+    return hotelRooms;
   }
 
   @Override
-  public void showLastResidentsOfRoom(int numberOfRoom) {
+  public List<String> showLastResidentsOfRoom(int numberOfRoom) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
     if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
-    System.out.println("Last residents of room " + numberOfRoom + ": ");
-    for (String string : hotelRoom.getLastResidents()) {
-      System.out.println(string);
-    }
+
+    return hotelRoom.getLastResidents();
   }
 
   @Override
-  public void showRoomDetails(int numberOfRoom) {
+  public String showRoomDetails(int numberOfRoom) {
     HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
 
     if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"Incorrect argument\")");
       throw new IllegalArgumentException("Incorrect argument");
     }
-    System.out.println(hotelRoom);
+    return hotelRoom.toString();
   }
 }

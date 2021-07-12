@@ -3,11 +3,11 @@ package com.senlacourses.electronicHotelAdministrator.domain.service;
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceAndRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,13 +35,13 @@ public class ServiceService implements IServiceService {
   }
 
   @Override
-  public void showCurrentServices() {
-    serviceDao.getAll().forEach(service -> System.out.println(service.toString()));
+  public List<Service> showCurrentServices() {
+    return serviceDao.getAll();
   }
 
   @Transactional
   @Override
-  public void changeServicePrice(String nameOfService, int newPrice) {
+  public Service changeServicePrice(String nameOfService, int newPrice) {
     Service service = serviceDao.read(nameOfService);
 
     if (service == null) {
@@ -57,31 +57,31 @@ public class ServiceService implements IServiceService {
     service.setPrice(newPrice);
 
     serviceDao.update(service);
+    return service;
   }
 
   @Override
-  public void showPriceOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion) {
+  public Map<String, List> showPriceOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion) {
+    Map<String, List> listMap = new HashMap<>();
 
     switch (criterion) {
 
       case SECTION:
-        showCurrentServices();
-        hotelRoomDao.getAll().forEach(hotelRoom -> System.out.println("Hotel room: "
-            + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice()));
-        break;
+        listMap.put("services", showCurrentServices());
+        listMap.put("hotel rooms", hotelRoomDao.getAll());
+        return listMap;
 
       case PRICE:
-        List<Service> services = new ArrayList<>(serviceDao.getAll());
+        List<Service> services = showCurrentServices();
         List<HotelRoom> hotelRooms = new ArrayList<>(hotelRoomDao.getAll());
 
         services.sort(Comparator.comparing(Service::getPrice));
         hotelRooms.sort(Comparator.comparing(HotelRoom::getPrice));
 
-        services.forEach(service -> System.out.println(service.toString()));
-
-        hotelRooms.forEach(hotelRoom -> System.out.println("Hotel room: "
-            + hotelRoom.getNumberOfRoom() + ": " + hotelRoom.getPrice()));
-        break;
+        listMap.put("services", services);
+        listMap.put("hotel rooms", hotelRooms);
+        return listMap;
     }
+    return null;
   }
 }

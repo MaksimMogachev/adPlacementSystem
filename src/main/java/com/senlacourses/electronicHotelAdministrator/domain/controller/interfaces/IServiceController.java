@@ -1,14 +1,14 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces;
 
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.ServiceAndRoomSortingCriteria;
+import org.springframework.http.ResponseEntity;
 
 public interface IServiceController {
 
-  void addNewService(String name, int price);
+  ResponseEntity<?> addNewService(String name, int price);
 
-  void showCurrentServices();
+  ResponseEntity<?> showCurrentServices();
 
-  void changeServicePrice(String nameOfService, int newPrice);
+  ResponseEntity<?> changeServicePrice(String nameOfService, int newPrice);
 
-  void showPriceOfServicesAndRoomsByCriterion(ServiceAndRoomSortingCriteria criterion);
+  ResponseEntity<?> showPriceOfServicesAndRoomsByCriterion(String criterion);
 }

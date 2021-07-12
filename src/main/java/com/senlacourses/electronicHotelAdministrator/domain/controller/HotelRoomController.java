@@ -1,13 +1,17 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelRoomController;
+import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
-import com.senlacourses.electronicHotelAdministrator.domain.model.criteriaForSorting.RoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.RoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelRoomService;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 public class HotelRoomController implements IHotelRoomController {
 
   private final IHotelRoomService hotelRoomService;
@@ -17,52 +21,113 @@ public class HotelRoomController implements IHotelRoomController {
   }
 
   @Override
-  public void showAllRooms() {
-    hotelRoomService.showAllRooms();
+  @GetMapping(value = "/hotel-rooms")
+  public ResponseEntity<List<HotelRoom>> showAllRooms() {
+    List<HotelRoom> hotelRooms = hotelRoomService.showAllRooms();
+
+    return hotelRooms != null
+            ? new ResponseEntity<>(hotelRooms, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
-  public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
+  @PostMapping(value = "/hotel-rooms")
+  public ResponseEntity<?> addNewRoom(@RequestBody int numberOfRoom, @RequestBody int numberOfStars,
+                                      @RequestBody int roomCapacity, @RequestBody int price) {
+
     hotelRoomService.addNewRoom(numberOfRoom, numberOfStars, roomCapacity, price);
+
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @Override
-  public void changeRoomCondition(int numberOfRoom, RoomCondition roomCondition) {
-    hotelRoomService.changeRoomCondition(numberOfRoom, roomCondition);
+  @PutMapping(value = "/hotel-rooms/{numberOfRoom}/condition")
+  public ResponseEntity<HotelRoom> changeRoomCondition(
+          @PathVariable(name = "numberOfRoom") int numberOfRoom,
+          @RequestBody String roomCondition) {
+
+    HotelRoom hotelRoom = hotelRoomService.changeRoomCondition(
+            numberOfRoom, RoomCondition.valueOf(roomCondition.toUpperCase()));
+
+    return hotelRoom != null
+            ? new ResponseEntity<>(hotelRoom, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
-  public void changeRoomPrice(int numberOfRoom, int newPrice) {
-    hotelRoomService.changeRoomPrice(numberOfRoom, newPrice);
+  @PutMapping(value = "/hotel-rooms/{numberOfRoom}/price")
+  public ResponseEntity<HotelRoom> changeRoomPrice(
+          @PathVariable(name = "numberOfRoom") int numberOfRoom,
+          @RequestBody int newPrice) {
+
+    HotelRoom hotelRoom = hotelRoomService.changeRoomPrice(numberOfRoom, newPrice);
+    return hotelRoom != null
+            ? new ResponseEntity<>(hotelRoom, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
-  public void showNumberOfFreeRooms() {
-    hotelRoomService.showNumberOfFreeRooms();
+  @GetMapping(value = "/hotel-rooms/free")
+  public ResponseEntity<?> showNumberOfFreeRooms() {
+    return new ResponseEntity<>(hotelRoomService.showNumberOfFreeRooms(), HttpStatus.OK);
   }
 
   @Override
-  public void showAllRoomsByCriterion(RoomSortingCriteria criterion) {
-    hotelRoomService.showAllRoomsByCriterion(criterion);
+  @GetMapping(value = "/hotel-rooms/criterion")
+  public ResponseEntity<List<HotelRoom>> showAllRoomsByCriterion(@RequestBody String criterion) {
+    List<HotelRoom> hotelRooms = hotelRoomService
+            .showAllRoomsByCriterion(RoomSortingCriteria.valueOf(criterion.toUpperCase()));
+
+    return hotelRooms != null
+            ? new ResponseEntity<>(hotelRooms, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
-  public void showFreeRoomsByCriterion(RoomSortingCriteria criterion) {
-    hotelRoomService.showFreeRoomsByCriterion(criterion);
+  @GetMapping(value = "/hotel-rooms/criterion/free")
+  public ResponseEntity<List<HotelRoom>> showFreeRoomsByCriterion(@RequestBody String criterion) {
+    List<HotelRoom> hotelRooms = hotelRoomService
+            .showFreeRoomsByCriterion(RoomSortingCriteria.valueOf(criterion.toUpperCase()));
+
+    return hotelRooms != null
+            ? new ResponseEntity<>(hotelRooms, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
-  public void showRoomsByDate(int year, int month, int dayOfMonth) {
-    hotelRoomService.showRoomsByDate(year, month, dayOfMonth);
+  @GetMapping(value = "/hotel-rooms/date")
+  public ResponseEntity<List<HotelRoom>> showRoomsByDate(@RequestBody int year,
+                                                         @RequestBody int month,
+                                                         @RequestBody int dayOfMonth) {
+
+    List<HotelRoom> hotelRooms = hotelRoomService.showRoomsByDate(year, month, dayOfMonth);
+
+    return hotelRooms != null
+            ? new ResponseEntity<>(hotelRooms, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
-  public void showLastResidentsOfRoom(int numberOfRoom) {
-    hotelRoomService.showLastResidentsOfRoom(numberOfRoom);
+  @GetMapping(value = "/hotel-rooms/{numberOfRoom}/residents")
+  public ResponseEntity<List<String>> showLastResidentsOfRoom(
+          @PathVariable(name = "numberOfRoom") int numberOfRoom) {
+
+    List<String> lastResidents = hotelRoomService.showLastResidentsOfRoom(numberOfRoom);
+
+    return lastResidents != null
+            ? new ResponseEntity<>(lastResidents, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
-  public void showRoomDetails(int numberOfRoom) {
-    hotelRoomService.showRoomDetails(numberOfRoom);
+  @GetMapping(value = "/hotel-rooms/{numberOfRoom}")
+  public ResponseEntity<String> showRoomDetails(
+          @PathVariable(name = "numberOfRoom") int numberOfRoom) {
+
+    String details = hotelRoomService.showRoomDetails(numberOfRoom);
+
+    return details != null
+            ? new ResponseEntity<>(details, HttpStatus.OK)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 }

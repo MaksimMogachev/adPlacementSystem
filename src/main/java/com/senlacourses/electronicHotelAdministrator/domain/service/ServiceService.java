@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
 
 @org.springframework.stereotype.Service
 public class ServiceService implements IServiceService {
@@ -27,10 +28,7 @@ public class ServiceService implements IServiceService {
 
   @Transactional
   @Override
-  public void addNewService(String name, int price) {
-    Service service = new Service();
-    service.setName(name);
-    service.setPrice(price);
+  public void addNewService(Service service) {
     serviceDao.create(service);
   }
 
@@ -43,6 +41,10 @@ public class ServiceService implements IServiceService {
   @Override
   public Service changeServicePrice(String nameOfService, int newPrice) {
     Service service = serviceDao.read(nameOfService);
+
+    if (nameOfService == null) {
+      return null;
+    }
 
     if (service == null) {
       logger.error("IllegalArgumentException(\"this service does not exist\")");

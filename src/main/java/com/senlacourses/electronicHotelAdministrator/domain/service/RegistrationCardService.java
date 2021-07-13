@@ -44,38 +44,23 @@ public class RegistrationCardService implements IRegistrationCardService {
 
   @Transactional
   @Override
-  public void putInTheRoom(int numberOfRoom, int passportNumber, int daysOfStay) {
-    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
-    RegistrationCard registrationCard = registrationCardDao.read(numberOfRoom);
-    HotelResident hotelResident = hotelResidentDao.read(passportNumber);
+  public void createNewCard(RegistrationCard registrationCard) {
+    HotelRoom hotelRoom = hotelRoomDao.read(registrationCard.getHotelRoom());
 
     if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    if (hotelResident == null) {
-      logger.error("IllegalArgumentException(\"the given resident is not registered\")");
-      throw new IllegalArgumentException("the given resident is not registered");
+    if (registrationCardDao.read(registrationCard.getHotelRoom()) != null) {
+      logger.error("IllegalArgumentException(\"this  registration card is already exist\")");
+      throw new IllegalArgumentException("this  registration card is already exist");
     }
 
-    if (registrationCard == null) {
-      registrationCard = new RegistrationCard();
-      registrationCard.setHotelRoom(numberOfRoom);
-      registrationCard.getResidents().add(hotelResident);
-      registrationCard.setCheckInDate(LocalDate.now());
-      registrationCard.setDepartureDate(LocalDate.now().plusDays(daysOfStay));
-      registrationCardDao.create(registrationCard);
+    registrationCardDao.create(registrationCard);
 
-      hotelRoom.setRoomIsOccupied(true);
-      hotelRoomDao.update(hotelRoom);
-
-    } else {
-      logger.error("IUnsupportedOperationException(\n"
-          + "\"the given room is occupied, use method with 2 arguments\")");
-      throw new UnsupportedOperationException(
-          "the given room is occupied, use method with 2 arguments");
-    }
+    hotelRoom.setRoomIsOccupied(true);
+    hotelRoomDao.update(hotelRoom);
   }
 
   @Transactional

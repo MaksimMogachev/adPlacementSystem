@@ -32,10 +32,8 @@ public class HotelRoomController implements IHotelRoomController {
 
   @Override
   @PostMapping(value = "/hotel-rooms")
-  public ResponseEntity<?> addNewRoom(@RequestBody int numberOfRoom, @RequestBody int numberOfStars,
-                                      @RequestBody int roomCapacity, @RequestBody int price) {
-
-    hotelRoomService.addNewRoom(numberOfRoom, numberOfStars, roomCapacity, price);
+  public ResponseEntity<?> addNewRoom(@RequestBody HotelRoom hotelRoom) {
+    hotelRoomService.addNewRoom(hotelRoom);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
@@ -58,9 +56,9 @@ public class HotelRoomController implements IHotelRoomController {
   @PutMapping(value = "/hotel-rooms/{numberOfRoom}/price")
   public ResponseEntity<HotelRoom> changeRoomPrice(
           @PathVariable(name = "numberOfRoom") int numberOfRoom,
-          @RequestBody int newPrice) {
+          @RequestBody String newPrice) {
 
-    HotelRoom hotelRoom = hotelRoomService.changeRoomPrice(numberOfRoom, newPrice);
+    HotelRoom hotelRoom = hotelRoomService.changeRoomPrice(numberOfRoom, Integer.parseInt(newPrice));
     return hotelRoom != null
             ? new ResponseEntity<>(hotelRoom, HttpStatus.OK)
             : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -96,9 +94,9 @@ public class HotelRoomController implements IHotelRoomController {
 
   @Override
   @GetMapping(value = "/hotel-rooms/date")
-  public ResponseEntity<List<HotelRoom>> showRoomsByDate(@RequestBody int year,
-                                                         @RequestBody int month,
-                                                         @RequestBody int dayOfMonth) {
+  public ResponseEntity<List<HotelRoom>> showRoomsByDate(@RequestParam int year,
+                                                         @RequestParam int month,
+                                                         @RequestParam int dayOfMonth) {
 
     List<HotelRoom> hotelRooms = hotelRoomService.showRoomsByDate(year, month, dayOfMonth);
 

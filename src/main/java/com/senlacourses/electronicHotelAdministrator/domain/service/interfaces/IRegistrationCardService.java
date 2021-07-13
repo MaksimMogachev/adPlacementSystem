@@ -13,7 +13,7 @@ public interface IRegistrationCardService {
 
   List<RegistrationCard> showOccupiedRooms();
 
-  void putInTheRoom(int numberOfRoom, int passportNumber, int daysOfStay);
+  void createNewCard(RegistrationCard registrationCard);
 
   RegistrationCard putInTheRoom(int numberOfRoom, int passportNumber);
 

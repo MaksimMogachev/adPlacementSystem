@@ -2,6 +2,7 @@ package com.senlacourses.electronicHotelAdministrator.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -29,14 +30,23 @@ public class HotelRoom implements Serializable {
   @NotNull
   @Min(0)
   private int price;
-  private RoomCondition roomCondition;
+  private RoomCondition roomCondition = RoomCondition.MAINTAINED;
   private boolean roomIsOccupied;
   @ElementCollection
   @CollectionTable(name = "last_residents_rooms", schema = "eha", joinColumns = @JoinColumn(name = "numberofroom"))
   @Column(name = "residentinformation")
   private List<String> lastResidents = new ArrayList<>();
 
-  public HotelRoom() {}
+  public HotelRoom() {
+  }
+
+  public HotelRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
+    this.numberOfRoom = numberOfRoom;
+    this.numberOfStars = numberOfStars;
+    this.roomCapacity = roomCapacity;
+    this.price = price;
+  }
+
 
   @Override
   public String toString() {

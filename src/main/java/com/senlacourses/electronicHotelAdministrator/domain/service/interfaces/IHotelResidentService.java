@@ -8,7 +8,7 @@ public interface IHotelResidentService {
 
   List<HotelResident> showAllResidents();
 
-  void addNewResident(String fullName, int passportNumber);
+  void addNewResident(HotelResident hotelResident);
 
   boolean removeResident(int passportNumber);
 }

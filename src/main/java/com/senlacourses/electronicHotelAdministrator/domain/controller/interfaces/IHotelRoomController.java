@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces;
 
+import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.RoomSortingCriteria;
 import org.springframework.http.ResponseEntity;
@@ -8,11 +9,11 @@ public interface IHotelRoomController {
 
   ResponseEntity<?> showAllRooms();
 
-  ResponseEntity<?> addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price);
+  ResponseEntity<?> addNewRoom(HotelRoom hotelRoom);
 
   ResponseEntity<?> changeRoomCondition(int numberOfRoom, String roomCondition);
 
-  ResponseEntity<?> changeRoomPrice(int numberOfRoom, int newPrice);
+  ResponseEntity<?> changeRoomPrice(int numberOfRoom, String newPrice);
 
   ResponseEntity<?> showNumberOfFreeRooms();
 

@@ -22,6 +22,6 @@ public class AddNewServiceAction implements IAction {
     name = scanner.nextLine();
     System.out.print("\nEnter price of service: ");
     price = scanner.nextInt();
-    controller.addNewService(name, price);
+//    controller.addNewService(name, price);
   }
 }

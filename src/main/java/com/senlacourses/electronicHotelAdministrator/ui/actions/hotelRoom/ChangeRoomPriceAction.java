@@ -22,6 +22,6 @@ public class ChangeRoomPriceAction implements IAction {
     numberOfRoom = scanner.nextInt();
     System.out.print("\nEnter new price: ");
     newPrice = scanner.nextInt();
-    controller.changeRoomPrice(numberOfRoom, newPrice);
+//    controller.changeRoomPrice(numberOfRoom, newPrice);
   }
 }

@@ -22,9 +22,8 @@ public class ServiceController implements IServiceController {
 
   @Override
   @PostMapping(value = "/services")
-  public ResponseEntity<?> addNewService(@RequestBody String name,
-                                         @RequestBody int price) {
-    serviceService.addNewService(name, price);
+  public ResponseEntity<?> addNewService(@RequestBody Service service) {
+    serviceService.addNewService(service);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
@@ -40,9 +39,9 @@ public class ServiceController implements IServiceController {
   }
 
   @Override
-  @PutMapping(value = "/services")
+  @PutMapping(value = "/services/{newPrice}")
   public ResponseEntity<Service> changeServicePrice(@RequestBody String nameOfService,
-                                                    @RequestBody int newPrice) {
+                                                    @PathVariable(value = "newPrice") int newPrice) {
     Service service = serviceService.changeServicePrice(nameOfService, newPrice);
 
     return service != null
@@ -52,7 +51,7 @@ public class ServiceController implements IServiceController {
 
   @Override
   @GetMapping(value = "/services/criterion")
-  public ResponseEntity<?> showPriceOfServicesAndRoomsByCriterion(String criterionForSorting) {
+  public ResponseEntity<?> showPriceOfServicesAndRoomsByCriterion(@RequestBody String criterionForSorting) {
 
     ServiceAndRoomSortingCriteria criterion = ServiceAndRoomSortingCriteria.valueOf(criterionForSorting.toUpperCase());
     Map<String, List> listMap = serviceService.showPriceOfServicesAndRoomsByCriterion(criterion);

@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @EqualsAndHashCode
 @Entity
 @Table(name = "hotelresident", schema = "eha")

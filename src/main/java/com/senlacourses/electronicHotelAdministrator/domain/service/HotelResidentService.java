@@ -28,10 +28,7 @@ public class HotelResidentService implements IHotelResidentService {
 
   @Transactional
   @Override
-  public void addNewResident(String fullName, int passportNumber) {
-    HotelResident hotelResident = new HotelResident();
-    hotelResident.setFullName(fullName);
-    hotelResident.setPassportNumber(passportNumber);
+  public void addNewResident(HotelResident hotelResident) {
     hotelResidentDao.create(hotelResident);
   }
 

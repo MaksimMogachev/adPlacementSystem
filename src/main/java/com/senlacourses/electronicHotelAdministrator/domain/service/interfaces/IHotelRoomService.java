@@ -10,7 +10,7 @@ public interface IHotelRoomService {
 
   List<HotelRoom> showAllRooms();
 
-  void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price);
+  void addNewRoom(HotelRoom hotelRoom);
 
   HotelRoom changeRoomCondition(int numberOfRoom, RoomCondition roomCondition);
 

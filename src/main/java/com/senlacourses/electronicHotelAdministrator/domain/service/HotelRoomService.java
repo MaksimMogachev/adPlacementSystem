@@ -42,18 +42,10 @@ public class HotelRoomService implements IHotelRoomService {
 
   @Transactional
   @Override
-  public void addNewRoom(int numberOfRoom, int numberOfStars, int roomCapacity, int price) {
-    HotelRoom hotelRoom = hotelRoomDao.read(numberOfRoom);
+  public void addNewRoom(HotelRoom hotelRoom) {
+    hotelRoomDao.create(hotelRoom);
 
-    if (hotelRoom == null) {
-      hotelRoom = new HotelRoom();
-      hotelRoom.setNumberOfRoom(numberOfRoom);
-      hotelRoom.setNumberOfStars(numberOfStars);
-      hotelRoom.setRoomCapacity(roomCapacity);
-      hotelRoom.setPrice(price);
-      hotelRoom.setRoomCondition(RoomCondition.MAINTAINED);
-      hotelRoomDao.create(hotelRoom);
-    } else {
+    if (hotelRoomDao.read(hotelRoom.getNumberOfRoom()) != null) {
       logger.error("IllegalArgumentException(\"this room already exists\")");
       throw new IllegalArgumentException("this room already exists");
     }

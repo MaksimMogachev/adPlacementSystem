@@ -23,6 +23,6 @@ public class AddNewResidentAction implements IAction {
     fullName = scanner.nextLine();
     System.out.print("\nEnter passport number: ");
     passportNumber = scanner.nextInt();
-    controller.addNewResident(fullName, passportNumber);
+//    controller.addNewResident(fullName, passportNumber);
   }
 }

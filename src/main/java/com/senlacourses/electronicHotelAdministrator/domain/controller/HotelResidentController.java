@@ -30,8 +30,8 @@ public class HotelResidentController implements IHotelResidentController {
 
   @Override
   @PostMapping(value = "/residents")
-  public ResponseEntity<?> addNewResident(@RequestParam String fullName, @RequestParam int passportNumber) {
-    hotelResidentService.addNewResident(fullName, passportNumber);
+  public ResponseEntity<?> addNewResident(@RequestBody HotelResident hotelResident) {
+    hotelResidentService.addNewResident(hotelResident);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }

@@ -28,6 +28,6 @@ public class AddNewRoomAction implements IAction {
     roomCapacity = scanner.nextInt();
     System.out.print("Enter price of room: ");
     price = scanner.nextInt();
-    controller.addNewRoom(numberOfRoom, numberOfStars, roomCapacity, price);
+//    controller.addNewRoom(numberOfRoom, numberOfStars, roomCapacity, price);
   }
 }

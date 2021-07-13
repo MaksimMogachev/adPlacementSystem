@@ -32,11 +32,9 @@ public class RegistrationCardController implements IRegistrationCardController {
 
   @Override
   @PostMapping(value = "/registration-cards")
-  public ResponseEntity<?> putInTheRoom(@RequestBody int numberOfRoom,
-                                        @RequestBody int passportNumber,
-                                        @RequestBody int daysOfStay) {
+  public ResponseEntity<?> createNewCard(@RequestBody RegistrationCard registrationCard) {
 
-    registrationCardService.putInTheRoom(numberOfRoom, passportNumber, daysOfStay);
+    registrationCardService.createNewCard(registrationCard);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
@@ -44,9 +42,10 @@ public class RegistrationCardController implements IRegistrationCardController {
   @Override
   @PutMapping(value = "/registration-cards/{numberOfRoom}")
   public ResponseEntity<RegistrationCard> putInTheRoom(@PathVariable(value = "numberOfRoom") int numberOfRoom,
-                                                       @RequestBody int passportNumber) {
+                                                       @RequestBody String passportNumber) {
 
-    RegistrationCard registrationCard = registrationCardService.putInTheRoom(numberOfRoom, passportNumber);
+    RegistrationCard registrationCard = registrationCardService.putInTheRoom(
+            numberOfRoom, Integer.parseInt(passportNumber));
 
     return registrationCard != null
             ? new ResponseEntity<>(registrationCard, HttpStatus.OK)
@@ -56,7 +55,7 @@ public class RegistrationCardController implements IRegistrationCardController {
   @Override
   @PutMapping(value = "/registration-cards/{numberOfRoom}/evict")
   public ResponseEntity<RegistrationCard> evictFromTheRoom(@PathVariable(value = "numberOfRoom") int numberOfRoom,
-                                                           @RequestBody int indexOfResidentInRoom) {
+                                                           @RequestParam int indexOfResidentInRoom) {
 
     RegistrationCard registrationCard = registrationCardService.evictFromTheRoom(numberOfRoom, indexOfResidentInRoom);
 
@@ -107,7 +106,7 @@ public class RegistrationCardController implements IRegistrationCardController {
   @Override
   @GetMapping(value = "/registration-cards/{numberOfRoom}/payment")
   public ResponseEntity<String> showAmountOfPayment(@PathVariable(value = "numberOfRoom") int numberOfRoom, 
-                                                    @RequestBody int daysOfStay) {
+                                                    @RequestParam int daysOfStay) {
     return new ResponseEntity<>(registrationCardService.showAmountOfPayment(numberOfRoom, daysOfStay), HttpStatus.OK);
   }
 

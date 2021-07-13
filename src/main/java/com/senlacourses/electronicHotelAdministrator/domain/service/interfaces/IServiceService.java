@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface IServiceService {
 
-  void addNewService(String name, int price);
+  void addNewService(Service service);
 
   List<Service> showCurrentServices();
 

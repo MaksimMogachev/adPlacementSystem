@@ -35,6 +35,10 @@ public class RegistrationCard implements Serializable {
   @NotNull
   private LocalDate departureDate;
 
+  public RegistrationCard(int numberOfRoom) {
+    this.hotelRoom = numberOfRoom;
+  }
+
   public RegistrationCard() {}
 
   @Override

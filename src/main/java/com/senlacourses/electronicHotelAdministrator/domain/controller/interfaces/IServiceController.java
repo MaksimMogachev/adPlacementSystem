@@ -1,10 +1,11 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces;
 
+import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import org.springframework.http.ResponseEntity;
 
 public interface IServiceController {
 
-  ResponseEntity<?> addNewService(String name, int price);
+  ResponseEntity<?> addNewService(Service service);
 
   ResponseEntity<?> showCurrentServices();
 

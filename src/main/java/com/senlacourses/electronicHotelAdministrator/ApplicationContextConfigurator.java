@@ -18,7 +18,6 @@ import javax.persistence.Persistence;
 @Configuration
 @ComponentScan
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableWebMvc
 public class ApplicationContextConfigurator {
 
   @Bean(name = "transactionManager")
@@ -33,10 +32,9 @@ public class ApplicationContextConfigurator {
   public static PropertySourcesPlaceholderConfigurer properties(){
     PropertySourcesPlaceholderConfigurer pspc
             = new PropertySourcesPlaceholderConfigurer();
-    Resource[] resources = new ClassPathResource[ ]
-            { new ClassPathResource( "springSources.properties" ) };
-    pspc.setLocations( resources );
-    pspc.setIgnoreUnresolvablePlaceholders( true );
+    Resource[] resources = new ClassPathResource[] {new ClassPathResource("springSources.properties")};
+    pspc.setLocations(resources);
+    pspc.setIgnoreUnresolvablePlaceholders(true);
     return pspc;
   }
 }

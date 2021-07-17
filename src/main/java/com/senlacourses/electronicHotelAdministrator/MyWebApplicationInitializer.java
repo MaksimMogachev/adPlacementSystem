@@ -1,23 +1,22 @@
 package com.senlacourses.electronicHotelAdministrator;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
-
-public class MyWebApplicationInitializer implements WebApplicationInitializer {
+public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
   @Override
-  public void onStartup(ServletContext servletContext) {
-
-    AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-    context.register(ApplicationContextConfigurator.class);
-
-    DispatcherServlet servlet = new DispatcherServlet(context);
-    ServletRegistration.Dynamic registration = servletContext.addServlet("app", servlet);
-    registration.setLoadOnStartup(1);
-    registration.addMapping("/*");
+  protected Class<?>[] getRootConfigClasses() {
+    return new Class[] { ApplicationContextConfigurator.class };
   }
+
+  @Override
+  protected Class<?>[] getServletConfigClasses() {
+    return new Class[] { WebApplicationContextConfigurator.class };
+  }
+
+  @Override
+  protected String[] getServletMappings() {
+    return new String[] { "/" };
+  }
+
 }

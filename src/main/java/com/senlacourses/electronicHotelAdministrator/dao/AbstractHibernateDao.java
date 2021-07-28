@@ -1,6 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.dao;
 
-import com.senlacourses.electronicHotelAdministrator.hibernate.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -12,7 +12,8 @@ import java.util.function.Consumer;
 public abstract class AbstractHibernateDao<T extends Serializable> {
 
   private final Class<T> clazz;
-  private final EntityManager entityManager = HibernateUtil.getManagerFactory().createEntityManager();
+  @Autowired
+  private EntityManager entityManager;
 
   public AbstractHibernateDao(Class<T> clazz) {
     this.clazz = clazz;

@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "usr", schema = "eha")
-public class User implements Serializable, UserDetails {
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

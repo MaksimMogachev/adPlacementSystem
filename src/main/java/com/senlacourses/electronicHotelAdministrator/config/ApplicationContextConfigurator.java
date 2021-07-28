@@ -3,6 +3,7 @@ package com.senlacourses.electronicHotelAdministrator.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 @Configuration
@@ -20,11 +23,22 @@ import javax.persistence.Persistence;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class ApplicationContextConfigurator {
 
+  @Bean
+  @Scope(value = "singleton")
+  public EntityManagerFactory entityManagerFactory() {
+    return Persistence.createEntityManagerFactory("eha");
+  }
+
+  @Bean
+  public EntityManager entityManager() {
+    return entityManagerFactory().createEntityManager();
+  }
+
   @Bean(name = "transactionManager")
   public PlatformTransactionManager transactionManager() {
     JpaTransactionManager tm =
             new JpaTransactionManager();
-    tm.setEntityManagerFactory(Persistence.createEntityManagerFactory("eha"));
+    tm.setEntityManagerFactory(entityManagerFactory());
     return tm;
   }
 

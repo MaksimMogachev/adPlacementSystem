@@ -12,4 +12,6 @@ public interface IUserService {
   void addNewUser(UserDto user);
 
   boolean removeUser(String username);
+
+  User findByLoginAndPassword(String username, String password);
 }

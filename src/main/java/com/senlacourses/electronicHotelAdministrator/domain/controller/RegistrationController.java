@@ -1,8 +1,11 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller;
 
+import com.senlacourses.electronicHotelAdministrator.config.security.jwt.JwtProvider;
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationController;
 import com.senlacourses.electronicHotelAdministrator.domain.dto.request.UserDto;
-import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IUserService;
+import com.senlacourses.electronicHotelAdministrator.domain.model.User;
+import com.senlacourses.electronicHotelAdministrator.domain.service.UserDetailsServiceImplementation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController implements IRegistrationController {
 
-  private final IUserService userService;
+  private final UserDetailsServiceImplementation userService;
+  @Autowired
+  private JwtProvider jwtProvider;
 
-  public RegistrationController(IUserService userService) {
+  public RegistrationController(UserDetailsServiceImplementation userService) {
     this.userService = userService;
   }
 
@@ -24,5 +29,13 @@ public class RegistrationController implements IRegistrationController {
     userService.addNewUser(userDto);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<?> auth(@RequestBody UserDto request) {
+    User user = userService.findByLoginAndPassword(request.getUsername(), request.getPassword());
+    String token = jwtProvider.generateToken(user.getUsername());
+
+    return new ResponseEntity<>(token, HttpStatus.OK);
   }
 }

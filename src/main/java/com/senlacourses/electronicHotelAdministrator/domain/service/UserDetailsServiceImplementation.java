@@ -68,7 +68,7 @@ public class UserDetailsServiceImplementation implements IUserService, UserDetai
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public User loadUserByUsername(String username) throws UsernameNotFoundException {
     User user = userDao.read(username);
 
     if (user == null) {
@@ -77,5 +77,17 @@ public class UserDetailsServiceImplementation implements IUserService, UserDetai
     }
 
     return user;
+  }
+
+  @Override
+  public User findByLoginAndPassword(String username, String password) {
+    User user = loadUserByUsername(username);
+
+    if (user != null) {
+      if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+        return user;
+      }
+    }
+    return null;
   }
 }

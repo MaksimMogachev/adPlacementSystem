@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.ServiceDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceAndRoomSortingCriteria;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
 
 @org.springframework.stereotype.Service
 public class ServiceService implements IServiceService {
@@ -28,12 +28,20 @@ public class ServiceService implements IServiceService {
 
   @Transactional
   @Override
-  public void addNewService(Service service) {
+  public void addNewService(ServiceDto serviceDto) {
+    if (serviceDao.read(serviceDto.getName()) != null) {
+      logger.error("IllegalArgumentException(\"this service already exist\")");
+      throw new IllegalArgumentException("this service already exist");
+    }
+    Service service = new Service();
+    service.setName(serviceDto.getName());
+    service.setPrice(serviceDto.getPrice());
+
     serviceDao.create(service);
   }
 
   @Override
-  public List<Service> showCurrentServices() {
+  public List<Service> getCurrentServices() {
     return serviceDao.getAll();
   }
 
@@ -69,12 +77,12 @@ public class ServiceService implements IServiceService {
     switch (criterion) {
 
       case SECTION:
-        listMap.put("services", showCurrentServices());
+        listMap.put("services", getCurrentServices());
         listMap.put("hotel rooms", hotelRoomDao.getAll());
         return listMap;
 
       case PRICE:
-        List<Service> services = showCurrentServices();
+        List<Service> services = getCurrentServices();
         List<HotelRoom> hotelRooms = new ArrayList<>(hotelRoomDao.getAll());
 
         services.sort(Comparator.comparing(Service::getPrice));

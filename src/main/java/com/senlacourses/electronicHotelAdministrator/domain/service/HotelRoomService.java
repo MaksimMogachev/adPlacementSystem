@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.HotelRoomDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
@@ -36,19 +37,25 @@ public class HotelRoomService implements IHotelRoomService {
   }
 
   @Override
-  public List<HotelRoom> showAllRooms() {
+  public List<HotelRoom> getAllRooms() {
     return hotelRoomDao.getAll();
   }
 
   @Transactional
   @Override
-  public void addNewRoom(HotelRoom hotelRoom) {
-    hotelRoomDao.create(hotelRoom);
-
-    if (hotelRoomDao.read(hotelRoom.getNumberOfRoom()) != null) {
+  public void addNewRoom(HotelRoomDto hotelRoomDto) {
+    if (hotelRoomDao.read(hotelRoomDto.getNumberOfRoom()) != null) {
       logger.error("IllegalArgumentException(\"this room already exists\")");
       throw new IllegalArgumentException("this room already exists");
     }
+
+    HotelRoom hotelRoom = new HotelRoom();
+    hotelRoom.setNumberOfRoom(hotelRoomDto.getNumberOfRoom());
+    hotelRoom.setNumberOfStars(hotelRoomDto.getNumberOfStars());
+    hotelRoom.setRoomCapacity(hotelRoomDto.getRoomCapacity());
+    hotelRoom.setPrice(hotelRoomDto.getPrice());
+
+    hotelRoomDao.create(hotelRoom);
   }
 
   @Transactional

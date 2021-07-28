@@ -1,13 +1,13 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces;
 
-import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.RegistrationCardDto;
 import org.springframework.http.ResponseEntity;
 
 public interface IRegistrationCardController {
 
   ResponseEntity<?> showOccupiedRooms();
 
-  ResponseEntity<?> createNewCard(RegistrationCard registrationCard);
+  ResponseEntity<?> createNewCard(RegistrationCardDto registrationCard);
 
   ResponseEntity<?> putInTheRoom(int numberOfRoom, String passportNumber);
 

@@ -1,15 +1,13 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces;
 
-import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
-import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
-import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.RoomSortingCriteria;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.HotelRoomDto;
 import org.springframework.http.ResponseEntity;
 
 public interface IHotelRoomController {
 
   ResponseEntity<?> showAllRooms();
 
-  ResponseEntity<?> addNewRoom(HotelRoom hotelRoom);
+  ResponseEntity<?> addNewRoom(HotelRoomDto hotelRoomDto);
 
   ResponseEntity<?> changeRoomCondition(int numberOfRoom, String roomCondition);
 

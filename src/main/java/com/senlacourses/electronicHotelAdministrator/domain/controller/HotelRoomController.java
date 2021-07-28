@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelRoomController;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.HotelRoomDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.RoomSortingCriteria;
@@ -23,7 +24,7 @@ public class HotelRoomController implements IHotelRoomController {
   @Override
   @GetMapping(value = "/hotel-rooms")
   public ResponseEntity<List<HotelRoom>> showAllRooms() {
-    List<HotelRoom> hotelRooms = hotelRoomService.showAllRooms();
+    List<HotelRoom> hotelRooms = hotelRoomService.getAllRooms();
 
     return hotelRooms != null
             ? new ResponseEntity<>(hotelRooms, HttpStatus.OK)
@@ -32,8 +33,8 @@ public class HotelRoomController implements IHotelRoomController {
 
   @Override
   @PostMapping(value = "/hotel-rooms")
-  public ResponseEntity<?> addNewRoom(@RequestBody HotelRoom hotelRoom) {
-    hotelRoomService.addNewRoom(hotelRoom);
+  public ResponseEntity<?> addNewRoom(@RequestBody HotelRoomDto hotelRoomDto) {
+    hotelRoomService.addNewRoom(hotelRoomDto);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }

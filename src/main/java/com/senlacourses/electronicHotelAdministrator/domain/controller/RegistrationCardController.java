@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationCardController;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.RegistrationCardDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.OccupiedRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceSortingCriteria;
@@ -23,7 +24,7 @@ public class RegistrationCardController implements IRegistrationCardController {
   @Override
   @GetMapping(value = "/registration-cards")
   public ResponseEntity<List<RegistrationCard>> showOccupiedRooms() {
-    List<RegistrationCard> registrationCards = registrationCardService.showOccupiedRooms();
+    List<RegistrationCard> registrationCards = registrationCardService.getOccupiedRooms();
 
     return registrationCards != null
             ? new ResponseEntity<>(registrationCards, HttpStatus.OK)
@@ -32,9 +33,9 @@ public class RegistrationCardController implements IRegistrationCardController {
 
   @Override
   @PostMapping(value = "/registration-cards")
-  public ResponseEntity<?> createNewCard(@RequestBody RegistrationCard registrationCard) {
+  public ResponseEntity<?> createNewCard(@RequestBody RegistrationCardDto registrationCardDto) {
 
-    registrationCardService.createNewCard(registrationCard);
+    registrationCardService.createNewCard(registrationCardDto);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }

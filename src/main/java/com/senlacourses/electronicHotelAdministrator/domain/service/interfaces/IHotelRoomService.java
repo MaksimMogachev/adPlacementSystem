@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service.interfaces;
 
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.HotelRoomDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RoomCondition;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.RoomSortingCriteria;
@@ -8,9 +9,9 @@ import java.util.List;
 
 public interface IHotelRoomService {
 
-  List<HotelRoom> showAllRooms();
+  List<HotelRoom> getAllRooms();
 
-  void addNewRoom(HotelRoom hotelRoom);
+  void addNewRoom(HotelRoomDto hotelRoomDto);
 
   HotelRoom changeRoomCondition(int numberOfRoom, RoomCondition roomCondition);
 

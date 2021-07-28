@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator;
 
+import com.senlacourses.electronicHotelAdministrator.config.ApplicationContextConfigurator;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelResidentService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.HotelRoomService;
 import com.senlacourses.electronicHotelAdministrator.domain.service.RegistrationCardService;

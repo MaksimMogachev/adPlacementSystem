@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service.interfaces;
 
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.ServiceDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceAndRoomSortingCriteria;
 
@@ -8,9 +9,9 @@ import java.util.Map;
 
 public interface IServiceService {
 
-  void addNewService(Service service);
+  void addNewService(ServiceDto serviceDto);
 
-  List<Service> showCurrentServices();
+  List<Service> getCurrentServices();
 
   Service changeServicePrice(String nameOfService, int newPrice);
 

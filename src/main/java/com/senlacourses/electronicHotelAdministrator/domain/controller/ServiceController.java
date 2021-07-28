@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IServiceController;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.ServiceDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
 import com.senlacourses.electronicHotelAdministrator.domain.service.criteriaForSorting.ServiceAndRoomSortingCriteria;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IServiceService;
@@ -22,8 +23,8 @@ public class ServiceController implements IServiceController {
 
   @Override
   @PostMapping(value = "/services")
-  public ResponseEntity<?> addNewService(@RequestBody Service service) {
-    serviceService.addNewService(service);
+  public ResponseEntity<?> addNewService(@RequestBody ServiceDto serviceDto) {
+    serviceService.addNewService(serviceDto);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
@@ -31,7 +32,7 @@ public class ServiceController implements IServiceController {
   @Override
   @GetMapping(value = "/services")
   public ResponseEntity<List<Service>> showCurrentServices() {
-    List<Service> services = serviceService.showCurrentServices();
+    List<Service> services = serviceService.getCurrentServices();
 
     return services != null
             ? new ResponseEntity<>(services, HttpStatus.OK)

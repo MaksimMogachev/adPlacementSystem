@@ -10,6 +10,7 @@
         <class>com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident</class>
         <class>com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard</class>
         <class>com.senlacourses.electronicHotelAdministrator.domain.model.Service</class>
+        <class>com.senlacourses.electronicHotelAdministrator.domain.model.User</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" /> <!-- DB Driver -->

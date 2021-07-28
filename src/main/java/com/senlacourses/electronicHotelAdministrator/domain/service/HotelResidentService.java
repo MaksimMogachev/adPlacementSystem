@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.HotelResidentDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelResidentService;
 import org.slf4j.Logger;
@@ -21,14 +22,23 @@ public class HotelResidentService implements IHotelResidentService {
   }
 
   @Override
-  public List<HotelResident> showAllResidents() {
+  public List<HotelResident> getAllResidents() {
     return hotelResidentDao
         .getAll();
   }
 
   @Transactional
   @Override
-  public void addNewResident(HotelResident hotelResident) {
+  public void addNewResident(HotelResidentDto hotelResidentDto) {
+    if (hotelResidentDao.read(hotelResidentDto.getPassportNumber()) != null) {
+      logger.error("IllegalArgumentException(\"this resident already exists\")");
+      throw new IllegalArgumentException("this resident already exists");
+    }
+
+    HotelResident hotelResident = new HotelResident();
+    hotelResident.setFullName(hotelResidentDto.getFullName());
+    hotelResident.setPassportNumber(hotelResidentDto.getPassportNumber());
+
     hotelResidentDao.create(hotelResident);
   }
 

@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.controller;
 
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IHotelResidentController;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.HotelResidentDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.IHotelResidentService;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class HotelResidentController implements IHotelResidentController {
   @Override
   @GetMapping(value = "/residents")
   public ResponseEntity<List<HotelResident>> showAllResidents() {
-    final List<HotelResident> hotelResidents = hotelResidentService.showAllResidents();
+    final List<HotelResident> hotelResidents = hotelResidentService.getAllResidents();
 
     return hotelResidents != null && !hotelResidents.isEmpty()
             ? new ResponseEntity<>(hotelResidents, HttpStatus.OK)
@@ -30,8 +31,8 @@ public class HotelResidentController implements IHotelResidentController {
 
   @Override
   @PostMapping(value = "/residents")
-  public ResponseEntity<?> addNewResident(@RequestBody HotelResident hotelResident) {
-    hotelResidentService.addNewResident(hotelResident);
+  public ResponseEntity<?> addNewResident(@RequestBody HotelResidentDto hotelResidentDto) {
+    hotelResidentService.addNewResident(hotelResidentDto);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }

@@ -1,4 +1,4 @@
-package com.senlacourses.electronicHotelAdministrator;
+package com.senlacourses.electronicHotelAdministrator.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.persistence.Persistence;
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackages = "com.senlacourses.electronicHotelAdministrator")
 @EnableTransactionManagement(proxyTargetClass = true)
 public class ApplicationContextConfigurator {
 

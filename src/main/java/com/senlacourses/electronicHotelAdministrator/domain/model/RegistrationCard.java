@@ -2,6 +2,7 @@ package com.senlacourses.electronicHotelAdministrator.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -18,12 +19,14 @@ import java.util.TreeMap;
 @Getter
 @Setter
 @EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "registrationcard", schema = "eha")
 public class RegistrationCard implements Serializable {
 
   @Id
   private int hotelRoom;
+  //  TODO
   @ElementCollection
   @CollectionTable(name = "residents_cards", schema = "eha")
   private List<HotelResident> residents = new ArrayList<>();
@@ -34,14 +37,6 @@ public class RegistrationCard implements Serializable {
   private LocalDate checkInDate;
   @NotNull
   private LocalDate departureDate;
-
-  public RegistrationCard(int numberOfRoom, LocalDate checkInDate, LocalDate departureDate) {
-    this.hotelRoom = numberOfRoom;
-    this.checkInDate = checkInDate;
-    this.departureDate = departureDate;
-  }
-
-  public RegistrationCard() {}
 
   @Override
   public String toString() {

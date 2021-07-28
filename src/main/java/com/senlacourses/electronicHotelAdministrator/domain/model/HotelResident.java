@@ -1,9 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,11 +8,10 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 @Entity
 @Table(name = "hotelresident", schema = "eha")
-@Embeddable
 public class HotelResident implements Serializable {
 
   @Id
@@ -23,8 +19,6 @@ public class HotelResident implements Serializable {
   private int passportNumber;
   @NotNull
   private String fullName;
-
-  public HotelResident() {}
 
   @Override
   public String toString() {

@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
 import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.domain.dto.request.RegistrationCardDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.RegistrationCard;
@@ -37,29 +38,30 @@ public class RegistrationCardService implements IRegistrationCardService {
   }
 
   @Override
-  public List<RegistrationCard> showOccupiedRooms() {
+  public List<RegistrationCard> getOccupiedRooms() {
     return registrationCardDao.getAll();
   }
 
   @Transactional
   @Override
-  public void createNewCard(RegistrationCard registrationCard) {
-    HotelRoom hotelRoom = hotelRoomDao.read(registrationCard.getHotelRoom());
+  public void createNewCard(RegistrationCardDto registrationCardDto) {
+    HotelRoom hotelRoom = hotelRoomDao.read(registrationCardDto.getHotelRoom());
 
     if (hotelRoom == null) {
       logger.error("IllegalArgumentException(\"this room does not exist\")");
       throw new IllegalArgumentException("this room does not exist");
     }
 
-    if (registrationCardDao.read(registrationCard.getHotelRoom()) != null) {
-      logger.error("IllegalArgumentException(\"this  registration card is already exist\")");
-      throw new IllegalArgumentException("this  registration card is already exist");
+    if (registrationCardDao.read(registrationCardDto.getHotelRoom()) != null) {
+      logger.error("IllegalArgumentException(\"this registration card is already exist\")");
+      throw new IllegalArgumentException("this registration card is already exist");
     }
+    RegistrationCard registrationCard = new RegistrationCard();
+    registrationCard.setHotelRoom(registrationCardDto.getHotelRoom());
+    registrationCard.setCheckInDate(registrationCardDto.getCheckInDate());
+    registrationCard.setDepartureDate(registrationCardDto.getDepartureDate());
 
     registrationCardDao.create(registrationCard);
-
-    hotelRoom.setRoomIsOccupied(true);
-    hotelRoomDao.update(hotelRoom);
   }
 
   @Transactional
@@ -98,6 +100,9 @@ public class RegistrationCardService implements IRegistrationCardService {
       throw new UnsupportedOperationException("Maximum Size "
           + hotelRoom.getRoomCapacity() + " reached");
     }
+    hotelRoom.setRoomIsOccupied(true);
+    hotelRoomDao.update(hotelRoom);
+
     return registrationCard;
   }
 

@@ -4,7 +4,7 @@ import com.senlacourses.electronicHotelAdministrator.config.security.jwt.JwtProv
 import com.senlacourses.electronicHotelAdministrator.domain.controller.interfaces.IRegistrationController;
 import com.senlacourses.electronicHotelAdministrator.domain.dto.request.UserDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.User;
-import com.senlacourses.electronicHotelAdministrator.domain.service.UserDetailsServiceImplementation;
+import com.senlacourses.electronicHotelAdministrator.domain.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController implements IRegistrationController {
 
-  private final UserDetailsServiceImplementation userService;
+  private final UserDetailsServiceImpl userService;
   @Autowired
   private JwtProvider jwtProvider;
 
-  public RegistrationController(UserDetailsServiceImplementation userService) {
+  public RegistrationController(UserDetailsServiceImpl userService) {
     this.userService = userService;
   }
 

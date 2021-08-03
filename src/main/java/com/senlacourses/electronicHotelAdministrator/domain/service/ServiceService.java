@@ -1,6 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.dao.interfaces.IHotelRoomDao;
+import com.senlacourses.electronicHotelAdministrator.dao.interfaces.IServiceDao;
 import com.senlacourses.electronicHotelAdministrator.domain.dto.request.ServiceDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Service;
@@ -18,10 +19,10 @@ import javax.transaction.Transactional;
 public class ServiceService implements IServiceService {
 
   private final static Logger logger = LoggerFactory.getLogger(ServiceService.class);
-  private final IGenericDao<Service> serviceDao;
-  private final IGenericDao<HotelRoom> hotelRoomDao;
+  private final IServiceDao serviceDao;
+  private final IHotelRoomDao hotelRoomDao;
 
-  public ServiceService(IGenericDao<Service> serviceDao, IGenericDao<HotelRoom> hotelRoomDao) {
+  public ServiceService(IServiceDao serviceDao, IHotelRoomDao hotelRoomDao) {
     this.serviceDao = serviceDao;
     this.hotelRoomDao = hotelRoomDao;
   }

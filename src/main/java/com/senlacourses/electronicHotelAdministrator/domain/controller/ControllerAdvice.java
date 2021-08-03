@@ -18,4 +18,9 @@ public class ControllerAdvice {
   public ResponseEntity<?> handleIllegalArgumentException(UsernameNotFoundException e) {
     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(UnsupportedOperationException.class)
+  public ResponseEntity<?> handleUnsupportedOperationException(UnsupportedOperationException e) {
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+  }
 }

@@ -2,7 +2,7 @@ package com.senlacourses.electronicHotelAdministrator.config;
 
 import com.senlacourses.electronicHotelAdministrator.config.security.CustomUsernamePasswordAuthFilter;
 import com.senlacourses.electronicHotelAdministrator.config.security.jwt.JwtFilter;
-import com.senlacourses.electronicHotelAdministrator.domain.service.UserDetailsServiceImplementation;
+import com.senlacourses.electronicHotelAdministrator.domain.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  UserDetailsServiceImplementation userDetailsServiceImplementation;
+  UserDetailsServiceImpl userDetailsServiceImpl;
 
   @Autowired
   JwtFilter jwtFilter;
@@ -59,6 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userDetailsServiceImplementation).passwordEncoder(bCryptPasswordEncoder());
+    auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(bCryptPasswordEncoder());
   }
 }

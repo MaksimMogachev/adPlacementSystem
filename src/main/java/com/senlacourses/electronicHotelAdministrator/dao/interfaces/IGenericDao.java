@@ -1,4 +1,4 @@
-package com.senlacourses.electronicHotelAdministrator.dao;
+package com.senlacourses.electronicHotelAdministrator.dao.interfaces;
 
 import java.io.Serializable;
 import java.util.List;

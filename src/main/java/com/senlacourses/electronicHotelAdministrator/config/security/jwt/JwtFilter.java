@@ -1,7 +1,7 @@
 package com.senlacourses.electronicHotelAdministrator.config.security.jwt;
 
 import com.senlacourses.electronicHotelAdministrator.domain.model.User;
-import com.senlacourses.electronicHotelAdministrator.domain.service.UserDetailsServiceImplementation;
+import com.senlacourses.electronicHotelAdministrator.domain.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,14 +25,14 @@ public class JwtFilter extends GenericFilterBean {
   @Autowired
   private JwtProvider jwtProvider;
   @Autowired
-  private UserDetailsServiceImplementation userDetailsServiceImplementation;
+  private UserDetailsServiceImpl userDetailsServiceImpl;
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
     String token = getTokenFromRequest((HttpServletRequest) servletRequest);
     if (token != null && jwtProvider.validateToken(token)) {
       String userLogin = jwtProvider.getLoginFromToken(token);
-      User user = userDetailsServiceImplementation.loadUserByUsername(userLogin);
+      User user = userDetailsServiceImpl.loadUserByUsername(userLogin);
       UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(auth);
     }

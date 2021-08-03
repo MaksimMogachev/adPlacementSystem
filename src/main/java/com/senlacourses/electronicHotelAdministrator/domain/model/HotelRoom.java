@@ -41,7 +41,7 @@ public class HotelRoom implements Serializable {
 
   @Override
   public String toString() {
-    return (" Number of room: "
+    return ("Number of room: "
         + getNumberOfRoom()
         + "; Number of stars: "
         + getNumberOfStars()

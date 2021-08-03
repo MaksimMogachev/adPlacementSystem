@@ -1,6 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.dao.interfaces.IUserDao;
 import com.senlacourses.electronicHotelAdministrator.domain.dto.request.UserDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.Role;
 import com.senlacourses.electronicHotelAdministrator.domain.model.User;
@@ -8,7 +8,6 @@ import com.senlacourses.electronicHotelAdministrator.domain.service.interfaces.I
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,14 +18,14 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class UserDetailsServiceImplementation implements IUserService, UserDetailsService {
+public class UserDetailsServiceImpl implements IUserService, UserDetailsService {
 
   private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
-  private final IGenericDao<User> userDao;
+  private final IUserDao userDao;
   @Autowired
-  BCryptPasswordEncoder bCryptPasswordEncoder;
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  public UserDetailsServiceImplementation(IGenericDao<User> userDao) {
+  public UserDetailsServiceImpl(IUserDao userDao) {
     this.userDao = userDao;
   }
 
@@ -83,11 +82,10 @@ public class UserDetailsServiceImplementation implements IUserService, UserDetai
   public User findByLoginAndPassword(String username, String password) {
     User user = loadUserByUsername(username);
 
-    if (user != null) {
-      if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
-        return user;
-      }
+    if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+      return user;
     }
+
     return null;
   }
 }

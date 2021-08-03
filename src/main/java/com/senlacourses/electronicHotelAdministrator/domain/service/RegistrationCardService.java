@@ -1,6 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.service;
 
-import com.senlacourses.electronicHotelAdministrator.dao.IGenericDao;
+import com.senlacourses.electronicHotelAdministrator.dao.interfaces.*;
 import com.senlacourses.electronicHotelAdministrator.domain.dto.request.RegistrationCardDto;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelResident;
 import com.senlacourses.electronicHotelAdministrator.domain.model.HotelRoom;
@@ -22,20 +22,21 @@ import java.util.*;
 public class RegistrationCardService implements IRegistrationCardService {
 
   private final Logger logger = LoggerFactory.getLogger(RegistrationCardService.class);
-  private final IGenericDao<RegistrationCard> registrationCardDao;
-  private final IGenericDao<HotelResident> hotelResidentDao;
-  private final IGenericDao<HotelRoom> hotelRoomDao;
-  private final IGenericDao<Service> serviceDao;
+  private final IRegistrationCardDao registrationCardDao;
+  private final IHotelResidentDao hotelResidentDao;
+  private final IHotelRoomDao hotelRoomDao;
+  private final IServiceDao serviceDao;
 
-  public RegistrationCardService(IGenericDao<RegistrationCard> registrationCardDao,
-                                 IGenericDao<HotelResident> hotelResidentDao,
-                                 IGenericDao<HotelRoom> hotelRoomDao,
-                                 IGenericDao<Service> serviceDao) {
+  public RegistrationCardService(IRegistrationCardDao registrationCardDao,
+                                 IHotelResidentDao hotelResidentDao,
+                                 IHotelRoomDao hotelRoomDao,
+                                 IServiceDao serviceDao) {
     this.registrationCardDao = registrationCardDao;
     this.hotelResidentDao = hotelResidentDao;
     this.hotelRoomDao = hotelRoomDao;
     this.serviceDao = serviceDao;
   }
+
 
   @Override
   public List<RegistrationCard> getOccupiedRooms() {
@@ -61,6 +62,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     registrationCard.setCheckInDate(registrationCardDto.getCheckInDate());
     registrationCard.setDepartureDate(registrationCardDto.getDepartureDate());
 
+    System.out.println(registrationCard);
     registrationCardDao.create(registrationCard);
   }
 
@@ -246,9 +248,7 @@ public class RegistrationCardService implements IRegistrationCardService {
     int size = 0;
 
     for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
-      if (hotelRoomDao.read(registrationCard.getHotelRoom()).isRoomIsOccupied()) {
-        size += registrationCard.getResidents().size();
-      }
+      size += registrationCard.getResidents().size();
     }
     return ("Total number of current residents: " + size);
   }
@@ -266,29 +266,32 @@ public class RegistrationCardService implements IRegistrationCardService {
                                                   ServiceSortingCriteria sortingCriteria) {
     Map<LocalDateTime, Service> services = null;
 
-    for (int i = 0; i < registrationCardDao.getAll().size(); i++) {
-      for (int j = 0; j < registrationCardDao.read(i).getResidents().size(); j++) {
-        if (registrationCardDao.read(i).getResidents().get(j).getPassportNumber() == passportNumber) {
-          services = registrationCardDao.read(i).getServices();
+    for (RegistrationCard registrationCard : registrationCardDao.getAll()) {
+      for (HotelResident hotelResident : registrationCard.getResidents()) {
+        if (hotelResident.getPassportNumber() == passportNumber) {
+          services = registrationCard.getServices();
           break;
         }
       }
     }
     if (services == null) {
-      logger.error("IllegalArgumentException(\"incorrect argument\")");
-      throw new IllegalArgumentException("incorrect argument");
+      logger.error("IllegalArgumentException(\"incorrect argument, resident not found\")");
+      throw new IllegalArgumentException("incorrect argument, resident not found");
+    }
+
+    if (services.size() == 0) {
+      logger.error("IllegalArgumentException(\"resident has no services\")");
+      throw new IllegalArgumentException("resident has no services");
     }
 
     switch (sortingCriteria) {
-
       case DATE:
         return services.entrySet().toArray();
 
-    case PRICE:
+      case PRICE:
         return services.entrySet().stream()
                 .sorted(Comparator.comparingInt(o -> o.getValue().getPrice())).toArray();
-
       }
     return null;
-    }
+  }
 }

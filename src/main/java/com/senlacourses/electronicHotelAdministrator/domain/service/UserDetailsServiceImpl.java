@@ -22,11 +22,11 @@ public class UserDetailsServiceImpl implements IUserService, UserDetailsService 
 
   private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
   private final IUserDao userDao;
-  @Autowired
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  public UserDetailsServiceImpl(IUserDao userDao) {
+  public UserDetailsServiceImpl(IUserDao userDao, BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userDao = userDao;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   @Override

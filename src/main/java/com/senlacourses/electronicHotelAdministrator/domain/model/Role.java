@@ -1,5 +1,6 @@
 package com.senlacourses.electronicHotelAdministrator.domain.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "t_role", schema = "eha")
 public class Role implements GrantedAuthority {

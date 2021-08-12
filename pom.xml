@@ -120,16 +120,6 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>5.3.8</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <version>5.3.8</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
       <version>5.3.8</version>
     </dependency>
@@ -224,7 +214,7 @@
               <manifest>
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>lib/</classpathPrefix>
-                <mainClass>com.senlacourses.electronicHotelAdministrator.Main</mainClass>
+                <mainClass>com.senlaCourses.adPlacementSystem.Main</mainClass>
               </manifest>
             </archive>
           </configuration>

@@ -3,7 +3,10 @@ package com.senlaCourses.adPlacementSystem.config;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+/**
+ * Spring application initializer.
+ */
+public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
   @Override
   protected Class<?>[] getRootConfigClasses() {
@@ -12,7 +15,7 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
 
   @Override
   protected Class<?>[] getServletConfigClasses() {
-    return new Class[0];
+    return new Class[]{WebApplicationContextConfig.class};
   }
 
   @Override

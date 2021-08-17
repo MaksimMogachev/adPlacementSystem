@@ -14,6 +14,8 @@ public interface IGenericDao<T extends Serializable> {
 
   <R> T read(R id);
 
+  <R> T readByNaturalId(R id);
+
   void update(T t);
 
   void delete(T t);

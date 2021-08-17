@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -15,7 +16,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
 
   private final Class<T> clazz;
   @Autowired
-  protected EntityManager entityManager;
+  private EntityManager entityManager;
 
   protected AbstractHibernateDao(Class<T> clazz) {
     this.clazz = clazz;
@@ -48,6 +49,10 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
    */
   public <R> T read(R id) {
     return entityManager.find(clazz, id);
+  }
+
+  public <R> T readByNaturalId(R id) {
+    return entityManager.unwrap(Session.class).bySimpleNaturalId(clazz).load(id);
   }
 
   /**

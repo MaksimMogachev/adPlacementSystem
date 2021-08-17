@@ -1,45 +1,38 @@
 package com.senlaCourses.adPlacementSystem.domain.model;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
- * POJO class for users roles.
+ * POJO class for chats.
  */
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-@Table(name = "t_role", schema = "aps")
-public class Role implements GrantedAuthority {
+@Table(name = "chat", schema = "aps")
+public class Chat implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String name;
-  @Transient
-  @ManyToMany(mappedBy = "roles")
-  private Set<User> users;
-
-  public Role(long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  @Override
-  public String getAuthority() {
-    return name;
-  }
+  @OneToMany(mappedBy = "chat")
+  private List<Message> messages = new LinkedList<>();
+  @ManyToMany(mappedBy = "chats")
+  private Set<User> users = new HashSet<>();
 }

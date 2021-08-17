@@ -1,40 +1,49 @@
 package com.senlaCourses.adPlacementSystem.domain.service;
 
-import com.senlaCourses.adPlacementSystem.dao.ProfileDao;
+import com.senlaCourses.adPlacementSystem.dao.interfaces.IProfileDao;
+import com.senlaCourses.adPlacementSystem.dao.interfaces.IUserDao;
 import com.senlaCourses.adPlacementSystem.domain.dto.request.ProfileDto;
 import com.senlaCourses.adPlacementSystem.domain.model.Ad;
 import com.senlaCourses.adPlacementSystem.domain.model.Profile;
 import com.senlaCourses.adPlacementSystem.domain.model.User;
 import com.senlaCourses.adPlacementSystem.domain.service.interfaces.IProfileService;
+import com.senlaCourses.adPlacementSystem.exceptions.EntityAlreadyExistException;
+import com.senlaCourses.adPlacementSystem.exceptions.EntityNotFoundException;
 import java.util.Set;
+import javax.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 /**
  * Class-Service for working with profile.
  */
+@Slf4j
+@AllArgsConstructor
+@Service
 public class ProfileService implements IProfileService {
 
-  private final ProfileDao profileDao;
-
-  public ProfileService(ProfileDao profileDao) {
-    this.profileDao = profileDao;
-  }
+  private final IProfileDao profileDao;
+  private final IUserDao userDao;
 
   /**
    * Adds new profile in DB.
    *
    * @param profileDto profile data for adding.
+   * @throws EntityAlreadyExistException if profile already have ad with this name.
    */
+  @Transactional
   @Override
-  public void addNewProfile(ProfileDto profileDto) {
-    //TODO check returned user. If doesn't work, change to (UserDetails) and get User from by Id.
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  public void addNewProfile(ProfileDto profileDto) throws EntityAlreadyExistException {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
+    User user = userDao.readByNaturalId(userDetails.getUsername());
 
-    if (user == null) {
-      throw new NullPointerException("User not logged in");
-    }
     if (profileDao.read(user.getUsername()) != null) {
-      throw new IllegalArgumentException("This profile already exist");
+      log.error("EntityAlreadyExistException(\"This profile already exist\")");
+      throw new EntityAlreadyExistException("This profile already exist");
     }
 
     Profile profile = new Profile();
@@ -49,9 +58,11 @@ public class ProfileService implements IProfileService {
    * Removes profile from DB.
    *
    * @return profile was deleted or not.
+   * @throws EntityNotFoundException if profile wasn't found in DB.
    */
+  @Transactional
   @Override
-  public boolean removeProfile() {
+  public boolean removeProfile() throws EntityNotFoundException {
     Profile profile = getCurrentProfile();
 
     profileDao.delete(profile);
@@ -63,9 +74,11 @@ public class ProfileService implements IProfileService {
    *
    * @param newPhoneNumber parameter of Profile.class object for change.
    * @return changed Profile.class object.
+   * @throws EntityNotFoundException if profile wasn't found in DB.
    */
+  @Transactional
   @Override
-  public Profile changePhoneNumber(String newPhoneNumber) {
+  public Profile changePhoneNumber(String newPhoneNumber) throws EntityNotFoundException {
     Profile profile = getCurrentProfile();
 
     profile.setPhoneNumber(newPhoneNumber);
@@ -78,12 +91,14 @@ public class ProfileService implements IProfileService {
    *
    * @param id identifier for search object id DB.
    * @return Profile.class object.
+   * @throws EntityNotFoundException if profile wasn't found in DB.
    */
   @Override
-  public Profile showProfileInformation(long id) {
+  public Profile showProfileInformation(long id) throws EntityNotFoundException {
     Profile profile = profileDao.read(id);
     if (profile == null) {
-      throw new IllegalArgumentException("Profile not found");
+      log.error("EntityNotFoundException(\"Profile not found\")");
+      throw new EntityNotFoundException("Profile not found");
     }
 
     return profile;
@@ -94,31 +109,27 @@ public class ProfileService implements IProfileService {
    *
    * @param id identifier for search object id DB.
    * @return Set of Ad.class objects.
+   * @throws EntityNotFoundException if profile wasn't found in DB.
    */
   @Override
-  public Set<Ad> showHistoryOfAds(long id) {
+  public Set<Ad> showHistoryOfAds(long id) throws EntityNotFoundException {
     Profile profile = profileDao.read(id);
-    if (profile == null) {
-      throw new IllegalArgumentException("Profile not found");
-    }
 
+    if (profile == null) {
+      log.error("EntityNotFoundException(\"Profile not found\")");
+      throw new EntityNotFoundException("Profile not found");
+    }
     return profile.getAds();
   }
 
-  /**
-   * Gets profile of current user logged in.
-   *
-   * @return Profile.class object of current user
-   */
-  private Profile getCurrentProfile() {
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (user == null) {
-      throw new NullPointerException("User not logged in");
-    }
+  private Profile getCurrentProfile() throws EntityNotFoundException {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
 
-    Profile profile = profileDao.read(user.getUsername());
+    Profile profile = profileDao.readByNaturalId(userDetails.getUsername());
     if (profile == null) {
-      throw new NullPointerException("The user does not have an account to post ads");
+      log.error("EntityNotFoundException(\"The user does not have an account to work with ads\")");
+      throw new EntityNotFoundException("The user does not have an account to work with ads");
     }
     return profile;
   }

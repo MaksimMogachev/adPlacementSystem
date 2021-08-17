@@ -6,37 +6,43 @@ import com.senlaCourses.adPlacementSystem.domain.dto.request.UserDtoForChangingT
 import com.senlaCourses.adPlacementSystem.domain.model.Role;
 import com.senlaCourses.adPlacementSystem.domain.model.User;
 import com.senlaCourses.adPlacementSystem.domain.service.interfaces.IUserService;
+import com.senlaCourses.adPlacementSystem.exceptions.EntityAlreadyExistException;
+import com.senlaCourses.adPlacementSystem.exceptions.EntityNotFoundException;
 import java.util.Collections;
 import javax.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 /**
  * Class-Service for working with users.
  */
+@Slf4j
+@AllArgsConstructor
+@Service
 public class UserService implements IUserService, UserDetailsService {
 
   private final IUserDao userDao;
-  private final BCryptPasswordEncoder encoder;
-
-  public UserService(IUserDao userDao, BCryptPasswordEncoder encoder) {
-    this.userDao = userDao;
-    this.encoder = encoder;
-  }
+  private BCryptPasswordEncoder encoder;
 
   /**
    * Adds new user to DB.
    *
    * @param userDto user data for adding.
+   * @throws EntityAlreadyExistException if user already have ad with this name.
    */
   @Transactional
   @Override
-  public void addNewUser(UserDto userDto) {
-    User user = userDao.read(userDto.getUsername());
+  public void addNewUser(UserDto userDto) throws EntityAlreadyExistException {
+    User user = userDao.readByNaturalId(userDto.getUsername());
     if (user != null) {
-      throw new IllegalArgumentException("this user already exist");
+      log.error("EntityAlreadyExistException(\"this user already exist\")");
+      throw new EntityAlreadyExistException("this user already exist");
     }
 
     user = new User();
@@ -53,20 +59,18 @@ public class UserService implements IUserService, UserDetailsService {
    * @param userDtoForChangingThePassword user data for change the password.
    * @return changed User.class object.
    */
+  @Transactional
   @Override
   public User changePassword(UserDtoForChangingThePassword userDtoForChangingThePassword) {
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (user == null) {
-      throw new NullPointerException("User not logged in");
+    User user = getCurrentUser();
+
+    if (!encoder.matches(userDtoForChangingThePassword.getCurrentPassword(), user.getPassword())) {
+      throw new IllegalArgumentException("Incorrect password");
     }
 
-    if (encoder.matches(userDtoForChangingThePassword.getCurrentPassword(), user.getPassword())) {
-      user.setPassword(encoder.encode(userDtoForChangingThePassword.getNewPassword()));
-      userDao.update(user);
-
-      return user;
-    }
-    return null;
+    user.setPassword(encoder.encode(userDtoForChangingThePassword.getNewPassword()));
+    userDao.update(user);
+    return user;
   }
 
   /**
@@ -75,12 +79,10 @@ public class UserService implements IUserService, UserDetailsService {
    * @param newEmail parameter of User.class object for change.
    * @return changed User.class object.
    */
+  @Transactional
   @Override
   public User changeEmail(String newEmail) {
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (user == null) {
-      throw new NullPointerException("User not logged in");
-    }
+    User user = getCurrentUser();
 
     user.setEmail(newEmail);
     userDao.update(user);
@@ -93,15 +95,16 @@ public class UserService implements IUserService, UserDetailsService {
    *
    * @param id parameter of User.class object for search.
    * @return user was deleted or not.
-   * @throws UsernameNotFoundException if user not found.
+   * @throws EntityNotFoundException if user not found.
    */
   @Transactional
   @Override
-  public boolean removeUser(long id) throws UsernameNotFoundException {
+  public boolean removeUser(long id) throws EntityNotFoundException {
     User user = userDao.read(id);
 
     if (user == null) {
-      throw new UsernameNotFoundException("User not found");
+      log.error("EntityNotFoundException(\"User not found\")");
+      throw new EntityNotFoundException("User not found");
     }
     userDao.delete(user);
     return userDao.read(id) == null;
@@ -114,11 +117,13 @@ public class UserService implements IUserService, UserDetailsService {
    * @return found user.
    * @throws UsernameNotFoundException if user not found.
    */
+  @Transactional
   @Override
   public User loadUserByUsername(String username) throws UsernameNotFoundException {
     User user = userDao.read(username);
 
     if (user == null) {
+      log.error("UsernameNotFoundException(\"User not found\")");
       throw new UsernameNotFoundException("User not found");
     }
     return user;
@@ -131,6 +136,7 @@ public class UserService implements IUserService, UserDetailsService {
    * @param password parameter of User.class object for search.
    * @return founded user.
    */
+  @Transactional
   @Override
   public User findByLoginAndPassword(String username, String password) {
     User user = loadUserByUsername(username);
@@ -139,5 +145,11 @@ public class UserService implements IUserService, UserDetailsService {
       return user;
     }
     return null;
+  }
+
+  private User getCurrentUser() {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
+    return userDao.readByNaturalId(userDetails.getUsername());
   }
 }

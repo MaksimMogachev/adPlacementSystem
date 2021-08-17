@@ -5,16 +5,13 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Class for creation User.class object.
+ * Class for creation Message.class object.
  */
 @Getter
 @AllArgsConstructor
-public class UserDto {
+public class MessageDto {
 
+  private final long receiverId;
   @NotNull
-  private final String username;
-  @NotNull
-  private final String email;
-  @NotNull
-  private final String password;
+  private final String messageText;
 }

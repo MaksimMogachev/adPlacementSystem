@@ -6,7 +6,6 @@ import com.senlaCourses.adPlacementSystem.domain.model.Chat;
 import com.senlaCourses.adPlacementSystem.domain.model.Message;
 import com.senlaCourses.adPlacementSystem.domain.service.interfaces.IChatService;
 import com.senlaCourses.adPlacementSystem.exceptions.EntityNotFoundException;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,9 +36,9 @@ public class ChatController implements IChatController {
 
   @Override
   @GetMapping(value = "/messages/{userId}")
-  public ResponseEntity<List<Message>> getAllMessagesFromChat(@PathVariable long userId)
+  public ResponseEntity<Set<Message>> getAllMessagesFromChat(@PathVariable long userId)
       throws EntityNotFoundException {
-    List<Message> messages = chatService.getAllMessagesFromChat(userId);
+    Set<Message> messages = chatService.getAllMessagesFromChat(userId);
 
     return new ResponseEntity<>(messages, HttpStatus.OK);
   }

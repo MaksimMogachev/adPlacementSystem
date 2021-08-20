@@ -41,7 +41,7 @@ public class ProfileService implements IProfileService {
         .getContext().getAuthentication().getPrincipal();
     User user = userDao.readByNaturalId(userDetails.getUsername());
 
-    if (profileDao.read(user.getUsername()) != null) {
+    if (profileDao.readByNaturalId(user.getUsername()) != null) {
       log.error("EntityAlreadyExistException(\"This profile already exist\")");
       throw new EntityAlreadyExistException("This profile already exist");
     }
@@ -50,8 +50,10 @@ public class ProfileService implements IProfileService {
     profile.setUser(user);
     profile.setUsername(user.getUsername());
     profile.setPhoneNumber(profileDto.getPhoneNumber());
-
     profileDao.create(profile);
+
+    user.setProfile(profile);
+    userDao.update(user);
   }
 
   /**
@@ -64,7 +66,11 @@ public class ProfileService implements IProfileService {
   @Override
   public boolean removeProfile() throws EntityNotFoundException {
     Profile profile = getCurrentProfile();
+    User user = userDao.readByNaturalId(profile.getUsername());
 
+    user.setProfile(null);
+
+    userDao.update(user);
     profileDao.delete(profile);
     return profileDao.read(profile.getId()) == null;
   }
@@ -125,8 +131,9 @@ public class ProfileService implements IProfileService {
   private Profile getCurrentProfile() throws EntityNotFoundException {
     UserDetails userDetails = (UserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
+    User user = userDao.readByNaturalId(userDetails.getUsername());
 
-    Profile profile = profileDao.readByNaturalId(userDetails.getUsername());
+    Profile profile = profileDao.readByNaturalId(user.getUsername());
     if (profile == null) {
       log.error("EntityNotFoundException(\"The user does not have an account to work with ads\")");
       throw new EntityNotFoundException("The user does not have an account to work with ads");

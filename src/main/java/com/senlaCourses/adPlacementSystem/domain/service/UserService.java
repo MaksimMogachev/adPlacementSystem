@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 public class UserService implements IUserService, UserDetailsService {
 
   private final IUserDao userDao;
-  private BCryptPasswordEncoder encoder;
+  private final BCryptPasswordEncoder encoder;
 
   /**
    * Adds new user to DB.
@@ -47,6 +47,7 @@ public class UserService implements IUserService, UserDetailsService {
 
     user = new User();
     user.setUsername(userDto.getUsername());
+    user.setEmail(userDto.getEmail());
     user.setPassword(encoder.encode(userDto.getPassword()));
     user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
 
@@ -120,7 +121,7 @@ public class UserService implements IUserService, UserDetailsService {
   @Transactional
   @Override
   public User loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userDao.read(username);
+    User user = userDao.readByNaturalId(username);
 
     if (user == null) {
       log.error("UsernameNotFoundException(\"User not found\")");
@@ -141,10 +142,11 @@ public class UserService implements IUserService, UserDetailsService {
   public User findByLoginAndPassword(String username, String password) {
     User user = loadUserByUsername(username);
 
-    if (encoder.matches(password, user.getPassword())) {
-      return user;
+    if (!encoder.matches(password, user.getPassword())) {
+      log.error("IllegalArgumentException(\"Password mismatch\")");
+      throw new IllegalArgumentException("Password mismatch");
     }
-    return null;
+    return user;
   }
 
   private User getCurrentUser() {

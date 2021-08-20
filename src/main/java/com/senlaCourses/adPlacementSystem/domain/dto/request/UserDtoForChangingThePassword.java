@@ -1,18 +1,15 @@
 package com.senlaCourses.adPlacementSystem.domain.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import lombok.NoArgsConstructor;
 
 /**
  * Class for data transfer new passport parameter.
  */
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserDtoForChangingThePassword {
 
-  @NotNull
-  private final String currentPassword;
-  @NotNull
-  private final String newPassword;
+  private String currentPassword;
+  private String newPassword;
 }

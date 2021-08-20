@@ -6,6 +6,6 @@ package com.senlaCourses.adPlacementSystem.domain.model;
 public enum CategoryOfAd {
   REAL_ESTATE,
   TRANSPORT,
-  SERVICES,
-  THINGS
+  SERVICE,
+  THING
 }

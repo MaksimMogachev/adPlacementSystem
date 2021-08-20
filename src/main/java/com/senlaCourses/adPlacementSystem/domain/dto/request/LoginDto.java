@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Class for creation Message.class object.
+ * Class for login.
  */
 @Getter
 @NoArgsConstructor
-public class MessageDto {
+public class LoginDto {
 
-  private long receiverId;
-  private String messageText;
+  private String username;
+  private String password;
 }

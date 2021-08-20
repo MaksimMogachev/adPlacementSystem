@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,7 +23,7 @@ public class UserController implements IUserController {
   @PutMapping(value = "/user/password")
   @Override
   public ResponseEntity<User> changePassword(
-      UserDtoForChangingThePassword userDtoForChangingThePassword) {
+      @RequestBody UserDtoForChangingThePassword userDtoForChangingThePassword) {
     User user = userService.changePassword(userDtoForChangingThePassword);
 
     return new ResponseEntity<>(user, HttpStatus.OK);
@@ -30,7 +31,7 @@ public class UserController implements IUserController {
 
   @PutMapping(value = "/user/email")
   @Override
-  public ResponseEntity<User> changeEmail(String newEmail) {
+  public ResponseEntity<User> changeEmail(@RequestBody String newEmail) {
     User user = userService.changeEmail(newEmail);
 
     return new ResponseEntity<>(user, HttpStatus.OK);

@@ -2,18 +2,13 @@ package com.senlaCourses.adPlacementSystem.domain.service;
 
 import com.senlaCourses.adPlacementSystem.dao.interfaces.IAdDao;
 import com.senlaCourses.adPlacementSystem.dao.interfaces.IProfileDao;
-import com.senlaCourses.adPlacementSystem.dao.interfaces.IUserDao;
 import com.senlaCourses.adPlacementSystem.domain.dto.request.AdDto;
-import com.senlaCourses.adPlacementSystem.domain.dto.request.AdDtoToChange;
-import com.senlaCourses.adPlacementSystem.domain.dto.request.AdDtoToCustomSearch;
 import com.senlaCourses.adPlacementSystem.domain.model.Ad;
 import com.senlaCourses.adPlacementSystem.domain.model.CategoryOfAd;
 import com.senlaCourses.adPlacementSystem.domain.model.Profile;
-import com.senlaCourses.adPlacementSystem.domain.model.User;
 import com.senlaCourses.adPlacementSystem.domain.service.interfaces.IAdService;
 import com.senlaCourses.adPlacementSystem.exceptions.EntityAlreadyExistException;
 import com.senlaCourses.adPlacementSystem.exceptions.EntityNotFoundException;
-import java.util.List;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +24,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdService implements IAdService {
 
-  private final IUserDao userDao;
   private final IProfileDao profileDao;
   private final IAdDao adDao;
 
@@ -47,7 +41,7 @@ public class AdService implements IAdService {
 
     for (Ad ad : profile.getAds()) {
       if (ad.getNameOfAd()
-          .equals(adDto.getNameOfAd())) {
+          .equals(adDto.getNameOfAd()) && ad.isActive()) {
         log.error("EntityAlreadyExistException(\"You already have ad with this name\")");
         throw new EntityAlreadyExistException("You already have ad with this name");
       }
@@ -58,15 +52,17 @@ public class AdService implements IAdService {
     }
 
     Ad ad = new Ad();
+    ad.setProfile(profile);
     ad.setNameOfAd(adDto.getNameOfAd());
     ad.setDescription(adDto.getDescription());
     ad.setPrice(adDto.getPrice());
+    ad.setCity(adDto.getCity());
     ad.setCategory(CategoryOfAd
         .valueOf(adDto.getCategory().toUpperCase()));
 
+    adDao.create(ad);
     profile.getAds().add(ad);
     profileDao.update(profile);
-    adDao.create(ad);
   }
 
   /**
@@ -79,9 +75,9 @@ public class AdService implements IAdService {
    */
   @Transactional
   @Override
-  public Ad changeAd(long id, AdDtoToChange adDto) throws EntityNotFoundException {
+  public Ad changeAd(long id, AdDto adDto) throws EntityNotFoundException {
     Profile profile = getCurrentProfile();
-    Ad ad = adDao.read(id);
+    Ad ad = null;
 
     for (Ad adInSet : profile.getAds()) {
       if (adInSet.getId() == id) {
@@ -182,9 +178,14 @@ public class AdService implements IAdService {
   @Override
   public Ad payForAnAd(long id, boolean isPaid) throws EntityNotFoundException {
     Ad ad = adDao.read(id);
+
     if (ad == null) {
       log.error("EntityNotFoundException(\"Ad not found\")");
       throw new EntityNotFoundException("Ad not found");
+    }
+    if (!ad.isActive()) {
+      log.error("IllegalArgumentException(\"ad is not active\")");
+      throw new IllegalArgumentException("ad is not active");
     }
 
     ad.setPaid(true);
@@ -209,6 +210,10 @@ public class AdService implements IAdService {
       log.error("EntityNotFoundException(\"Ad not found\")");
       throw new EntityNotFoundException("Ad not found");
     }
+    if (!ad.isActive()) {
+      log.error("IllegalArgumentException(\"ad is not active\")");
+      throw new IllegalArgumentException("ad is not active");
+    }
 
     ad.getComments().add(profile.getUsername() + ": " + comment);
     adDao.update(ad);
@@ -218,9 +223,8 @@ public class AdService implements IAdService {
   private Profile getCurrentProfile() throws EntityNotFoundException {
     UserDetails userDetails = (UserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
-    User user = userDao.readByNaturalId(userDetails.getUsername());
 
-    Profile profile = profileDao.read(user.getUsername());
+    Profile profile = profileDao.readByNaturalId(userDetails.getUsername());
     if (profile == null) {
       log.error("EntityNotFoundException(\"The user does not have an account to post ads\")");
       throw new EntityNotFoundException("The user does not have an account to post ads");

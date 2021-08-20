@@ -30,7 +30,8 @@ public class ProfileController implements IProfileController {
 
   @Override
   @PostMapping(value = "/profile")
-  public ResponseEntity<?> addNewProfile(ProfileDto profileDto) throws EntityAlreadyExistException {
+  public ResponseEntity<?> addNewProfile(@RequestBody ProfileDto profileDto)
+      throws EntityAlreadyExistException {
     profileService.addNewProfile(profileDto);
 
     return new ResponseEntity<>(HttpStatus.CREATED);

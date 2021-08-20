@@ -3,6 +3,8 @@ package com.senlaCourses.adPlacementSystem.config;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.sql.DataSource;
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,22 @@ public class ApplicationContextConfig {
   @Scope("singleton")
   public EntityManager entityManager() {
     return entityManagerFactory().createEntityManager();
+  }
+
+  /**
+   * Creates DataSource.
+   * Bean ONLY for tests.
+   *
+   * @return configured DataSource.
+   */
+  @Bean
+  public DataSource dataSource() {
+    PGSimpleDataSource ds = new PGSimpleDataSource();
+    ds.setServerName("127.0.0.1:5432");
+    ds.setDatabaseName("postgres");
+    ds.setUser("postgres");
+    ds.setPassword("1234");
+    return ds;
   }
 
   @Bean

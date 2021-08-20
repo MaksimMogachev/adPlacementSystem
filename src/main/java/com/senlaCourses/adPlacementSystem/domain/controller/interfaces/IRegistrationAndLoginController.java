@@ -1,5 +1,6 @@
 package com.senlaCourses.adPlacementSystem.domain.controller.interfaces;
 
+import com.senlaCourses.adPlacementSystem.domain.dto.request.LoginDto;
 import com.senlaCourses.adPlacementSystem.domain.dto.request.UserDto;
 import com.senlaCourses.adPlacementSystem.exceptions.EntityAlreadyExistException;
 import org.springframework.http.ResponseEntity;
@@ -11,5 +12,5 @@ public interface IRegistrationAndLoginController {
 
   ResponseEntity<?> addNewUser(UserDto userDto) throws EntityAlreadyExistException;
 
-  ResponseEntity<?> login(UserDto request);
+  ResponseEntity<?> login(LoginDto request);
 }

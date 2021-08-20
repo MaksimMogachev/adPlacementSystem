@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 /**
- * Java web token filter for users.
+ * JSON web token filter for users.
  */
 @Component
 public class JwtFilter extends GenericFilterBean {

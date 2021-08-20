@@ -7,7 +7,6 @@ import com.senlaCourses.adPlacementSystem.exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +22,6 @@ public class AdminController implements IAdminController {
   private final IUserService userService;
 
   @Override
-  @Secured({"ROLE_ADMIN"})
   @DeleteMapping(value = "/admin/remove/ad")
   public ResponseEntity<?> removeAdFromDb(@RequestParam long id) {
     boolean deleted = adService.removeAdFromDb(id);
@@ -34,7 +32,6 @@ public class AdminController implements IAdminController {
   }
 
   @Override
-  @Secured({"ROLE_ADMIN"})
   @DeleteMapping(value = "/admin/remove/user")
   public ResponseEntity<?> removeUser(@RequestParam long id) throws EntityNotFoundException {
     boolean deleted = userService.removeUser(id);

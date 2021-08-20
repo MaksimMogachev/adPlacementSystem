@@ -9,7 +9,6 @@ import com.senlaCourses.adPlacementSystem.domain.model.Message;
 import com.senlaCourses.adPlacementSystem.domain.model.User;
 import com.senlaCourses.adPlacementSystem.domain.service.interfaces.IChatService;
 import com.senlaCourses.adPlacementSystem.exceptions.EntityNotFoundException;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +41,6 @@ public class ChatService implements IChatService {
     message.setSenderName(getCurrentUser().getUsername());
     message.setMessageText(messageDto.getMessageText());
     Chat chat = findChat(messageDto.getReceiverId());
-
-    messageDao.create(message);
     if (chat == null) {
       chat = new Chat();
       User currentUser = getCurrentUser();
@@ -65,6 +62,9 @@ public class ChatService implements IChatService {
       chatDao.update(chat);
     }
 
+    message.setChat(chat);
+    messageDao.create(message);
+
     return chat;
   }
 
@@ -76,7 +76,7 @@ public class ChatService implements IChatService {
    * @throws EntityNotFoundException if chat wasn't found in DB.
    */
   @Override
-  public List<Message> getAllMessagesFromChat(long userId) throws EntityNotFoundException {
+  public Set<Message> getAllMessagesFromChat(long userId) throws EntityNotFoundException {
     Chat chat = findChat(userId);
     if (chat == null) {
       log.error("EntityNotFoundException(\"Chat not found\")");

@@ -3,6 +3,8 @@ package com.senlaCourses.adPlacementSystem.dao;
 import com.senlaCourses.adPlacementSystem.dao.interfaces.IAdDao;
 import com.senlaCourses.adPlacementSystem.domain.dto.request.AdDtoToCustomSearch;
 import com.senlaCourses.adPlacementSystem.domain.model.Ad;
+import com.senlaCourses.adPlacementSystem.domain.model.CategoryOfAd;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -26,7 +28,6 @@ public class AdDao extends AbstractHibernateDao<Ad> implements IAdDao {
     super(Ad.class);
   }
 
-  //todo check correct place for methods.
   /**
    * Searches ad among all active ads by name.
    *
@@ -39,12 +40,12 @@ public class AdDao extends AbstractHibernateDao<Ad> implements IAdDao {
     CriteriaQuery<Ad> criteriaQuery = builder.createQuery(Ad.class);
 
     Root<Ad> ad = criteriaQuery.from(Ad.class);
-    Predicate searchActivePredicate = builder.isTrue(ad.get("isOpen"));
+    Predicate searchActivePredicate = builder.isTrue(ad.get("isActive"));
     Predicate searchNameOfAdPredicate = builder.like(ad.get("nameOfAd"), "%" + nameOfAd + "%");
     criteriaQuery.where(searchActivePredicate, searchNameOfAdPredicate);
 
     TypedQuery<Ad> query = entityManager.createQuery(criteriaQuery);
-    return getSortedList(query.getResultList());
+    return query.getResultList();
   }
 
   /**
@@ -57,51 +58,41 @@ public class AdDao extends AbstractHibernateDao<Ad> implements IAdDao {
   public List<Ad> customSearchAmongAllAds(AdDtoToCustomSearch dto) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Ad> criteriaQuery = builder.createQuery(Ad.class);
+    List<Predicate> predicateList = new LinkedList<>();
     Predicate searchNameOfAdPredicate;
     Predicate searchActivePredicate;
-    Predicate searchMinPricePredicate = null;
-    Predicate searchMaxPricePredicate = null;
-    Predicate searchCityPredicate = null;
-    Predicate searchCategoryPredicate = null;
+    Predicate searchMinPricePredicate;
+    Predicate searchMaxPricePredicate;
+    Predicate searchCityPredicate;
+    Predicate searchCategoryPredicate;
 
     Root<Ad> ad = criteriaQuery.from(Ad.class);
-    searchActivePredicate = builder.isTrue(ad.get("isOpen"));
+    searchActivePredicate = builder.isTrue(ad.get("isActive"));
+    predicateList.add(searchActivePredicate);
     searchNameOfAdPredicate = builder
         .like(ad.get("nameOfAd"), "%" + dto.getNameOfAd() + "%");
+    predicateList.add(searchNameOfAdPredicate);
     if (dto.getMinPrice() > 0) {
       searchMinPricePredicate = builder.greaterThanOrEqualTo(ad.get("price"), dto.getMinPrice());
+      predicateList.add(searchMinPricePredicate);
     }
     if (dto.getMaxPrice() > 0) {
       searchMaxPricePredicate = builder.lessThanOrEqualTo(ad.get("price"), dto.getMaxPrice());
+      predicateList.add(searchMaxPricePredicate);
     }
     if (dto.getCity() != null) {
       searchCityPredicate = builder.equal(ad.get("city"), dto.getCity());
+      predicateList.add(searchCityPredicate);
     }
     if (dto.getCategory() != null) {
-      searchCategoryPredicate = builder.equal(ad.get("category"), dto.getCategory());
+      searchCategoryPredicate = builder.equal(ad.get("category"),
+                                CategoryOfAd.valueOf(dto.getCategory()));
+      predicateList.add(searchCategoryPredicate);
     }
 
-    criteriaQuery.where(searchActivePredicate,
-                        searchNameOfAdPredicate,
-                        searchMinPricePredicate,
-                        searchMaxPricePredicate,
-                        searchCityPredicate,
-                        searchCategoryPredicate);
+    criteriaQuery.where(predicateList.toArray(new Predicate[0]));
 
     TypedQuery<Ad> query = entityManager.createQuery(criteriaQuery);
-    return getSortedList(query.getResultList());
-  }
-
-  private List<Ad> getSortedList(List<Ad> ads) {
-    ads.sort((o1, o2) -> {
-      if (o1.isPaid() && !o2.isPaid()) {
-        return 1;
-      }
-      if (!o1.isPaid() && o2.isPaid()) {
-        return -1;
-      }
-      return Integer.compare(o1.getProfile().getRating(), o2.getProfile().getRating());
-    });
-    return ads;
+    return query.getResultList();
   }
 }

@@ -1,0 +1,10 @@
+DELETE FROM aps.ad_comments;
+DELETE FROM aps.ad;
+DELETE FROM aps.usr_t_role;
+DELETE FROM aps.usr_chat;
+DELETE FROM aps.t_role;
+DELETE FROM aps.usr;
+DELETE FROM aps.profile;
+DELETE FROM aps.message_chat;
+DELETE FROM aps.message;
+DELETE FROM aps.chat;

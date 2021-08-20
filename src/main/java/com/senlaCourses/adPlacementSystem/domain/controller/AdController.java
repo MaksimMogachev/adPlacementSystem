@@ -2,7 +2,6 @@ package com.senlaCourses.adPlacementSystem.domain.controller;
 
 import com.senlaCourses.adPlacementSystem.domain.controller.interfaces.IAdController;
 import com.senlaCourses.adPlacementSystem.domain.dto.request.AdDto;
-import com.senlaCourses.adPlacementSystem.domain.dto.request.AdDtoToChange;
 import com.senlaCourses.adPlacementSystem.domain.model.Ad;
 import com.senlaCourses.adPlacementSystem.domain.service.interfaces.IAdService;
 import com.senlaCourses.adPlacementSystem.exceptions.EntityAlreadyExistException;
@@ -10,7 +9,6 @@ import com.senlaCourses.adPlacementSystem.exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,9 +36,9 @@ public class AdController implements IAdController {
   @Override
   @PutMapping(value = "/ads/change")
   public ResponseEntity<Ad> changeAd(@RequestParam long id,
-                                     @RequestBody AdDtoToChange adDtoToChange)
+                                     @RequestBody AdDto adDto)
       throws EntityNotFoundException {
-    Ad ad = adService.changeAd(id, adDtoToChange);
+    Ad ad = adService.changeAd(id, adDto);
 
     return new ResponseEntity<>(ad, HttpStatus.OK);
   }

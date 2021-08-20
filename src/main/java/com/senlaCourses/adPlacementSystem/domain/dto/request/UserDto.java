@@ -1,20 +1,16 @@
 package com.senlaCourses.adPlacementSystem.domain.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import lombok.NoArgsConstructor;
 
 /**
  * Class for creation User.class object.
  */
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
-  @NotNull
-  private final String username;
-  @NotNull
-  private final String email;
-  @NotNull
-  private final String password;
+  private String username;
+  private String email;
+  private String password;
 }

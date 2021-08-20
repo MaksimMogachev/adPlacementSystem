@@ -1,9 +1,9 @@
 package com.senlaCourses.adPlacementSystem.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,10 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,19 +35,18 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  @Size(min = 6)
   @NaturalId
   private String username;
-  @Size(min = 8)
   private String password;
   private String email;
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne
+  @JsonIgnore
   private Profile profile;
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "usr_t_role", schema = "aps")
   private Set<Role> roles;
   @ManyToMany
-  @JoinTable(name = "usr_chats", schema = "aps")
+  @JoinTable(name = "usr_chat", schema = "aps")
   private final Set<Chat> chats = new HashSet<>();
 
   @Override

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * Java web token provider.
+ * JSON web token provider.
  */
 @Slf4j
 @Component
@@ -52,6 +52,12 @@ public class JwtProvider {
         .getBody().getSubject();
   }
 
+  /**
+   * Validates token.
+   *
+   * @param token token of user.
+   * @return validates or not.
+   */
   public boolean validateToken(String token) {
     try {
       Jwts.parser().setSigningKey(jwtSecretWord).parseClaimsJws(token);
@@ -62,7 +68,7 @@ public class JwtProvider {
       log.error("Unsupported jwt");
     } catch (MalformedJwtException mjEx) {
       log.error("Malformed jwt");
-    } catch (SignatureException sEx) {
+    } catch (SignatureException signatureEx) {
       log.error("Invalid signature");
     } catch (Exception e) {
       log.error("invalid token");

@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -40,11 +39,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
         .authorizeRequests()
-        .antMatchers("/").permitAll()
         .antMatchers("/registration").not().fullyAuthenticated()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/ads/**").hasRole("USER")
-        .antMatchers("/messages/*").hasRole("USER")
+        .antMatchers("/messages/**").hasRole("USER")
+        .antMatchers("/messages").hasRole("USER")
         .antMatchers("/profile/**").hasRole("USER")
         .antMatchers("/search/**").hasRole("USER")
         .antMatchers("/user/**").hasRole("USER")
@@ -52,12 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .formLogin()
         .loginPage("/login")
-        .defaultSuccessUrl("/")
         .permitAll()
       .and()
         .logout()
-        .permitAll()
-        .logoutSuccessUrl("/");
+        .permitAll();
   }
 
   @Override

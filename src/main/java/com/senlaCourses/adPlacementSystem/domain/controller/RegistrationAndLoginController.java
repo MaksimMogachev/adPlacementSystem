@@ -2,9 +2,10 @@ package com.senlaCourses.adPlacementSystem.domain.controller;
 
 import com.senlaCourses.adPlacementSystem.config.jwt.JwtProvider;
 import com.senlaCourses.adPlacementSystem.domain.controller.interfaces.IRegistrationAndLoginController;
+import com.senlaCourses.adPlacementSystem.domain.dto.request.LoginDto;
 import com.senlaCourses.adPlacementSystem.domain.dto.request.UserDto;
 import com.senlaCourses.adPlacementSystem.domain.model.User;
-import com.senlaCourses.adPlacementSystem.domain.service.UserService;
+import com.senlaCourses.adPlacementSystem.domain.service.interfaces.IUserService;
 import com.senlaCourses.adPlacementSystem.exceptions.EntityAlreadyExistException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationAndLoginController implements IRegistrationAndLoginController {
 
-  //todo how change to interface
-  private final UserService userService;
+  private final IUserService userService;
   private final JwtProvider jwtProvider;
 
   @Override
@@ -35,7 +35,7 @@ public class RegistrationAndLoginController implements IRegistrationAndLoginCont
 
   @Override
   @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody UserDto request) {
+  public ResponseEntity<?> login(@RequestBody LoginDto request) {
     User user = userService.findByLoginAndPassword(request.getUsername(), request.getPassword());
     String token = jwtProvider.generateToken(user.getUsername());
 

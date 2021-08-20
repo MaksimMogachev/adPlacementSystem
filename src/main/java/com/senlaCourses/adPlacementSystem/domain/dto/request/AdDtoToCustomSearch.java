@@ -1,20 +1,18 @@
 package com.senlaCourses.adPlacementSystem.domain.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import lombok.NoArgsConstructor;
 
 /**
  * Class for custom search User.class objects is DB.
  */
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class AdDtoToCustomSearch {
 
-  @NotNull
-  private final String nameOfAd;
-  private final int minPrice;
-  private final int maxPrice;
-  private final String city;
-  private final String category;
+  private String nameOfAd;
+  private int minPrice;
+  private int maxPrice;
+  private String city;
+  private String category;
 }

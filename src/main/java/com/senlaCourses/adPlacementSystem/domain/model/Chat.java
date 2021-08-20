@@ -1,9 +1,9 @@
 package com.senlaCourses.adPlacementSystem.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +21,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "chat", schema = "aps")
@@ -32,7 +30,25 @@ public class Chat implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   @OneToMany(mappedBy = "chat")
-  private List<Message> messages = new LinkedList<>();
+  private Set<Message> messages = new HashSet<>();
   @ManyToMany(mappedBy = "chats")
+  @JsonIgnore
   private Set<User> users = new HashSet<>();
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Chat chat = (Chat) o;
+    return id == chat.id && messages.equals(chat.messages);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, messages);
+  }
 }

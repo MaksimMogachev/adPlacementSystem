@@ -38,6 +38,7 @@ public class User implements UserDetails {
   @NaturalId
   private String username;
   private String password;
+  @NaturalId
   private String email;
   @OneToOne
   @JsonIgnore

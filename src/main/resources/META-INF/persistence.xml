@@ -14,7 +14,7 @@
 
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" /> <!-- DB Driver -->
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/postgres" /> <!-- BD Mane -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/postgres" /> <!-- BD Name -->
       <property name="javax.persistence.jdbc.user" value="postgres" /> <!-- DB User -->
       <property name="javax.persistence.jdbc.password" value="1234" /> <!-- DB Password -->
 

@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
         .authorizeRequests()
-        .antMatchers("/registration").not().fullyAuthenticated()
+        .antMatchers("/registration", "/lost-password").not().fullyAuthenticated()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/ads/**").hasRole("USER")
         .antMatchers("/messages/**").hasRole("USER")

@@ -6,4 +6,6 @@ import com.senlaCourses.adPlacementSystem.domain.model.User;
  * Interface for UserDao realization.
  */
 public interface IUserDao extends IGenericDao<User> {
+
+  User readByMail(String mailTo);
 }

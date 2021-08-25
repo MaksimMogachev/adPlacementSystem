@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres:12.7
+    container_name: db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./SQL/CreatingDBFinal.sql:/docker-entrypoint-initdb.d/CreatingDBFinal.sql
+
+  tc:
+    image: tomcat:9.0.52-jdk11-openjdk
+    container_name: tc
+    volumes:
+      - ./target/Senla-1.0.war:/usr/local/tomcat/webapps/Senla-1.0.war
+    ports:
+      - 8080:8080
+    depends_on:
+      - db

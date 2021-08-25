@@ -34,7 +34,7 @@ public class MailService implements IMailService {
 
   @Override
   public void sendEmail(String mailTo) throws EntityNotFoundException {
-    User user = userDao.readByNaturalId(mailTo);
+    User user = userDao.readByMail(mailTo);
     if (user == null) {
       log.error("EntityNotFoundException(\"User not found\")");
       throw new EntityNotFoundException("User not found");

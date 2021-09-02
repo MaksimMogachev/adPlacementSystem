@@ -72,13 +72,11 @@ class RegistrationAndLoginControllerTest {
   @Sql(value = "/sql/clear-db.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   void login() throws Exception {
     String username = "abc";
-    String email = "abc@mail.ru";
     String password = "password";
 
     MvcResult mvcResult = this.mockMvc.perform(post("/login")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{ \"username\": \"" + username + "\", \"email\": \""
-            + email + "\", \"password\": \"" + password + "\" }")
+        .content("{ \"username\": \"" + username + "\", \"password\": \"" + password + "\" }")
         .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())

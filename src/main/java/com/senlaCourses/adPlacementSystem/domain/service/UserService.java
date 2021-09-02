@@ -49,7 +49,7 @@ public class UserService implements IUserService, UserDetailsService {
     user.setUsername(userDto.getUsername());
     user.setEmail(userDto.getEmail());
     user.setPassword(encoder.encode(userDto.getPassword()));
-    user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
+    user.getRoles().add(new Role(1, "ROLE_USER"));
 
     userDao.create(user);
   }

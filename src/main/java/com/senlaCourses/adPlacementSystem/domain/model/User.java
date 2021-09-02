@@ -44,7 +44,7 @@ public class User implements UserDetails {
   private Profile profile;
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "usr_t_role", schema = "aps")
-  private Set<Role> roles;
+  private Set<Role> roles = new HashSet<>();
   @ManyToMany
   @JoinTable(name = "usr_chat", schema = "aps")
   private final Set<Chat> chats = new HashSet<>();

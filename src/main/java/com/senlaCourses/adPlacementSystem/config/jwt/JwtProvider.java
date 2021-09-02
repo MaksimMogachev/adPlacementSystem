@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtProvider {
 
-  @Value("$(jwt.secretWord)")
+  @Value("${jwt.secretWord}")
   private String jwtSecretWord;
 
   /**

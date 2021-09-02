@@ -12,10 +12,6 @@ import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -73,13 +69,11 @@ public class ApplicationContextConfig {
   }
 
   @Bean
-  @Scope("singleton")
   public EntityManager entityManager() {
     return entityManagerFactory().createEntityManager();
   }
 
   @Bean
-  @Scope("singleton")
   public EntityManagerFactory entityManagerFactory() {
     return Persistence.createEntityManagerFactory("aps");
   }
@@ -94,20 +88,6 @@ public class ApplicationContextConfig {
     JpaTransactionManager tm = new JpaTransactionManager();
     tm.setEntityManagerFactory(entityManagerFactory());
     return tm;
-  }
-
-  /**
-   * Sets up work with the properties for spring.
-   *
-   * @return configured PropertySourcesPlaceholderConfigurer bean.
-   */
-  @Bean
-  public static PropertySourcesPlaceholderConfigurer properties() {
-    PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
-    Resource[] resources = new ClassPathResource[] {new ClassPathResource("springSrc.properties")};
-    pspc.setLocations(resources);
-    pspc.setIgnoreUnresolvablePlaceholders(true);
-    return pspc;
   }
 
   /**

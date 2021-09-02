@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.velocity.app.VelocityEngine;
@@ -33,6 +34,7 @@ public class MailService implements IMailService {
   private final BCryptPasswordEncoder encoder;
 
   @Override
+  @Transactional
   public void sendEmail(String mailTo) throws EntityNotFoundException {
     User user = userDao.readByMail(mailTo);
     if (user == null) {

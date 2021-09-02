@@ -27,7 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private JwtFilter jwtFilter;
 
   @Bean
-  @Scope("singleton")
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
@@ -39,22 +38,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
         .authorizeRequests()
-        .antMatchers("/registration", "/lost-password").not().fullyAuthenticated()
+        .antMatchers("/registration", "/login", "/lost-password").not().fullyAuthenticated()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/ads/**").hasRole("USER")
         .antMatchers("/messages/**").hasRole("USER")
-        .antMatchers("/messages").hasRole("USER")
         .antMatchers("/profile/**").hasRole("USER")
         .antMatchers("/search/**").hasRole("USER")
         .antMatchers("/user/**").hasRole("USER")
       .and()
-        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        .formLogin()
-        .loginPage("/login")
-        .permitAll()
-      .and()
-        .logout()
-        .permitAll();
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
   @Override
